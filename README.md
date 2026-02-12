@@ -1,0 +1,2 @@
+# claudecode_settingjsons
+ClaudeCodeでのAI開発におけるコマンド許可/拒否のデフォルトを準備する
