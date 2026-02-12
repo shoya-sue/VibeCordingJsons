@@ -1,0 +1,23 @@
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test files
+test/
+*.test.json
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Claude settings (users should copy these, not commit them)
+.claude/settings.json
+.claude/*.local.*
