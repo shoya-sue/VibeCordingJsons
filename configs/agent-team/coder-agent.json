@@ -1,0 +1,81 @@
+{
+  "description": "Single Agent - Coder/Developer Specialization",
+  "allowedTools": [
+    "view",
+    "grep",
+    "glob",
+    "edit",
+    "create",
+    "bash",
+    "list_bash",
+    "web_fetch",
+    "web_search",
+    "report_progress",
+    "code_review",
+    "codeql_checker",
+    "gh-advisory-database",
+    "github-mcp-server-get_file_contents",
+    "github-mcp-server-search_code"
+  ],
+  "disallowedTools": [
+    "write_bash",
+    "read_bash",
+    "stop_bash",
+    "task",
+    "playwright-browser_navigate",
+    "playwright-browser_click",
+    "playwright-browser_type"
+  ],
+  "toolRestrictions": {
+    "edit": {
+      "maxFileSize": 1000000,
+      "requireBackup": true
+    },
+    "create": {
+      "maxFileSize": 1000000,
+      "disallowedPaths": ["/.git/", "/node_modules/", "/dist/", "/build/"]
+    },
+    "bash": {
+      "allowedCommands": [
+        "git status",
+        "git diff",
+        "git log",
+        "git show",
+        "git branch",
+        "npm install",
+        "npm test",
+        "pip install",
+        "pytest"
+      ],
+      "executionTimeout": 120000
+    }
+  },
+  "agentProfile": {
+    "role": "coder",
+    "model": "claude-3-5-sonnet-20241022",
+    "specialization": "Code development and modification",
+    "capabilities": [
+      "File editing and creation",
+      "Code refactoring",
+      "Bug fixing",
+      "Feature implementation",
+      "Code review and quality checks",
+      "Security scanning"
+    ],
+    "limitations": [
+      "No interactive bash sessions",
+      "No browser automation",
+      "No sub-agent delegation"
+    ]
+  },
+  "notes": [
+    "Optimized for code development tasks",
+    "Uses powerful Sonnet model for complex reasoning",
+    "Full file editing capabilities with safeguards",
+    "Security scanning integrated",
+    "Code review before finalization",
+    "Progress reporting enabled",
+    "Suitable for feature development and bug fixes",
+    "Should be primary agent for code changes"
+  ]
+}

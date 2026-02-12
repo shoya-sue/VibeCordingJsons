@@ -1,0 +1,61 @@
+{
+  "description": "Single Agent - Explorer Specialization",
+  "allowedTools": [
+    "view",
+    "grep",
+    "glob",
+    "web_fetch",
+    "web_search",
+    "github-mcp-server-get_file_contents",
+    "github-mcp-server-search_code",
+    "github-mcp-server-search_repositories"
+  ],
+  "disallowedTools": [
+    "edit",
+    "create",
+    "bash",
+    "write_bash",
+    "read_bash",
+    "stop_bash",
+    "report_progress",
+    "code_review",
+    "codeql_checker",
+    "task"
+  ],
+  "toolRestrictions": {
+    "view": {
+      "maxFileSize": 500000
+    },
+    "grep": {
+      "maxResults": 200,
+      "enableParallel": true
+    },
+    "glob": {
+      "maxResults": 500
+    }
+  },
+  "agentProfile": {
+    "role": "explorer",
+    "model": "claude-3-5-haiku-20241022",
+    "specialization": "Code exploration and analysis",
+    "capabilities": [
+      "Fast codebase navigation",
+      "Pattern matching and search",
+      "Repository structure analysis",
+      "Documentation review"
+    ],
+    "limitations": [
+      "No file modification",
+      "No command execution",
+      "Read-only operations only"
+    ]
+  },
+  "notes": [
+    "Optimized for fast code exploration",
+    "Uses efficient Haiku model",
+    "Read-only operations ensure safety",
+    "Parallel search enabled for speed",
+    "Suitable for codebase analysis tasks",
+    "Can run safely alongside other agents"
+  ]
+}

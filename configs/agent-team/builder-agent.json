@@ -1,0 +1,83 @@
+{
+  "description": "Single Agent - Builder/Tester Specialization",
+  "allowedTools": [
+    "bash",
+    "view",
+    "list_bash",
+    "web_fetch"
+  ],
+  "disallowedTools": [
+    "edit",
+    "create",
+    "write_bash",
+    "read_bash",
+    "stop_bash",
+    "task",
+    "report_progress",
+    "code_review",
+    "codeql_checker"
+  ],
+  "toolRestrictions": {
+    "bash": {
+      "allowedCommands": [
+        "npm install",
+        "npm ci",
+        "npm run",
+        "npm test",
+        "yarn install",
+        "yarn test",
+        "pnpm install",
+        "pnpm test",
+        "pip install",
+        "pip install -r requirements.txt",
+        "pytest",
+        "python -m pytest",
+        "mvn clean",
+        "mvn test",
+        "mvn install",
+        "gradle test",
+        "gradle build",
+        "make",
+        "make test",
+        "cargo build",
+        "cargo test",
+        "go test",
+        "go build",
+        "dotnet build",
+        "dotnet test",
+        "rustc",
+        "tsc",
+        "eslint",
+        "prettier"
+      ],
+      "executionTimeout": 300000,
+      "maxOutputSize": 1048576
+    }
+  },
+  "agentProfile": {
+    "role": "builder",
+    "model": "claude-3-5-haiku-20241022",
+    "specialization": "Build, test, and lint operations",
+    "capabilities": [
+      "Run build pipelines",
+      "Execute test suites",
+      "Run linters and formatters",
+      "Install dependencies",
+      "Generate build artifacts"
+    ],
+    "limitations": [
+      "No file editing",
+      "No interactive bash sessions",
+      "Command execution only"
+    ]
+  },
+  "notes": [
+    "Optimized for build and test operations",
+    "Uses efficient Haiku model for speed",
+    "Allowed commands cover major ecosystems",
+    "5-minute timeout for long builds",
+    "Output limited to 1MB to prevent overflow",
+    "Returns summary on success, full output on failure",
+    "Safe to run in parallel with other agents"
+  ]
+}

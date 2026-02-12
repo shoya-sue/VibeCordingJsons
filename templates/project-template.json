@@ -1,0 +1,45 @@
+{
+  "description": "Template - Customize this for your project",
+  "allowedTools": [
+    "view",
+    "grep",
+    "glob",
+    "edit",
+    "create",
+    "bash",
+    "web_fetch",
+    "report_progress",
+    "code_review",
+    "codeql_checker"
+  ],
+  "disallowedTools": [
+    "write_bash",
+    "read_bash",
+    "stop_bash"
+  ],
+  "toolRestrictions": {
+    "bash": {
+      "allowedCommands": [
+        "git status",
+        "git diff",
+        "git log",
+        "npm install",
+        "npm test",
+        "pip install",
+        "pytest"
+      ],
+      "disallowedCommands": [
+        "rm -rf",
+        "sudo"
+      ]
+    },
+    "edit": {
+      "maxFileSize": 1000000
+    }
+  },
+  "notes": [
+    "Customize this template for your specific needs",
+    "Add or remove tools from allowedTools/disallowedTools",
+    "Adjust toolRestrictions based on your requirements"
+  ]
+}

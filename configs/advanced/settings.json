@@ -1,0 +1,68 @@
+{
+  "description": "Advanced/Permissive permission configuration - Full access for trusted environments and experienced developers",
+  "allowedTools": [
+    "view",
+    "grep",
+    "glob",
+    "edit",
+    "create",
+    "bash",
+    "write_bash",
+    "read_bash",
+    "stop_bash",
+    "list_bash",
+    "web_fetch",
+    "web_search",
+    "report_progress",
+    "code_review",
+    "codeql_checker",
+    "gh-advisory-database",
+    "task",
+    "playwright-browser_navigate",
+    "playwright-browser_click",
+    "playwright-browser_type",
+    "playwright-browser_fill_form",
+    "playwright-browser_snapshot",
+    "playwright-browser_evaluate",
+    "playwright-browser_hover",
+    "playwright-browser_select_option",
+    "playwright-browser_take_screenshot",
+    "playwright-browser_wait_for",
+    "playwright-browser_tabs",
+    "github-mcp-server-get_file_contents",
+    "github-mcp-server-list_commits",
+    "github-mcp-server-list_pull_requests",
+    "github-mcp-server-list_issues",
+    "github-mcp-server-search_code",
+    "github-mcp-server-search_repositories",
+    "github-mcp-server-pull_request_read",
+    "github-mcp-server-issue_read",
+    "github-mcp-server-get_commit",
+    "github-mcp-server-list_branches",
+    "github-mcp-server-list_tags",
+    "github-mcp-server-get_tag",
+    "github-mcp-server-actions_list",
+    "github-mcp-server-actions_get",
+    "github-mcp-server-get_job_logs"
+  ],
+  "disallowedTools": [],
+  "toolRestrictions": {
+    "bash": {
+      "disallowedCommands": [
+        ":(){ :|:& };:",
+        "mkfs",
+        "dd if=/dev/zero",
+        "chmod -R 777 /"
+      ]
+    }
+  },
+  "notes": [
+    "This configuration allows nearly all operations",
+    "Bash commands have minimal restrictions (only preventing system destruction)",
+    "Browser automation is fully enabled",
+    "All GitHub MCP operations are available",
+    "Interactive bash sessions are permitted",
+    "Only use in fully trusted environments with experienced developers",
+    "Consider implementing additional monitoring and audit logging"
+  ]
+}
