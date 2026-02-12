@@ -412,9 +412,9 @@ PRの説明に含めること：
 
 ## 関連リソース
 
-- [Claude Code公式ドキュメント](https://code.claude.com/docs)
-- [Model Context Protocol (MCP)](https://modelcontextprotocol.io/)
-- [Claude Code Skills Guide](https://gist.github.com/alirezarezvani/a0f6e0a984d4a4adc4842bbe124c5935)
+- [Claude Code公式ドキュメント](https://code.claude.com/docs) - Claude Codeの公式マニュアル
+- [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) - MCPの仕様とドキュメント
+- [Claude Code Skills Guide](https://gist.github.com/alirezarezvani/a0f6e0a984d4a4adc4842bbe124c5935) - Skillsの開発パターンと実践ガイド
 
 ## ライセンス
 
