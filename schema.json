@@ -1,0 +1,76 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ClaudeCode Settings Schema",
+  "description": "Schema for ClaudeCode project settings configuration",
+  "type": "object",
+  "properties": {
+    "description": {
+      "type": "string",
+      "description": "Human-readable description of this configuration"
+    },
+    "allowedTools": {
+      "type": "array",
+      "description": "List of tools that are explicitly allowed",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-zA-Z0-9_-]+$"
+      },
+      "uniqueItems": true
+    },
+    "disallowedTools": {
+      "type": "array",
+      "description": "List of tools that are explicitly disallowed",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-zA-Z0-9_-]+$"
+      },
+      "uniqueItems": true
+    },
+    "toolRestrictions": {
+      "type": "object",
+      "description": "Detailed restrictions for specific tools",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "allowedCommands": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "disallowedCommands": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "allowedDirectories": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "disallowedPaths": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "maxFileSize": {
+            "type": "number",
+            "minimum": 0
+          },
+          "maxResults": {
+            "type": "number",
+            "minimum": 1
+          },
+          "executionTimeout": {
+            "type": "number",
+            "minimum": 1000
+          }
+        }
+      }
+    },
+    "notes": {
+      "type": "array",
+      "description": "Additional notes and guidance",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": ["allowedTools"],
+  "additionalProperties": true
+}

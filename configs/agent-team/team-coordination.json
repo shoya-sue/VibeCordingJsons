@@ -1,0 +1,71 @@
+{
+  "description": "Agent Team Coordination - Permissions for multi-agent collaboration",
+  "allowedTools": [
+    "task",
+    "view",
+    "grep",
+    "glob",
+    "edit",
+    "create",
+    "bash",
+    "web_search",
+    "report_progress",
+    "code_review",
+    "codeql_checker",
+    "gh-advisory-database"
+  ],
+  "disallowedTools": [
+    "write_bash",
+    "read_bash",
+    "stop_bash"
+  ],
+  "toolRestrictions": {
+    "task": {
+      "allowedAgentTypes": ["explore", "task", "general-purpose"],
+      "maxConcurrent": 5,
+      "maxDepth": 3,
+      "modelOverride": true
+    },
+    "bash": {
+      "executionTimeout": 120000
+    }
+  },
+  "agentTeamConfig": {
+    "coordination": {
+      "enableParallelExecution": true,
+      "enableTaskDelegation": true,
+      "requireProgressReporting": true
+    },
+    "roles": {
+      "explorer": {
+        "agentType": "explore",
+        "tools": ["view", "grep", "glob"],
+        "description": "Specialized for codebase exploration"
+      },
+      "builder": {
+        "agentType": "task",
+        "tools": ["bash", "view"],
+        "description": "Specialized for builds, tests, and CLI operations"
+      },
+      "coder": {
+        "agentType": "general-purpose",
+        "tools": ["edit", "create", "view", "grep", "bash"],
+        "description": "Specialized for code changes and development"
+      }
+    },
+    "limits": {
+      "maxAgentsPerTeam": 10,
+      "maxExecutionTime": 600000,
+      "maxMemoryPerAgent": "1GB"
+    }
+  },
+  "notes": [
+    "Designed for multi-agent team collaboration",
+    "Supports three specialized agent types",
+    "Parallel execution enabled for efficiency",
+    "Task delegation between agents is permitted",
+    "Progress reporting required for coordination",
+    "Suitable for complex, multi-phase projects",
+    "Monitor resource usage with multiple concurrent agents"
+  ]
+}
