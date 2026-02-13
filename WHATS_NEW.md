@@ -4,6 +4,26 @@
 
 このプルリクエストでは、ClaudeCodeの`.claude/settings.json`において、**コマンド許可リスト以外にカスタマイズ可能な設定オプション**の最新情報を追加しました。
 
+## ⚠️ 重要：既存設定との互換性
+
+**新しいオプションは既存の設定と完全に互換性があります！**
+
+- ✅ **既存の設定ファイルに追加可能**: `allowedTools`、`disallowedTools`、`toolRestrictions`と一緒に使えます
+- ✅ **段階的な導入が可能**: 必要なオプションだけを既存設定に追加できます
+- ✅ **マージして使用可能**: `jq`コマンドで既存設定と新しいオプションを組み合わせられます
+
+### 既存設定との組み合わせ例
+
+```bash
+# 既存のstandard設定に新しいオプションを追加
+jq -s '.[0] * .[1]' \
+  configs/standard/settings.json \
+  configs/examples/hooks-focused.json \
+  > .claude/settings.json
+```
+
+実例は `configs/examples/combined-standard-advanced.json` を参照してください。
+
 ## 追加された主要な設定オプション
 
 ### 1. 権限管理（Permissions）

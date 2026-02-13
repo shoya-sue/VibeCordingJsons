@@ -79,8 +79,15 @@ A: Claude Codeを再起動してください。`.claude/settings.json`がプロ�
 ### Q: 複数の設定を組み合わせたい
 A: 手動でJSONをマージするか、`jq`コマンドを使用してください：
 ```bash
+# 既存設定とMCP設定を組み合わせる
 jq -s '.[0] * .[1]' configs/standard/settings.json configs/mcp/github-readonly.json > .claude/settings.json
+
+# 既存設定に高度なオプション（フック等）を追加
+jq -s '.[0] * .[1]' configs/standard/settings.json configs/examples/hooks-focused.json > .claude/settings.json
 ```
+
+### Q: 新しい高度なオプションは既存設定と一緒に使えますか？
+A: はい、完全に互換性があります！既存の`allowedTools`や`toolRestrictions`と一緒に、`permissions`、`env`、`llm`、`hooks`などの新しいオプションを追加できます。実例は`configs/examples/combined-standard-advanced.json`を参照してください。
 
 ### Q: 権限エラーが出る
 A: `.claude/settings.json`の`allowedTools`に必要なツールを追加してください。
