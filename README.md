@@ -59,11 +59,16 @@ configs/
 ├── skills/                      # Skills
 │   ├── skill-development.json
 │   └── skill-execution.json
-└── agent-team/                  # マルチエージェント
-    ├── team-coordination.json
-    ├── explorer-agent.json
-    ├── builder-agent.json
-    └── coder-agent.json
+├── agent-team/                  # マルチエージェント
+│   ├── team-coordination.json
+│   ├── explorer-agent.json
+│   ├── builder-agent.json
+│   └── coder-agent.json
+└── examples/                    # 高度なカスタマイズ例
+    ├── advanced-options.json    # 全オプション網羅
+    ├── permissions-focused.json # 権限管理の例
+    ├── hooks-focused.json       # フック機能の例
+    └── agents-focused.json      # カスタムエージェントの例
 ```
 
 ## よくある質問
@@ -82,6 +87,7 @@ A: `.claude/settings.json`の`allowedTools`に必要なツールを追加して�
 
 ## 詳細情報
 
+- **高度なカスタマイズオプション**: [ADVANCED_CUSTOMIZATION.md](ADVANCED_CUSTOMIZATION.md) - コマンド許可リスト以外の設定オプション（権限管理、環境変数、モデル設定、フック、カスタムエージェントなど）
 - 詳細なリファレンス: [REFERENCE.md](REFERENCE.md)
 - JSONスキーマ: [schema.json](schema.json)
 - ライセンス: [MIT](LICENSE)

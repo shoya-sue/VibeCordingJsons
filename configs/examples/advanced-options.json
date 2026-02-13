@@ -1,0 +1,146 @@
+{
+  "$schema": "../../schema.json",
+  "description": "高度なカスタマイズオプションを網羅したサンプル設定",
+  "allowedTools": [
+    "view",
+    "grep",
+    "glob",
+    "edit",
+    "create",
+    "bash",
+    "report_progress",
+    "code_review",
+    "codeql_checker"
+  ],
+  "disallowedTools": [
+    "write_bash",
+    "stop_bash"
+  ],
+  "toolRestrictions": {
+    "bash": {
+      "allowedCommands": [
+        "npm run *",
+        "npm test",
+        "git status",
+        "git diff",
+        "git log *"
+      ],
+      "disallowedCommands": [
+        "rm -rf *",
+        "sudo *",
+        "npm install"
+      ],
+      "executionTimeout": 300000
+    },
+    "edit": {
+      "maxFileSize": 5242880
+    },
+    "grep": {
+      "maxResults": 100
+    }
+  },
+  "permissions": {
+    "allow": [
+      "Read(./src/**)",
+      "Read(./tests/**)",
+      "Read(./docs/**)",
+      "Write(./src/**)",
+      "Write(./tests/**)",
+      "Bash(npm run *)",
+      "Bash(git status)",
+      "Bash(git diff)"
+    ],
+    "deny": [
+      "Read(**/.env*)",
+      "Read(**/secrets/**)",
+      "Read(**/*.key)",
+      "Write(**/node_modules/**)",
+      "Write(**/dist/**)",
+      "Bash(rm -rf *)",
+      "Bash(sudo *)"
+    ],
+    "ask": [
+      "Bash(npm install *)",
+      "Write(./package.json)",
+      "Write(./package-lock.json)"
+    ],
+    "defaultMode": "ask"
+  },
+  "env": {
+    "NODE_ENV": "development",
+    "DEBUG": "app:*",
+    "LOG_LEVEL": "info"
+  },
+  "llm": {
+    "model": "claude-sonnet-4-20250514",
+    "temperature": 0.3,
+    "maxTokens": 4096
+  },
+  "execution": {
+    "timeout": 300,
+    "maxConcurrent": 5
+  },
+  "limits": {
+    "maxFileSize": 5242880,
+    "maxResults": 100,
+    "maxMemory": 2048
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "type": "command",
+        "command": "echo '## プロジェクト状態' && git status --short && echo '' && echo '## 最近のコミット' && git log --oneline -5",
+        "matcher": "startup"
+      }
+    ],
+    "BeforeEdit": [
+      {
+        "type": "command",
+        "command": "npm run lint:check"
+      }
+    ]
+  },
+  "agents": [
+    {
+      "name": "explorer",
+      "path": "./agents/explorer.json",
+      "model": "claude-3-5-haiku-20250120",
+      "permissions": {
+        "allow": [
+          "Read(**/*)",
+          "Bash(grep *)",
+          "Bash(find *)"
+        ],
+        "deny": [
+          "Write(**/*)"
+        ]
+      }
+    },
+    {
+      "name": "tester",
+      "path": "./agents/tester.json",
+      "model": "claude-3-5-haiku-20250120",
+      "permissions": {
+        "allow": [
+          "Bash(npm test)",
+          "Bash(npm run test:*)",
+          "Read(./tests/**)"
+        ]
+      }
+    }
+  ],
+  "plugins": [
+    "prettier",
+    "eslint",
+    "typescript"
+  ],
+  "theme": "dark",
+  "verbose": false,
+  "notes": [
+    "このファイルは高度なカスタマイズオプションのサンプルです",
+    "実際のプロジェクトでは、必要なオプションのみを使用してください",
+    "permissions設定は、toolRestrictionsよりも細かい制御が可能です",
+    "hooks機能を使うと、セッション開始時に自動でGit状態を表示できます",
+    "agents機能で、専門タスク用のカスタムエージェントを定義できます"
+  ]
+}
