@@ -4,12 +4,29 @@ ClaudeCodeの`.claude/settings.json`用の設定テンプレート集です。�
 
 ## どのJSONを使うべきか
 
-### 🔐 セキュリティレベルで選ぶ
+### 🎯 最適化済み設定（推奨・そのまま使える）
+
+**✨ NEW: 高度なオプションを組み込み済みの最適化設定**
+
+| 状況 | 使用するJSON | 説明 |
+|------|-------------|------|
+| 📖 コードレビューのみ | `configs/optimized/basic-optimized.json` | 読み取り専用 + セキュア権限管理 + 高速モデル |
+| 👨‍💻 **通常の開発（最推奨）** | `configs/optimized/standard-optimized.json` | 標準設定 + 権限管理 + 自動Git状態表示 + 最新モデル |
+| 🚀 完全信頼環境 | `configs/optimized/advanced-optimized.json` | 全機能 + マルチエージェント + 詳細フック |
+
+**特徴**:
+- ✅ すぐに使える：そのままコピーして使用可能
+- ✅ ベストプラクティス：実用的な設定を組み込み済み
+- ✅ 最適化済み：permissions、env、llm、hooks等を適切に設定
+
+### 🔐 基本設定（カスタマイズ用）
+
+従来の設定ファイル。必要に応じて手動で組み合わせ可能。
 
 | 状況 | 使用するJSON | 説明 |
 |------|-------------|------|
 | 📖 コードレビューのみ | `configs/basic/settings.json` | 読み取り専用。ファイル変更・コマンド実行不可 |
-| 👨‍💻 通常の開発（推奨） | `configs/standard/settings.json` | ファイル編集可能、安全なコマンド実行、GitHub連携 |
+| 👨‍💻 通常の開発 | `configs/standard/settings.json` | ファイル編集可能、安全なコマンド実行、GitHub連携 |
 | 🚀 完全信頼環境 | `configs/advanced/settings.json` | 全機能利用可能。経験豊富な開発者向け |
 
 ### 🔌 機能で選ぶ（追加設定）
@@ -34,12 +51,25 @@ ClaudeCodeの`.claude/settings.json`用の設定テンプレート集です。�
 
 ## クイックスタート
 
+### 推奨：最適化済み設定を使う（最も簡単）
+
 ```bash
-# 1. 標準設定をコピー（ほとんどのプロジェクトに推奨）
+# 1. 最適化済みの標準設定をコピー（最推奨）
+cp configs/optimized/standard-optimized.json .claude/settings.json
+
+# 2. Claude Codeを再起動して適用
+# 設定はそのまま使えます！
+```
+
+### 従来の方法：基本設定を使う
+
+```bash
+# 1. 標準設定をコピー
 cp configs/standard/settings.json .claude/settings.json
 
-# 2. 設定を確認・編集
-vim .claude/settings.json
+# 2. 必要に応じて高度なオプションを追加
+jq -s '.[0] * .[1]' .claude/settings.json configs/examples/hooks-focused.json > .claude/settings.new.json
+mv .claude/settings.new.json .claude/settings.json
 
 # 3. Claude Codeを再起動して適用
 ```
@@ -48,6 +78,10 @@ vim .claude/settings.json
 
 ```
 configs/
+├── optimized/                   # 🎯 最適化済み（推奨・そのまま使える）
+│   ├── basic-optimized.json     # 読み取り専用 + 高度オプション
+│   ├── standard-optimized.json  # 標準設定 + 高度オプション（最推奨）
+│   └── advanced-optimized.json  # 全機能 + 高度オプション
 ├── basic/settings.json          # 最小権限（読み取り専用）
 ├── standard/settings.json       # 推奨設定（バランス型）
 ├── advanced/settings.json       # 全権限（信頼環境用）
@@ -68,7 +102,8 @@ configs/
     ├── advanced-options.json    # 全オプション網羅
     ├── permissions-focused.json # 権限管理の例
     ├── hooks-focused.json       # フック機能の例
-    └── agents-focused.json      # カスタムエージェントの例
+    ├── agents-focused.json      # カスタムエージェントの例
+    └── combined-standard-advanced.json # 既存設定との組み合わせ例
 ```
 
 ## よくある質問
@@ -87,7 +122,27 @@ jq -s '.[0] * .[1]' configs/standard/settings.json configs/examples/hooks-focuse
 ```
 
 ### Q: 新しい高度なオプションは既存設定と一緒に使えますか？
-A: はい、完全に互換性があります！既存の`allowedTools`や`toolRestrictions`と一緒に、`permissions`、`env`、`llm`、`hooks`などの新しいオプションを追加できます。実例は`configs/examples/combined-standard-advanced.json`を参照してください。
+A: はい、完全に互換性があります！既存の`allowedTools`や`toolRestrictions`と一緒に、`permissions`、`env`、`llm`、`hooks`などの新しいオプションを追加できます。
+
+**推奨：最適化済み設定を使う**
+```bash
+# すぐに使える最適化済み設定（推奨）
+cp configs/optimized/standard-optimized.json .claude/settings.json
+```
+
+**カスタマイズする場合：手動でマージ**
+```bash
+# 既存設定に高度なオプションを追加
+jq -s '.[0] * .[1]' configs/standard/settings.json configs/examples/hooks-focused.json > .claude/settings.json
+```
+
+### Q: 「最適化済み設定」と「基本設定」の違いは？
+A: 
+- **最適化済み設定** (`configs/optimized/`): 高度なオプション（permissions、env、llm、hooks等）を実用的に組み込み済み。**そのまま使えて推奨**。
+- **基本設定** (`configs/basic/`, `configs/standard/`, `configs/advanced/`): 従来の設定。必要に応じて手動でカスタマイズする場合に使用。
+- **examples設定** (`configs/examples/`): 高度なオプションの学習用サンプル。組み合わせの参考に。
+
+ほとんどの場合、最適化済み設定をそのまま使うのが最も簡単で効率的です。
 
 ### Q: 権限エラーが出る
 A: `.claude/settings.json`の`allowedTools`に必要なツールを追加してください。
