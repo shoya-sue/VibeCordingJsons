@@ -1,114 +1,223 @@
 # ClaudeCode Settings JSONs
 
-ClaudeCodeの`.claude/settings.json`用の設定テンプレート集です。**3つの選択肢から選ぶだけ**で、すぐに使えます。
+Claude Code のベストプラクティステンプレート集。
+`settings.json` / `.mcp.json` / `CLAUDE.md` / Skills / Agents / Rules を一式提供。
 
-## 🎯 どれを使えばいい？（3つだけ）
+## 使い方
 
-| 用途 | ファイル | いつ使う？ |
-|------|---------|-----------|
-| 📖 **コードレビュー** | `configs/basic-optimized.json` | コードを読むだけ。変更しない |
-| 👨‍💻 **通常の開発（推奨）** | `configs/standard-optimized.json` | ほとんどのプロジェクトはこれ |
-| 🚀 **フル機能** | `configs/advanced-optimized.json` | 全ての制限を外したい |
-
-## クイックスタート
+### install.sh で一括コピー（推奨）
 
 ```bash
-# 1. 設定をコピー（ほとんどの人はこれ）
-cp configs/standard-optimized.json .claude/settings.json
-
-# 2. Claude Codeを再起動
-# 完了！
+git clone https://github.com/shoya-sue/ClaudeCodeJsons.git
+cd ClaudeCodeJsons
+./install.sh standard /path/to/your/project
 ```
 
-## それぞれの違いは？
+### GitHub 上で手動コピー
 
-### 📖 basic-optimized.json（読み取り専用）
-- ✅ ファイルを読む、検索する
-- ❌ ファイルを編集できない
-- ❌ コマンドを実行できない
-- 💡 使う場面：信頼できないコードのレビュー
+使いたいパターンのディレクトリを開き、各ファイルの中身をコピー。
 
-### 👨‍💻 standard-optimized.json（推奨）
-- ✅ ファイルを読む、編集する
-- ✅ 安全なコマンド実行（npm、git等）
-- ✅ GitHub連携
-- ✅ セッション開始時にGit状態を自動表示
-- ❌ 危険なコマンド（rm -rf、sudo等）は拒否
-- 💡 使う場面：ほとんどの開発プロジェクト（**これを選べば間違いなし**）
+## 3つのパターン
 
-### 🚀 advanced-optimized.json（上級者向け）
-- ✅ ほぼ全ての操作が可能
-- ✅ マルチエージェント機能
-- ✅ ブラウザ自動化
-- ✅ 詳細なフック設定
-- ⚠️ 危険なコマンドのみ拒否
-- 💡 使う場面：完全に信頼できる環境、経験豊富な開発者
+| パターン | 用途 | 含まれるファイル |
+|---------|------|-----------------|
+| **[Minimal](minimal/)** | コードレビュー・探索のみ | `.claude/settings.json`, `CLAUDE.md` |
+| **[Standard](standard/)** | 日常の開発作業（**推奨**） | 上記 + `.mcp.json`, Skills, Rules |
+| **[Full](full/)** | 全機能活用 | 上記 + Agents, Sandbox, Agent Teams |
 
-## 高度な使い方（オプション）
+各ディレクトリの README に詳細なコピー先とインストール手順があります。
 
-### 追加機能が必要な場合
+## settings.json vs settings.local.json
 
-特殊な機能が必要な場合は、`configs/add-ons/`にある設定を組み合わせられます：
+| ファイル | 用途 | Git 管理 |
+|---------|------|---------|
+| `settings.json` | チーム共有のベースライン設定 | する |
+| `settings.local.json` | 個人用の上書き（モデル選択、追加権限等） | しない（gitignore） |
 
-```bash
-# 例：標準設定にGitHub Actions監視を追加
-jq -s '.[0] * .[1]' \
-  configs/standard-optimized.json \
-  configs/add-ons/mcp/github-actions.json \
-  > .claude/settings.json
-```
+`settings.local.json` は `settings.json` の設定を上書きします。
+同様に `CLAUDE.md`（チーム共有）と `CLAUDE.local.md`（個人用）の対応があります。
 
-利用可能なアドオン：
-- `add-ons/mcp/` - GitHub API連携、ブラウザ自動化
-- `add-ons/skills/` - Claude Code Skills開発・実行
-- `add-ons/agent-team/` - マルチエージェント開発
+## パターン比較
 
-### 従来の設定ファイル
-
-過去の設定ファイルは`configs/legacy/`にあります。新規利用は非推奨です。
+| 機能 | Minimal | Standard | Full |
+|------|---------|----------|------|
+| ファイル読み取り | src/tests/docs | src/tests/docs + 設定ファイル | 全ファイル |
+| ファイル書き込み | **不可** | src/tests/docs | 主要ディレクトリ |
+| git 操作 | 参照のみ | add/commit まで | 全操作 |
+| permissions.ask | なし | git push, npm publish | + docker/terraform/kubectl |
+| パッケージマネージャー | **不可** | npm/yarn/pnpm/bun | 同左 |
+| テスト実行 | **不可** | pytest/cargo/go | 同左 |
+| Docker / K8s | **不可** | **不可** | docker/kubectl |
+| MCP サーバー | **不可** | 4サーバー | 5サーバー + 全許可 |
+| Skills | **不可** | explain-code | + fix-issue, review-pr |
+| Agents | なし | なし | code-reviewer, test-runner |
+| Rules | なし | code-style | + api-conventions |
+| Hooks | なし | PostToolUse, Stop | + SessionStart, PreToolUse |
+| Sandbox | なし | なし | 有効（network 制御付き） |
+| Agent Teams | なし | なし | 有効 |
+| Attribution | なし | コミット・PR 署名 | 同左 |
 
 ## ディレクトリ構成
 
+```text
+.
+├── minimal/
+│   ├── .claude/
+│   │   ├── settings.json
+│   │   └── settings.local.json
+│   ├── CLAUDE.md
+│   ├── CLAUDE.local.md
+│   └── README.md
+├── standard/
+│   ├── .claude/
+│   │   ├── settings.json
+│   │   ├── settings.local.json
+│   │   ├── skills/explain-code/SKILL.md
+│   │   └── rules/code-style.md
+│   ├── .mcp.json
+│   ├── CLAUDE.md
+│   ├── CLAUDE.local.md
+│   └── README.md
+├── full/
+│   ├── .claude/
+│   │   ├── settings.json
+│   │   ├── settings.local.json
+│   │   ├── skills/
+│   │   │   ├── explain-code/SKILL.md
+│   │   │   ├── fix-issue/SKILL.md
+│   │   │   └── review-pr/SKILL.md
+│   │   ├── agents/
+│   │   │   ├── code-reviewer.md
+│   │   │   └── test-runner.md
+│   │   └── rules/
+│   │       ├── code-style.md
+│   │       └── api-conventions.md
+│   ├── .mcp.json
+│   ├── CLAUDE.md
+│   ├── CLAUDE.local.md
+│   └── README.md
+├── install.sh
+├── .claude/settings.json
+├── CLAUDE.md
+├── LICENSE
+└── README.md
 ```
-configs/
-├── basic-optimized.json           # 📖 読み取り専用
-├── standard-optimized.json        # 👨‍💻 通常の開発（推奨）
-├── advanced-optimized.json        # 🚀 フル機能
-├── add-ons/                       # オプション：追加機能
-│   ├── mcp/                       #   GitHub API、ブラウザ等
-│   ├── skills/                    #   Skills開発・実行
-│   └── agent-team/                #   マルチエージェント
-└── legacy/                        # 非推奨：過去の設定ファイル
+
+## settings.json 設定項目一覧
+
+### permissions（権限制御 — 3段階）
+
+```jsonc
+{
+  "permissions": {
+    "allow": [...],  // 自動許可
+    "ask": [...],    // 毎回確認（allow と deny の中間）
+    "deny": [...]    // 常に拒否
+  }
+}
 ```
 
-## よくある質問
+対応パターン:
 
-### Q: 設定が反映されない
-A: Claude Codeを再起動してください。`.claude/settings.json`がプロジェクトルートにあることを確認してください。
+| パターン | 説明 | 例 |
+|---------|------|-----|
+| `Read(glob)` | ファイル読み取り | `Read(src/**)` |
+| `Write(glob)` | ファイル書き込み | `Write(src/**)` |
+| `Edit(glob)` | ファイル編集 | `Edit(**/*.ts)` |
+| `Bash(pattern)` | シェルコマンド | `Bash(git *)` |
+| `mcp__server__tool` | MCP ツール | `mcp__context7__*` |
+| `Skill(pattern)` | スキル実行 | `Skill(explain-code:*)` |
+| `MCPSearch` | MCP 検索 | `MCPSearch` |
 
-### Q: どれを選べばいい？
-A: **迷ったら`standard-optimized.json`を使ってください**。ほとんどのプロジェクトに適しています。
+### hooks（イベントフック — 14イベント対応）
 
-### Q: 追加機能が欲しい
-A: `configs/add-ons/`から必要な設定を組み合わせられます：
-```bash
-# 例：GitHub Actions監視を追加
-jq -s '.[0] * .[1]' \
-  configs/standard-optimized.json \
-  configs/add-ons/mcp/github-actions.json \
-  > .claude/settings.json
+3種類のフックタイプ: `command`（シェル）、`prompt`（LLM 判定）、`agent`（サブエージェント）
+
+```jsonc
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          { "type": "command", "command": "echo 'Before bash'", "timeout": 5000 }
+        ]
+      }
+    ]
+  }
+}
 ```
 
-### Q: 権限エラーが出る
-A: `.claude/settings.json`の`allowedTools`に必要なツールを追加してください。
+主要イベント:
 
-## 詳細情報
+| イベント | タイミング | ブロック可能 |
+|---------|-----------|------------|
+| `SessionStart` | セッション開始 | No |
+| `UserPromptSubmit` | プロンプト送信前 | Yes |
+| `PreToolUse` | ツール実行前 | Yes |
+| `PostToolUse` | ツール実行後 | No |
+| `Stop` | セッション停止時 | Yes |
+| `SubagentStop` | サブエージェント停止時 | Yes |
 
-- **高度なカスタマイズオプション**: [ADVANCED_CUSTOMIZATION.md](ADVANCED_CUSTOMIZATION.md) - コマンド許可リスト以外の設定オプション（権限管理、環境変数、モデル設定、フック、カスタムエージェントなど）
-- 詳細なリファレンス: [REFERENCE.md](REFERENCE.md)
-- JSONスキーマ: [schema.json](schema.json)
-- ライセンス: [MIT](LICENSE)
+### env（環境変数）
 
-## 貢献
+| 変数 | 説明 | 推奨値 |
+|------|------|--------|
+| `MCP_TIMEOUT` | MCP タイムアウト (ms) | `10000`-`15000` |
+| `MAX_MCP_OUTPUT_TOKENS` | MCP 出力上限トークン | `25000`-`50000` |
+| `BASH_MAX_TIMEOUT_MS` | Bash タイムアウト (ms) | `120000`-`300000` |
+| `ENABLE_TOOL_SEARCH` | ツール検索の有効化 | `auto` |
+| `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE` | コンテキスト自動圧縮 (%) | `50` |
+| `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS` | Agent Teams 有効化 | `1` |
+| `MAX_THINKING_TOKENS` | 思考トークン上限 | モデル依存 |
 
-プルリクエストを歓迎します。詳細は[REFERENCE.md](REFERENCE.md)の「貢献ガイド」セクションを参照してください。
+### その他の設定項目
+
+| 項目 | 説明 |
+|------|------|
+| `$schema` | IDE での自動補完を有効化 |
+| `model` | デフォルトモデルの指定 |
+| `language` | 応答言語（`"japanese"` 等） |
+| `attribution` | コミット・PR への署名テキスト |
+| `sandbox` | Bash サンドボックス（enabled, excludedCommands, network） |
+| `teammateMode` | Agent Teams 表示モード（`auto` / `in-process` / `tmux`） |
+| `enableAllProjectMcpServers` | `.mcp.json` のサーバー自動有効化 |
+
+## 設定の階層
+
+Claude Code は以下の優先順位で設定を適用する:
+
+1. CLI 引数（セッション限定）
+2. `.claude/settings.local.json`（個人用、gitignore 推奨）
+3. `.claude/settings.json`（チーム共有、Git 管理）
+4. `~/.claude/settings.local.json`（グローバル個人用）
+5. `~/.claude/settings.json`（グローバルデフォルト）
+
+## ベストプラクティス
+
+- **最小権限**: 必要な権限だけを `allow` に記載する
+- **ask を活用**: push / publish 等は `ask` で毎回確認
+- **明示的拒否**: 危険な操作は `deny` で明示的にブロック
+- **MCP は 4-5 個**: 多すぎると起動が遅くなり逆効果
+- **CLAUDE.md は 150 行以内**: コンテキストに確実に含まれる
+- **secrets は書かない**: `.env` や API キーを settings.json に入れない
+- **Hooks 活用**: ファイル変更通知やコマンドログで作業を可視化
+- **Sandbox 有効化**: 信頼できる環境でも sandbox で安全性を担保
+- **`--dangerously-skip-permissions` は使わない**: セキュリティリスク大
+
+## 参考
+
+- [Claude Code 公式ドキュメント](https://code.claude.com/docs)
+- [Settings](https://code.claude.com/docs/settings)
+- [Hooks](https://code.claude.com/docs/hooks)
+- [Skills](https://code.claude.com/docs/skills)
+- [Sub-Agents](https://code.claude.com/docs/sub-agents)
+- [MCP](https://code.claude.com/docs/mcp)
+- [Agent Teams](https://code.claude.com/docs/agent-teams)
+- [Memory (CLAUDE.md)](https://code.claude.com/docs/memory)
+- [Best Practices](https://code.claude.com/docs/best-practices)
+- [Model Context Protocol](https://modelcontextprotocol.io/)
+
+## ライセンス
+
+[MIT](LICENSE)
