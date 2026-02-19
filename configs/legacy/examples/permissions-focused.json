@@ -1,0 +1,66 @@
+{
+  "$schema": "../../schema.json",
+  "description": "権限管理（Permissions）を活用したセキュアな設定",
+  "allowedTools": [
+    "view",
+    "grep",
+    "glob",
+    "edit",
+    "create",
+    "bash",
+    "report_progress"
+  ],
+  "permissions": {
+    "allow": [
+      "Read(./src/**)",
+      "Read(./public/**)",
+      "Read(./README.md)",
+      "Write(./src/**)",
+      "Write(./public/**)",
+      "Bash(npm run dev)",
+      "Bash(npm run build)",
+      "Bash(npm test)",
+      "Bash(git status)",
+      "Bash(git diff)",
+      "Bash(git log --oneline -10)"
+    ],
+    "deny": [
+      "Read(**/.env*)",
+      "Read(**/.aws/**)",
+      "Read(**/.ssh/**)",
+      "Read(**/secrets/**)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)",
+      "Write(**/node_modules/**)",
+      "Write(**/dist/**)",
+      "Write(**/build/**)",
+      "Bash(npm install *)",
+      "Bash(yarn install *)",
+      "Bash(rm -rf *)",
+      "Bash(sudo *)",
+      "Bash(curl *)",
+      "Bash(wget *)"
+    ],
+    "ask": [
+      "Write(./package.json)",
+      "Write(./package-lock.json)",
+      "Write(./tsconfig.json)",
+      "Bash(git add *)",
+      "Bash(git commit *)"
+    ],
+    "defaultMode": "ask"
+  },
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "llm": {
+    "model": "claude-sonnet-4-20250514",
+    "temperature": 0.3
+  },
+  "notes": [
+    "permissions機能を使った細かい権限制御の例",
+    "機密ファイル（.env, .aws, .ssh等）へのアクセスを完全にブロック",
+    "package.jsonの変更は確認が必要（ask設定）",
+    "defaultModeを'ask'にすることで、明示的に許可していない操作は確認を求める"
+  ]
+}

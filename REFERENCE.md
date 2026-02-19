@@ -5,9 +5,10 @@
 ## 目次
 
 1. [設定ファイル詳細](#設定ファイル詳細)
-2. [使用例・シナリオ](#使用例シナリオ)
-3. [ツールリファレンス](#ツールリファレンス)
-4. [貢献ガイド](#貢献ガイド)
+2. [高度なカスタマイズオプション](#高度なカスタマイズオプション)
+3. [使用例・シナリオ](#使用例シナリオ)
+4. [ツールリファレンス](#ツールリファレンス)
+5. [貢献ガイド](#貢献ガイド)
 
 ---
 
@@ -107,6 +108,111 @@
 - **モデル**: Claude 3.5 Sonnet（高品質）
 - **機能**: フルファイル編集、セキュリティスキャン統合
 - **制限**: インタラクティブBash無効
+
+---
+
+## 高度なカスタマイズオプション
+
+コマンド許可リスト（`allowedCommands`）以外にも、多くのカスタマイズオプションが利用可能です。詳細は[ADVANCED_CUSTOMIZATION.md](ADVANCED_CUSTOMIZATION.md)を参照してください。
+
+### 主要な追加オプション
+
+#### 1. 権限管理（Permissions）
+ファイルアクセスとコマンド実行を細かく制御：
+```json
+{
+  "permissions": {
+    "allow": ["Read(./src/**)", "Bash(npm run *)"],
+    "deny": ["Read(**/.env*)", "Bash(rm -rf *)"],
+    "defaultMode": "ask"
+  }
+}
+```
+
+#### 2. 環境変数（Environment Variables）
+すべてのツール実行時に使用される環境変数：
+```json
+{
+  "env": {
+    "NODE_ENV": "development",
+    "DEBUG": "app:*"
+  }
+}
+```
+
+#### 3. モデル設定（LLM Configuration）
+使用するClaudeモデルと動作のカスタマイズ：
+```json
+{
+  "llm": {
+    "model": "claude-sonnet-4-20250514",
+    "temperature": 0.7,
+    "maxTokens": 4096
+  }
+}
+```
+
+#### 4. 実行設定（Execution）
+コマンド実行のタイムアウトと並列数：
+```json
+{
+  "execution": {
+    "timeout": 300,
+    "maxConcurrent": 5
+  }
+}
+```
+
+#### 5. リソース制限（Limits）
+グローバルなリソース制限：
+```json
+{
+  "limits": {
+    "maxFileSize": 5242880,
+    "maxResults": 100,
+    "maxMemory": 2048
+  }
+}
+```
+
+#### 6. フック（Hooks）
+セッションライフサイクルイベントへのフック：
+```json
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "type": "command",
+        "command": "git status --short"
+      }
+    ]
+  }
+}
+```
+
+#### 7. カスタムエージェント（Custom Agents）
+専門エージェントの定義：
+```json
+{
+  "agents": [
+    {
+      "name": "test-runner",
+      "path": "./agents/test-runner.json",
+      "model": "claude-3-5-haiku-20250120"
+    }
+  ]
+}
+```
+
+#### 8. プラグイン（Plugins）
+有効にするプラグインの指定：
+```json
+{
+  "plugins": ["prettier", "eslint", "typescript"]
+}
+```
+
+詳細な説明と実用例については、[ADVANCED_CUSTOMIZATION.md](ADVANCED_CUSTOMIZATION.md)をご覧ください。
 
 ---
 
