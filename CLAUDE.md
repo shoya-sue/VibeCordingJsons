@@ -1,6 +1,6 @@
-# ClaudeCode Settings JSONs
+# VibeCording Settings
 
-Claude Code のベストプラクティステンプレートを提供するリポジトリ。
+Claude Code と GitHub Copilot CLI のベストプラクティステンプレートを提供するリポジトリ。
 
 ## Tech Stack
 
@@ -12,15 +12,18 @@ Bash, JSON, Markdown（コードは含まない。設定テンプレートのみ
 .
 ├── minimal/           # 読み取り専用パターン
 │   ├── .claude/       # settings.json, settings.local.json
+│   ├── .copilot/      # Copilot CLI 設定（TBD）
 │   ├── CLAUDE.md
 │   └── README.md
 ├── standard/          # 日常開発パターン（推奨）
 │   ├── .claude/       # settings + skills + rules
+│   ├── .copilot/      # Copilot CLI 設定（TBD）
 │   ├── .mcp.json
 │   ├── CLAUDE.md
 │   └── README.md
 ├── full/              # 全機能パターン
 │   ├── .claude/       # settings + skills + agents + rules
+│   ├── .copilot/      # Copilot CLI 設定（TBD）
 │   ├── .mcp.json
 │   ├── CLAUDE.md
 │   └── README.md

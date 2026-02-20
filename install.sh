@@ -63,6 +63,17 @@ if [[ -d "$SCRIPT_DIR/$PATTERN/.claude" ]]; then
   done
 fi
 
+# Copy .copilot/ directory
+if [[ -d "$SCRIPT_DIR/$PATTERN/.copilot" ]]; then
+  mkdir -p "$TARGET/.copilot"
+  cp -r "$SCRIPT_DIR/$PATTERN/.copilot/"* "$TARGET/.copilot/" 2>/dev/null || true
+
+  # Copy hidden files in .copilot/
+  for f in "$SCRIPT_DIR/$PATTERN/.copilot/".*; do
+    [[ -f "$f" ]] && cp "$f" "$TARGET/.copilot/"
+  done
+fi
+
 # Copy root-level files
 for file in .mcp.json CLAUDE.md CLAUDE.local.md; do
   if [[ -f "$SCRIPT_DIR/$PATTERN/$file" ]]; then
@@ -72,7 +83,7 @@ done
 
 # Add CLAUDE.local.md and settings.local.json to .gitignore if exists
 if [[ -f "$TARGET/.gitignore" ]]; then
-  for entry in "CLAUDE.local.md" ".claude/settings.local.json" ".claude/*.local.*"; do
+  for entry in "CLAUDE.local.md" ".claude/settings.local.json" ".claude/*.local.*" ".copilot/*.local.*"; do
     if ! grep -qF "$entry" "$TARGET/.gitignore" 2>/dev/null; then
       echo "$entry" >> "$TARGET/.gitignore"
     fi
@@ -84,6 +95,7 @@ echo ""
 
 # List installed files
 find "$TARGET/.claude" -type f 2>/dev/null | sed "s|$TARGET/||" | sort
+find "$TARGET/.copilot" -type f 2>/dev/null | sed "s|$TARGET/||" | sort
 [[ -f "$TARGET/.mcp.json" ]] && echo ".mcp.json"
 [[ -f "$TARGET/CLAUDE.md" ]] && echo "CLAUDE.md"
 [[ -f "$TARGET/CLAUDE.local.md" ]] && echo "CLAUDE.local.md"

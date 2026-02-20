@@ -1,6 +1,6 @@
-# ClaudeCode Settings JSONs
+# VibeCording Settings
 
-Claude Code のベストプラクティステンプレート集。
+Claude Code と GitHub Copilot CLI のベストプラクティステンプレート集。
 `settings.json` / `.mcp.json` / `CLAUDE.md` / Skills / Agents / Rules を一式提供。
 
 ## 使い方
@@ -8,8 +8,8 @@ Claude Code のベストプラクティステンプレート集。
 ### install.sh で一括コピー（推奨）
 
 ```bash
-git clone https://github.com/shoya-sue/ClaudeCodeJsons.git
-cd ClaudeCodeJsons
+git clone https://github.com/shoya-sue/VibeCordingJsons.git
+cd VibeCordingJsons
 ./install.sh standard /path/to/your/project
 ```
 
@@ -41,6 +41,7 @@ cd ClaudeCodeJsons
 
 | 機能 | Minimal | Standard | Full |
 |------|---------|----------|------|
+| **Claude Code** | | | |
 | ファイル読み取り | src/tests/docs | src/tests/docs + 設定ファイル | 全ファイル |
 | ファイル書き込み | **不可** | src/tests/docs | 主要ディレクトリ |
 | git 操作 | 参照のみ | add/commit まで | 全操作 |
@@ -56,6 +57,7 @@ cd ClaudeCodeJsons
 | Sandbox | なし | なし | 有効（network 制御付き） |
 | Agent Teams | なし | なし | 有効 |
 | Attribution | なし | コミット・PR 署名 | 同左 |
+| **Copilot CLI** | TBD | TBD | TBD |
 
 ## ディレクトリ構成
 
@@ -65,6 +67,7 @@ cd ClaudeCodeJsons
 │   ├── .claude/
 │   │   ├── settings.json
 │   │   └── settings.local.json
+│   ├── .copilot/          # Copilot CLI 設定（TBD）
 │   ├── CLAUDE.md
 │   ├── CLAUDE.local.md
 │   └── README.md
@@ -74,6 +77,7 @@ cd ClaudeCodeJsons
 │   │   ├── settings.local.json
 │   │   ├── skills/explain-code/SKILL.md
 │   │   └── rules/code-style.md
+│   ├── .copilot/          # Copilot CLI 設定（TBD）
 │   ├── .mcp.json
 │   ├── CLAUDE.md
 │   ├── CLAUDE.local.md
@@ -92,6 +96,7 @@ cd ClaudeCodeJsons
 │   │   └── rules/
 │   │       ├── code-style.md
 │   │       └── api-conventions.md
+│   ├── .copilot/          # Copilot CLI 設定（TBD）
 │   ├── .mcp.json
 │   ├── CLAUDE.md
 │   ├── CLAUDE.local.md

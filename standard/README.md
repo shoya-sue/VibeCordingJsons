@@ -16,8 +16,8 @@
 
 ```bash
 # install.sh で一括コピー
-git clone https://github.com/shoya-sue/ClaudeCodeJsons.git
-cd ClaudeCodeJsons
+git clone https://github.com/shoya-sue/VibeCordingJsons.git
+cd VibeCordingJsons
 ./install.sh standard /path/to/your/project
 ```
 
@@ -40,3 +40,26 @@ export GITHUB_PERSONAL_ACCESS_TOKEN="ghp_xxxx"
 ## 拒否される操作
 
 `rm -rf`, `sudo`, `force-push`, `hard reset`, secrets 読み取り
+
+## Copilot CLI 設定
+
+### 含まれるファイル
+
+| ファイル | 説明 |
+|---------|------|
+| `.copilot/copilot-instructions.md` | 日常開発指示・Claude Code 連携 |
+| `.copilot/skills/explain-code/SKILL.md` | コード解説スキル |
+| `.copilot/skills/code-reviewer/SKILL.md` | 高精度レビュースキル |
+
+### 機能
+
+- **copilot-instructions.md**: 標準開発指示・Claude Code 連携
+- **Skills**: explain-code, code-reviewer (2個)
+- Agents: なし
+
+### 使い方
+
+```
+/explain-code @src/auth.ts
+/code-reviewer
+```

@@ -21,8 +21,8 @@
 
 ```bash
 # install.sh で一括コピー
-git clone https://github.com/shoya-sue/ClaudeCodeJsons.git
-cd ClaudeCodeJsons
+git clone https://github.com/shoya-sue/VibeCordingJsons.git
+cd VibeCordingJsons
 ./install.sh full /path/to/your/project
 ```
 
@@ -48,3 +48,36 @@ export GITHUB_PERSONAL_ACCESS_TOKEN="ghp_xxxx"
 ## 拒否される操作
 
 `rm -rf /`, `mkfs`, `terraform destroy`, `kubectl delete namespace/node`, 本番 secrets 読み取り
+
+## Copilot CLI 設定
+
+### 含まれるファイル
+
+| ファイル | 説明 |
+|---------|------|
+| `.copilot/copilot-instructions.md` | Fleet/Plan/Agent Teams 全機能指示 |
+| `.copilot/skills/explain-code/SKILL.md` | コード解説スキル |
+| `.copilot/skills/code-reviewer/SKILL.md` | 高精度レビュースキル |
+| `.copilot/skills/fix-issue/SKILL.md` | Issue 修正スキル |
+| `.copilot/skills/review-pr/SKILL.md` | PR レビュースキル |
+| `.copilot/skills/test-runner/SKILL.md` | テスト実行・修正スキル |
+| `.copilot/agents/code-reviewer.agent.md` | 読み取り専用レビューエージェント |
+| `.copilot/agents/github-workflow.agent.md` | GitHub ワークフローエージェント |
+| `.copilot/agents/code-explorer.agent.md` | コード解説エージェント |
+| `.copilot/agents/test-runner.agent.md` | テスト実行エージェント |
+
+### 機能
+
+- **copilot-instructions.md**: Fleet / Plan / Agent Teams の全機能指示
+- **Skills**: explain-code, code-reviewer, fix-issue, review-pr, test-runner (5個)
+- **Agents**: code-reviewer, github-workflow, code-explorer, test-runner (4個)
+
+### 使い方
+
+```
+/explain-code @src/auth.ts
+/code-reviewer
+/fix-issue #123
+/review-pr #42
+/test-runner
+```
