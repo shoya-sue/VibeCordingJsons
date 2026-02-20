@@ -18,6 +18,7 @@
 | `.mcp.json` | プロジェクトルート `.mcp.json` |
 | `CLAUDE.md` | プロジェクトルート `CLAUDE.md` |
 | `CLAUDE.local.md` | プロジェクトルート `CLAUDE.local.md`（個人用、gitignore） |
+| `AGENTS.md` | プロジェクトルート `AGENTS.md` |
 
 ```bash
 # install.sh で一括コピー
@@ -65,6 +66,7 @@ export GITHUB_PERSONAL_ACCESS_TOKEN="ghp_xxxx"
 | `.copilot/agents/github-workflow.agent.md` | GitHub ワークフローエージェント |
 | `.copilot/agents/code-explorer.agent.md` | コード解説エージェント |
 | `.copilot/agents/test-runner.agent.md` | テスト実行エージェント |
+| `AGENTS.md` | Copilot CLI / Gemini CLI 等の汎用 AI エージェント指示 |
 
 ### 機能
 

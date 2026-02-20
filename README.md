@@ -1,7 +1,7 @@
 # VibeCording Settings
 
 Claude Code と GitHub Copilot CLI のベストプラクティステンプレート集。
-`settings.json` / `.mcp.json` / `CLAUDE.md` / Skills / Agents / Rules を一式提供。
+`settings.json` / `.mcp.json` / `CLAUDE.md` / `AGENTS.md` / Skills / Agents / Rules を一式提供。
 
 ## 使い方
 
@@ -21,7 +21,7 @@ cd VibeCordingJsons
 
 | パターン | 用途 | 含まれるファイル |
 |---------|------|-----------------|
-| **[Minimal](minimal/)** | コードレビュー・探索のみ | `.claude/settings.json`, `CLAUDE.md` |
+| **[Minimal](minimal/)** | コードレビュー・探索のみ | `.claude/settings.json`, `CLAUDE.md`, `AGENTS.md` |
 | **[Standard](standard/)** | 日常の開発作業（**推奨**） | 上記 + `.mcp.json`, Skills, Rules |
 | **[Full](full/)** | 全機能活用 | 上記 + Agents, Sandbox, Agent Teams |
 
@@ -57,7 +57,26 @@ cd VibeCordingJsons
 | Sandbox | なし | なし | 有効（network 制御付き） |
 | Agent Teams | なし | なし | 有効 |
 | Attribution | なし | コミット・PR 署名 | 同左 |
-| **Copilot CLI** | TBD | TBD | TBD |
+| **Copilot CLI** | | | |
+| copilot-instructions.md | 読み取り専用指示 | 標準開発指示 | 全機能指示 |
+| Skills | なし | explain-code, code-reviewer | + fix-issue, review-pr, test-runner |
+| Agents | なし | なし | code-reviewer, github-workflow, code-explorer, test-runner |
+| AGENTS.md | ✅ | ✅ | ✅ |
+
+## AI エージェントが読み込む指示ファイル
+
+各 AI ツールが自動で読み込む指示ファイルの一覧：
+
+| ファイル | Claude Code | Copilot CLI | Gemini CLI | 用途 |
+|---------|------------|-------------|------------|------|
+| `CLAUDE.md` | ✅ | ✅ | — | Claude Code 向け詳細指示 |
+| `AGENTS.md` | — | ✅ | ✅ | 汎用 AI エージェント指示 |
+| `.github/copilot-instructions.md` | — | ✅ | — | Copilot プロジェクト指示 |
+| `~/.copilot/copilot-instructions.md` | — | ✅ | — | Copilot ユーザーレベル指示 |
+| `~/.claude/CLAUDE.md` | ✅ | — | — | Claude Code グローバル指示 |
+
+**推奨配置**: `CLAUDE.md`（Claude Code 専用）と `AGENTS.md`（汎用）の両方をプロジェクトルートに配置。
+`~/.copilot/copilot-instructions.md` にユーザーレベルの設定を置くと全プロジェクトに適用されます。
 
 ## ディレクトリ構成
 
@@ -67,7 +86,9 @@ cd VibeCordingJsons
 │   ├── .claude/
 │   │   ├── settings.json
 │   │   └── settings.local.json
-│   ├── .copilot/          # Copilot CLI 設定（TBD）
+│   ├── .copilot/
+│   │   └── copilot-instructions.md
+│   ├── AGENTS.md
 │   ├── CLAUDE.md
 │   ├── CLAUDE.local.md
 │   └── README.md
@@ -77,8 +98,13 @@ cd VibeCordingJsons
 │   │   ├── settings.local.json
 │   │   ├── skills/explain-code/SKILL.md
 │   │   └── rules/code-style.md
-│   ├── .copilot/          # Copilot CLI 設定（TBD）
+│   ├── .copilot/
+│   │   ├── copilot-instructions.md
+│   │   └── skills/
+│   │       ├── explain-code/SKILL.md
+│   │       └── code-reviewer/SKILL.md
 │   ├── .mcp.json
+│   ├── AGENTS.md
 │   ├── CLAUDE.md
 │   ├── CLAUDE.local.md
 │   └── README.md
@@ -96,8 +122,21 @@ cd VibeCordingJsons
 │   │   └── rules/
 │   │       ├── code-style.md
 │   │       └── api-conventions.md
-│   ├── .copilot/          # Copilot CLI 設定（TBD）
+│   ├── .copilot/
+│   │   ├── copilot-instructions.md
+│   │   ├── skills/
+│   │   │   ├── explain-code/SKILL.md
+│   │   │   ├── code-reviewer/SKILL.md
+│   │   │   ├── fix-issue/SKILL.md
+│   │   │   ├── review-pr/SKILL.md
+│   │   │   └── test-runner/SKILL.md
+│   │   └── agents/
+│   │       ├── code-reviewer.agent.md
+│   │       ├── github-workflow.agent.md
+│   │       ├── code-explorer.agent.md
+│   │       └── test-runner.agent.md
 │   ├── .mcp.json
+│   ├── AGENTS.md
 │   ├── CLAUDE.md
 │   ├── CLAUDE.local.md
 │   └── README.md
@@ -209,9 +248,11 @@ Claude Code は以下の優先順位で設定を適用する:
 - **Hooks 活用**: ファイル変更通知やコマンドログで作業を可視化
 - **Sandbox 有効化**: 信頼できる環境でも sandbox で安全性を担保
 - **`--dangerously-skip-permissions` は使わない**: セキュリティリスク大
+- **CLAUDE.md + AGENTS.md の両方を配置**: Claude Code と Copilot CLI の両方をカバー
 
 ## 参考
 
+### Claude Code
 - [Claude Code 公式ドキュメント](https://code.claude.com/docs)
 - [Settings](https://code.claude.com/docs/settings)
 - [Hooks](https://code.claude.com/docs/hooks)
@@ -221,6 +262,12 @@ Claude Code は以下の優先順位で設定を適用する:
 - [Agent Teams](https://code.claude.com/docs/agent-teams)
 - [Memory (CLAUDE.md)](https://code.claude.com/docs/memory)
 - [Best Practices](https://code.claude.com/docs/best-practices)
+
+### GitHub Copilot CLI
+- [Copilot CLI 公式ドキュメント](https://docs.github.com/copilot/concepts/agents/about-copilot-cli)
+- [Copilot CLI の使い方](https://docs.github.com/en/copilot/how-tos/use-copilot-agents/use-copilot-cli)
+- [GitHub Copilot ベストプラクティス](https://docs.github.com/copilot/using-github-copilot/best-practices-for-using-github-copilot)
+- [カスタム指示ファイル](https://docs.github.com/copilot/customizing-copilot/adding-custom-instructions-for-github-copilot)
 - [Model Context Protocol](https://modelcontextprotocol.io/)
 
 ## ライセンス

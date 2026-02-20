@@ -75,7 +75,7 @@ if [[ -d "$SCRIPT_DIR/$PATTERN/.copilot" ]]; then
 fi
 
 # Copy root-level files
-for file in .mcp.json CLAUDE.md CLAUDE.local.md; do
+for file in .mcp.json CLAUDE.md CLAUDE.local.md AGENTS.md; do
   if [[ -f "$SCRIPT_DIR/$PATTERN/$file" ]]; then
     cp "$SCRIPT_DIR/$PATTERN/$file" "$TARGET/$file"
   fi
@@ -99,6 +99,7 @@ find "$TARGET/.copilot" -type f 2>/dev/null | sed "s|$TARGET/||" | sort
 [[ -f "$TARGET/.mcp.json" ]] && echo ".mcp.json"
 [[ -f "$TARGET/CLAUDE.md" ]] && echo "CLAUDE.md"
 [[ -f "$TARGET/CLAUDE.local.md" ]] && echo "CLAUDE.local.md"
+[[ -f "$TARGET/AGENTS.md" ]] && echo "AGENTS.md"
 
 echo ""
 echo "Done! Edit CLAUDE.md and settings.json to match your project."

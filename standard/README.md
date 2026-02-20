@@ -13,6 +13,7 @@
 | `.mcp.json` | プロジェクトルート `.mcp.json` |
 | `CLAUDE.md` | プロジェクトルート `CLAUDE.md` |
 | `CLAUDE.local.md` | プロジェクトルート `CLAUDE.local.md`（個人用、gitignore） |
+| `AGENTS.md` | プロジェクトルート `AGENTS.md` |
 
 ```bash
 # install.sh で一括コピー
@@ -50,6 +51,7 @@ export GITHUB_PERSONAL_ACCESS_TOKEN="ghp_xxxx"
 | `.copilot/copilot-instructions.md` | 日常開発指示・Claude Code 連携 |
 | `.copilot/skills/explain-code/SKILL.md` | コード解説スキル |
 | `.copilot/skills/code-reviewer/SKILL.md` | 高精度レビュースキル |
+| `AGENTS.md` | Copilot CLI / Gemini CLI 等の汎用 AI エージェント指示 |
 
 ### 機能
 

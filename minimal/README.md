@@ -10,6 +10,7 @@
 | `.claude/settings.local.json` | `.claude/settings.local.json`（個人用、gitignore） |
 | `CLAUDE.md` | プロジェクトルート `CLAUDE.md` |
 | `CLAUDE.local.md` | プロジェクトルート `CLAUDE.local.md`（個人用、gitignore） |
+| `AGENTS.md` | プロジェクトルート `AGENTS.md` |
 
 ```bash
 # install.sh で一括コピー
@@ -32,6 +33,7 @@ cd VibeCordingJsons
 | ファイル | 説明 |
 |---------|------|
 | `.copilot/copilot-instructions.md` | 読み取り専用モードの指示 |
+| `AGENTS.md` | Copilot CLI / Gemini CLI 等の汎用 AI エージェント指示 |
 
 ### 機能
 
