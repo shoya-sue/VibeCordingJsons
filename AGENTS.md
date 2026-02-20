@@ -59,3 +59,26 @@ Bash, JSON, Markdown（コードは含まない。設定テンプレートのみ
 - 各パターンの README.md は GitHub ブラウザで自動表示される
 - install.sh は既存ファイルを上書きする（プロジェクト固有設定は先にバックアップ）
 - このリポジトリ自体の `.claude/settings.json` はテンプレート開発用に最適化済み
+
+## AI エージェント使用ポリシー
+
+このリポジトリはテンプレート集のため、以下の点に注意して作業すること。
+
+### 許可される操作
+
+- すべての Markdown・JSON・Bash ファイルの読み取り・編集
+- `git add` / `git commit`
+- `bash install.sh` による動作確認
+
+### 禁止される操作
+
+- テンプレートへの実際の API キー・シークレットの書き込み
+- `install.sh` の本番プロジェクトへの無確認実行
+- 各ティア構造の大幅な変更（事前に確認が必要）
+
+### テンプレート編集時の注意
+
+1. `minimal/` → `standard/` → `full/` の順に機能が増える設計を維持
+2. SKILL.md は `user-invokable: true` フロントマターが必須
+3. agent ファイルは `description` と `tools` フロントマターが必須
+4. 変更後は `./install.sh` でインストール動作を確認
