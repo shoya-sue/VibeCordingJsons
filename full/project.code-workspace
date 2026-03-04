@@ -1,0 +1,117 @@
+{
+  "folders": [
+    {
+      "name": "<!-- プロジェクト名に変更 -->",
+      "path": "."
+    }
+  ],
+  "settings": {
+    "task.allowAutomaticTasks": "on",
+    "git.repositoryScanMaxDepth": 3,
+    "git.autoRepositoryDetection": true,
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 1000,
+    "files.exclude": {
+      "**/.git": true,
+      "**/.DS_Store": true,
+      "**/Thumbs.db": true,
+      "**/__pycache__": true,
+      "**/*.pyc": true,
+      "**/.idea": true,
+      "**/.vscode/settings.json": false
+    },
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/vendor": true,
+      "**/dist": true,
+      "**/build": true,
+      "**/.next": true,
+      "**/out": true,
+      "**/coverage": true,
+      "**/*.min.js": true,
+      "**/*.min.css": true,
+      "**/package-lock.json": true,
+      "**/yarn.lock": true,
+      "**/composer.lock": true
+    },
+    "files.watcherExclude": {
+      "**/.git/objects/**": true,
+      "**/.git/subtree-cache/**": true,
+      "**/node_modules/**": true,
+      "**/vendor/**": true,
+      "**/dist/**": true,
+      "**/build/**": true,
+      "**/.next/**": true
+    },
+    "terminal.integrated.defaultProfile.osx": "zsh",
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2,
+    "editor.renderWhitespace": "boundary",
+    "editor.bracketPairColorization.enabled": true,
+    "editor.guides.bracketPairs": "active",
+    "editor.minimap.enabled": false
+  },
+  "extensions": {
+    "recommendations": [
+      "github.copilot",
+      "github.copilot-chat",
+      "eamodio.gitlens",
+      "esbenp.prettier-vscode",
+      "dbaeumer.vscode-eslint",
+      "editorconfig.editorconfig",
+      "ms-azuretools.vscode-docker"
+    ]
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [],
+    "compounds": []
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "🟩 Claude Code",
+        "type": "shell",
+        "command": "claude -c || claude",
+        "options": {
+          "shell": {
+            "executable": "/bin/zsh",
+            "args": ["-li", "-c"]
+          }
+        },
+        "isBackground": true,
+        "presentation": {
+          "reveal": "always",
+          "panel": "dedicated",
+          "group": "claude",
+          "showReuseMessage": false,
+          "clear": true
+        },
+        "problemMatcher": [
+          {
+            "pattern": {
+              "regexp": "^$"
+            },
+            "background": {
+              "activeOnStart": true,
+              "beginsPattern": ".",
+              "endsPattern": "."
+            }
+          }
+        ]
+      },
+      {
+        "label": "🚀 Auto Start",
+        "dependsOn": [
+          "🟩 Claude Code"
+        ],
+        "dependsOrder": "parallel",
+        "runOptions": {
+          "runOn": "folderOpen"
+        },
+        "problemMatcher": []
+      }
+    ]
+  }
+}

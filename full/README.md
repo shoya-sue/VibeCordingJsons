@@ -15,6 +15,7 @@
 | `.claude/agents/test-runner.md` | `.claude/agents/test-runner.md` |
 | `.claude/rules/code-style.md` | `.claude/rules/code-style.md` |
 | `.claude/rules/api-conventions.md` | `.claude/rules/api-conventions.md` |
+| `project.code-workspace` | `<プロジェクト名>.code-workspace` |
 | `.mcp.json` | プロジェクトルート `.mcp.json` |
 | `CLAUDE.md` | プロジェクトルート `CLAUDE.md` |
 | `CLAUDE.local.md` | プロジェクトルート `CLAUDE.local.md`（個人用、gitignore） |
@@ -51,6 +52,69 @@ export GITHUB_PERSONAL_ACCESS_TOKEN="ghp_xxxx"
 ## 拒否される操作
 
 `rm -rf /`, `mkfs`, `terraform destroy`, `kubectl delete namespace/node`, 本番 secrets 読み取り
+
+## VSCode ワークスペース設定
+
+`project.code-workspace` に以下の設定を含む:
+
+| カテゴリ | 設定内容 |
+|---------|---------|
+| **エディタ** | formatOnSave, tabSize: 2, bracketPairColorization, minimap: off |
+| **ファイル管理** | autoSave (1秒遅延), exclude, watcherExclude |
+| **検索除外** | node_modules, vendor, dist, build, .next, out, coverage, lock files |
+| **Git** | repositoryScanMaxDepth: 3, autoRepositoryDetection |
+| **ターミナル** | zsh（macOS デフォルト） |
+| **拡張機能** | Copilot, Copilot Chat, GitLens, Prettier, ESLint, EditorConfig, Docker |
+| **タスク** | Claude Code 自動起動 + フォルダオープン時自動実行 |
+| **Launch** | デバッグ構成テンプレート（空） |
+
+### Claude Code 自動起動タスク
+
+`🚀 Auto Start` タスクにより、ワークスペースを開くと Claude Code が自動起動:
+
+- `claude -c` で既存セッション復帰、なければ新規起動
+- zsh ログインシェルで実行（環境変数・パスを完全読み込み）
+- `runOn: folderOpen` でワークスペースオープン時に自動実行
+- タスクグループでプロジェクト別にパネルを整理可能
+
+### マルチプロジェクト構成
+
+複数プロジェクトを1つのワークスペースで管理する場合、`folders` と `tasks` を拡張:
+
+```jsonc
+{
+  "folders": [
+    { "name": "frontend", "path": "./frontend" },
+    { "name": "backend", "path": "./backend" },
+    { "name": "infra", "path": "./infra" }
+  ],
+  "tasks": {
+    "tasks": [
+      {
+        "label": "🟩 frontend",
+        "command": "claude -c || claude",
+        "options": { "cwd": "${workspaceFolder:frontend}" },
+        // ... （他の設定は同じ）
+        "presentation": { "group": "frontend" }
+      },
+      {
+        "label": "🟦 backend",
+        "command": "claude -c || claude",
+        "options": { "cwd": "${workspaceFolder:backend}" },
+        "presentation": { "group": "backend" }
+      },
+      {
+        "label": "🚀 Auto Start",
+        "dependsOn": ["🟩 frontend", "🟦 backend"],
+        "dependsOrder": "parallel",
+        "runOptions": { "runOn": "folderOpen" }
+      }
+    ]
+  }
+}
+```
+
+> **Tip**: 各タスクの `presentation.group` で色分けされた専用パネルに表示される。
 
 ## Copilot CLI 設定
 

@@ -1,7 +1,7 @@
 # VibeCording Settings
 
 Claude Code と GitHub Copilot CLI のベストプラクティステンプレート集。
-`settings.json` / `.mcp.json` / `CLAUDE.md` / `AGENTS.md` / Skills / Agents / Rules を一式提供。
+`settings.json` / `.mcp.json` / `CLAUDE.md` / `AGENTS.md` / Skills / Agents / Rules / VSCode ワークスペース設定を一式提供。
 
 ## 使い方
 
@@ -21,9 +21,9 @@ cd VibeCordingJsons
 
 | パターン | 用途 | 含まれるファイル |
 |---------|------|-----------------|
-| **[Minimal](minimal/)** | コードレビュー・探索のみ | `.claude/settings.json`, `CLAUDE.md`, `AGENTS.md` |
+| **[Minimal](minimal/)** | コードレビュー・探索のみ | `.claude/settings.json`, `CLAUDE.md`, `AGENTS.md`, VSCode workspace |
 | **[Standard](standard/)** | 日常の開発作業（**推奨**） | 上記 + `.mcp.json`, Skills, Rules |
-| **[Full](full/)** | 全機能活用 | 上記 + Agents, Sandbox, Agent Teams |
+| **[Full](full/)** | 全機能活用 | 上記 + Agents, Sandbox, Agent Teams, Auto Start |
 
 各ディレクトリの README に詳細なコピー先とインストール手順があります。
 
@@ -62,6 +62,11 @@ cd VibeCordingJsons
 | Skills | なし | explain-code, code-reviewer | + fix-issue, review-pr, test-runner |
 | Agents | なし | なし | code-reviewer, github-workflow, code-explorer, test-runner |
 | AGENTS.md | ✅ | ✅ | ✅ |
+| **VSCode Workspace** | | | |
+| エディタ設定 | 基本（formatOnSave, tabSize） | 全設定（autoSave, git, search） | 同左 + minimap: off |
+| 拡張機能 | Copilot のみ | + GitLens, Prettier, ESLint, EditorConfig | + Docker |
+| Claude Code タスク | なし | バックグラウンドタスク 1個 | + Auto Start（folderOpen） |
+| ランチ構成テンプレート | なし | なし | 空テンプレート付き |
 
 ## AI エージェントが読み込む指示ファイル
 
@@ -91,6 +96,7 @@ cd VibeCordingJsons
 │   ├── AGENTS.md
 │   ├── CLAUDE.md
 │   ├── CLAUDE.local.md
+│   ├── project.code-workspace
 │   └── README.md
 ├── standard/
 │   ├── .claude/
@@ -107,6 +113,7 @@ cd VibeCordingJsons
 │   ├── AGENTS.md
 │   ├── CLAUDE.md
 │   ├── CLAUDE.local.md
+│   ├── project.code-workspace
 │   └── README.md
 ├── full/
 │   ├── .claude/
@@ -139,6 +146,7 @@ cd VibeCordingJsons
 │   ├── AGENTS.md
 │   ├── CLAUDE.md
 │   ├── CLAUDE.local.md
+│   ├── project.code-workspace
 │   └── README.md
 ├── install.sh
 ├── .claude/settings.json
@@ -252,6 +260,60 @@ Claude Code は以下の優先順位で設定を適用する:
 4. `~/.claude/settings.local.json`（グローバル個人用）
 5. `~/.claude/settings.json`（グローバルデフォルト）
 
+## VSCode ワークスペース設定
+
+各パターンに `project.code-workspace` を同梱。VSCode の「ファイル > ワークスペースを開く」で読み込み可能。
+
+### パターン別の機能
+
+| 機能 | Minimal | Standard | Full |
+|------|---------|----------|------|
+| エディタ設定 | formatOnSave, tabSize: 2 | + autoSave, search/watcher excludes | + minimap: off, vendor excludes |
+| 拡張機能推奨 | Copilot, Copilot Chat | + GitLens, Prettier, ESLint, EditorConfig | + Docker |
+| Claude Code タスク | — | `🟩 Claude Code` (バックグラウンド) | + `🚀 Auto Start` (フォルダ開放時自動起動) |
+| ランチ構成 | — | — | 空テンプレート |
+
+### Claude Code バックグラウンドタスク
+
+Standard / Full パターンでは、VSCode タスクとして Claude Code をバックグラウンド起動できます。
+
+```jsonc
+// project.code-workspace 内のタスク定義（抜粋）
+{
+  "label": "🟩 Claude Code",
+  "type": "shell",
+  "command": "claude -c || claude",
+  "isBackground": true,
+  "options": {
+    "shell": { "executable": "/bin/zsh", "args": ["-l", "-c"] }
+  }
+}
+```
+
+- **Standard**: `Cmd+Shift+P` → `Tasks: Run Task` → `🟩 Claude Code` で手動起動
+- **Full**: フォルダを開くと自動的に Claude Code ターミナルが起動（`runOn: folderOpen`）
+
+### マルチプロジェクト構成
+
+Full パターンの `project.code-workspace` を編集して、複数プロジェクトの Claude Code を並行管理できます。
+
+```jsonc
+{
+  "folders": [
+    { "path": ".", "name": "frontend" },
+    { "path": "../backend", "name": "backend" }
+  ],
+  "tasks": {
+    "tasks": [
+      { "label": "🟦 Frontend Claude", "command": "cd ${workspaceFolder:frontend} && claude -c || claude", ... },
+      { "label": "🟩 Backend Claude", "command": "cd ${workspaceFolder:backend} && claude -c || claude", ... }
+    ]
+  }
+}
+```
+
+`presentation.group` でタスクパネルの色分けも可能です（詳細は `full/README.md` を参照）。
+
 ## ベストプラクティス
 
 - **最小権限**: 必要な権限だけを `allow` に記載する
@@ -264,6 +326,7 @@ Claude Code は以下の優先順位で設定を適用する:
 - **Sandbox 有効化**: 信頼できる環境でも sandbox で安全性を担保
 - **`--dangerously-skip-permissions` は使わない**: セキュリティリスク大
 - **CLAUDE.md + AGENTS.md の両方を配置**: Claude Code と Copilot CLI の両方をカバー
+- **project.code-workspace を活用**: エディタ設定・拡張機能・Claude Code タスクをチームで統一
 
 ## 参考
 

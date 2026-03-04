@@ -81,6 +81,11 @@ for file in .mcp.json CLAUDE.md CLAUDE.local.md AGENTS.md; do
   fi
 done
 
+# Copy workspace file
+if [[ -f "$SCRIPT_DIR/$PATTERN/project.code-workspace" ]]; then
+  cp "$SCRIPT_DIR/$PATTERN/project.code-workspace" "$TARGET/project.code-workspace"
+fi
+
 # Add CLAUDE.local.md and settings.local.json to .gitignore if exists
 if [[ -f "$TARGET/.gitignore" ]]; then
   for entry in "CLAUDE.local.md" ".claude/settings.local.json" ".claude/*.local.*" ".copilot/*.local.*"; do
@@ -100,6 +105,7 @@ find "$TARGET/.copilot" -type f 2>/dev/null | sed "s|$TARGET/||" | sort
 [[ -f "$TARGET/CLAUDE.md" ]] && echo "CLAUDE.md"
 [[ -f "$TARGET/CLAUDE.local.md" ]] && echo "CLAUDE.local.md"
 [[ -f "$TARGET/AGENTS.md" ]] && echo "AGENTS.md"
+[[ -f "$TARGET/project.code-workspace" ]] && echo "project.code-workspace"
 
 echo ""
-echo "Done! Edit CLAUDE.md and settings.json to match your project."
+echo "Done! Edit CLAUDE.md, settings.json, and project.code-workspace to match your project."

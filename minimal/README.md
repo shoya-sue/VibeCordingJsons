@@ -8,6 +8,7 @@
 |---------|---------|
 | `.claude/settings.json` | `.claude/settings.json` |
 | `.claude/settings.local.json` | `.claude/settings.local.json`（個人用、gitignore） |
+| `project.code-workspace` | `<プロジェクト名>.code-workspace` |
 | `CLAUDE.md` | プロジェクトルート `CLAUDE.md` |
 | `CLAUDE.local.md` | プロジェクトルート `CLAUDE.local.md`（個人用、gitignore） |
 | `AGENTS.md` | プロジェクトルート `AGENTS.md` |
@@ -25,6 +26,19 @@ cd VibeCordingJsons
 - `git status` / `git diff` / `git log` / `git branch` / `git show`
 - Write / Edit / Skill / MCPSearch は全拒否
 - MCP サーバー不要
+
+## VSCode ワークスペース設定
+
+`project.code-workspace` に以下の設定を含む:
+
+| カテゴリ | 設定内容 |
+|---------|---------|
+| **エディタ** | formatOnSave, tabSize: 2, bracketPairColorization |
+| **ファイル除外** | `.git`, `.DS_Store`, `__pycache__` |
+| **ターミナル** | zsh（macOS デフォルト） |
+| **拡張機能** | GitHub Copilot, Copilot Chat |
+
+> **Note**: 読み取り専用のため、Claude Code 自動起動タスクは含まれません。
 
 ## Copilot CLI 設定
 

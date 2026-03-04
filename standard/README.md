@@ -10,6 +10,7 @@
 | `.claude/settings.local.json` | `.claude/settings.local.json`（個人用、gitignore） |
 | `.claude/skills/explain-code/SKILL.md` | `.claude/skills/explain-code/SKILL.md` |
 | `.claude/rules/code-style.md` | `.claude/rules/code-style.md` |
+| `project.code-workspace` | `<プロジェクト名>.code-workspace` |
 | `.mcp.json` | プロジェクトルート `.mcp.json` |
 | `CLAUDE.md` | プロジェクトルート `CLAUDE.md` |
 | `CLAUDE.local.md` | プロジェクトルート `CLAUDE.local.md`（個人用、gitignore） |
@@ -42,6 +43,30 @@ export GITHUB_PERSONAL_ACCESS_TOKEN="ghp_xxxx"
 ## 拒否される操作
 
 `rm -rf`, `sudo`, `force-push`, `hard reset`, secrets 読み取り
+
+## VSCode ワークスペース設定
+
+`project.code-workspace` に以下の設定を含む:
+
+| カテゴリ | 設定内容 |
+|---------|---------|
+| **エディタ** | formatOnSave, tabSize: 2, bracketPairColorization |
+| **ファイル管理** | autoSave (1秒遅延), exclude, watcherExclude |
+| **検索除外** | node_modules, dist, build, .next, coverage, lock files |
+| **Git** | repositoryScanMaxDepth: 3, autoRepositoryDetection |
+| **ターミナル** | zsh（macOS デフォルト） |
+| **拡張機能** | Copilot, Copilot Chat, GitLens, Prettier, ESLint, EditorConfig |
+| **タスク** | Claude Code 自動起動（バックグラウンド） |
+
+### Claude Code 自動起動タスク
+
+ワークスペースに定義された `🟩 Claude Code` タスクにより、VSCode のターミナルパネルで Claude Code を直接操作可能:
+
+- `claude -c` で既存セッション復帰、なければ新規起動
+- zsh ログインシェルで実行（環境変数・パスを完全読み込み）
+- バックグラウンドタスクとして常駐
+
+> **Tip**: `Cmd+Shift+P` → `Tasks: Run Task` → `🟩 Claude Code` で手動起動も可能。
 
 ## Copilot CLI 設定
 
