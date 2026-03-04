@@ -32,7 +32,8 @@ export GITHUB_PERSONAL_ACCESS_TOKEN="ghp_xxxx"
 
 - **permissions**: allow / ask / deny の3段階制御
 - **ask**: `git push`, `npm publish` は毎回確認
-- **hooks**: PostToolUse（ファイル変更通知）、Stop（セッション終了ログ）
+- **hooks**: 5イベント対応（ログ出力のみ、通知なし）
+  - SessionStart, PreToolUse(Bash), PostToolUse(Write|Edit), PostToolUseFailure, Stop
 - **skills**: `/explain-code` — コード解説スキル
 - **rules**: code-style — コーディングスタイルルール
 - **MCP**: 4サーバー（Context7, Playwright, DeepWiki, GitHub）

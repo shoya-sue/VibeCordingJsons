@@ -22,6 +22,15 @@
 | クイックフィックス | 複雑なデバッグセッション |
 | コードの説明・質問 | アーキテクチャ設計 |
 
+### Claude Code Hooks 構成
+
+Claude Code は5イベントの hooks を設定済み（ログ出力のみ、通知なし）:
+- **SessionStart** — セッション開始ログ
+- **PreToolUse(Bash)** — Bash コマンド実行前のログ
+- **PostToolUse(Write|Edit)** — ファイル変更ログ
+- **PostToolUseFailure** — ツール失敗ログ
+- **Stop** — セッション終了ログ
+
 共有コンテキスト: `CLAUDE.md` / `AGENTS.md` に両ツール共通の指示を記載。
 
 ## スキル活用ガイド
