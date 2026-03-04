@@ -2,6 +2,7 @@
 name: explain-code
 description: コードの構造・ロジック・依存関係を日本語で解説する
 user-invokable: true
+allowed-tools: ["Read", "Glob", "Grep", "Bash(find *)"]
 ---
 
 # explain-code

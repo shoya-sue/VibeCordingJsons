@@ -12,20 +12,20 @@ Bash, JSON, Markdown（コードは含まない。設定テンプレートのみ
 .
 ├── minimal/           # 読み取り専用パターン
 │   ├── .claude/       # settings.json, settings.local.json
-│   ├── .copilot/      # copilot-instructions.md
+│   ├── .github/       # copilot-instructions.md
 │   ├── AGENTS.md
 │   ├── CLAUDE.md
 │   └── README.md
 ├── standard/          # 日常開発パターン（推奨）
 │   ├── .claude/       # settings + skills + rules
-│   ├── .copilot/      # copilot-instructions.md + 2 skills
+│   ├── .github/       # copilot-instructions.md + 2 skills
 │   ├── .mcp.json
 │   ├── AGENTS.md
 │   ├── CLAUDE.md
 │   └── README.md
 ├── full/              # 全機能パターン
 │   ├── .claude/       # settings + skills + agents + rules
-│   ├── .copilot/      # copilot-instructions.md + 5 skills + 4 agents
+│   ├── .github/       # copilot-instructions.md + 5 skills + 4 agents
 │   ├── .mcp.json
 │   ├── AGENTS.md
 │   ├── CLAUDE.md
@@ -39,7 +39,7 @@ Bash, JSON, Markdown（コードは含まない。設定テンプレートのみ
 - 各パターンは自己完結型（GitHub 上で個別にコピー可能）
 - settings.json の権限は最小権限の原則に従う
 - SKILL.md のフロントマターは `user-invokable`（`user-invocable` ではない）
-- SKILL.md に `allowed-tools` は使用不可（Claude Code 未サポート）
+- SKILL.md に `allowed-tools` でツール制限が可能（例: `allowed-tools: ["Read", "Glob", "Grep"]`）
 - `.mcp.json` の API キーは `${ENV_VAR}` 形式で参照
 - テンプレート内のコメントは `<!-- -->` で記載
 - CLAUDE.md と AGENTS.md の両方をプロジェクトルートおよび各ティアに配置

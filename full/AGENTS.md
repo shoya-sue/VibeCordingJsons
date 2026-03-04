@@ -56,7 +56,7 @@ Fleet・Plan・Agent Teams を含むすべての機能を活用します。
 |--------|------|
 | Interactive（デフォルト） | 対話型コーディング |
 | Plan（Shift+Tab） | 実装計画の立案・確認 |
-| Autopilot（実験的） | タスク完了まで自律実行 |
+| Autopilot | タスク完了まで自律実行 |
 
 ### Agent Teams 設定
 

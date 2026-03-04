@@ -3,6 +3,7 @@ name: review-pr
 description: Pull Request のコードレビューを実施する
 argument-hint: "<pr-number>"
 user-invokable: true
+allowed-tools: ["Read", "Glob", "Grep", "Bash(gh pr *)"]
 ---
 
 # review-pr
