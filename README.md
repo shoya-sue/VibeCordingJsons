@@ -53,7 +53,7 @@ cd VibeCordingJsons
 | Skills | **不可** | explain-code | + fix-issue, review-pr |
 | Agents | なし | なし | code-reviewer, test-runner |
 | Rules | なし | code-style | + api-conventions |
-| Hooks | なし | PostToolUse, Stop | + SessionStart, PreToolUse |
+| Hooks | なし | 5イベント（ログ） | 全18イベント + macOS 通知 |
 | Sandbox | なし | なし | 有効（network 制御付き） |
 | Agent Teams | なし | なし | 有効 |
 | Attribution | なし | コミット・PR 署名 | 同左 |
@@ -173,9 +173,9 @@ cd VibeCordingJsons
 | `Skill(pattern)` | スキル実行 | `Skill(explain-code:*)` |
 | `MCPSearch` | MCP 検索 | `MCPSearch` |
 
-### hooks（イベントフック — 14イベント対応）
+### hooks（イベントフック — 全18イベント対応）
 
-3種類のフックタイプ: `command`（シェル）、`prompt`（LLM 判定）、`agent`（サブエージェント）
+4種類のフックタイプ: `command`（シェル）、`http`（HTTP リクエスト）、`prompt`（LLM 判定）、`agent`（サブエージェント）
 
 ```jsonc
 {
@@ -184,7 +184,7 @@ cd VibeCordingJsons
       {
         "matcher": "Bash",
         "hooks": [
-          { "type": "command", "command": "echo 'Before bash'", "timeout": 5000 }
+          { "type": "command", "command": "echo 'Before bash'", "timeout": 10 }
         ]
       }
     ]
@@ -192,7 +192,7 @@ cd VibeCordingJsons
 }
 ```
 
-主要イベント:
+全イベント一覧:
 
 | イベント | タイミング | ブロック可能 |
 |---------|-----------|------------|
@@ -200,8 +200,22 @@ cd VibeCordingJsons
 | `UserPromptSubmit` | プロンプト送信前 | Yes |
 | `PreToolUse` | ツール実行前 | Yes |
 | `PostToolUse` | ツール実行後 | No |
-| `Stop` | セッション停止時 | Yes |
+| `PostToolUseFailure` | ツール実行失敗後 | No |
+| `PermissionRequest` | 権限確認時 | No |
+| `Notification` | 通知発行時 | No |
+| `SubagentStart` | サブエージェント開始時 | No |
 | `SubagentStop` | サブエージェント停止時 | Yes |
+| `Stop` | レスポンス停止時 | Yes |
+| `TeammateIdle` | チームメイト待機時 | No |
+| `TaskCompleted` | タスク完了時 | No |
+| `ConfigChange` | 設定変更時 | No |
+| `WorktreeCreate` | ワークツリー作成時 | No |
+| `WorktreeRemove` | ワークツリー削除時 | No |
+| `PreCompact` | コンテキスト圧縮前 | No |
+| `InstructionsLoaded` | 指示ファイル読込時 | No |
+| `SessionEnd` | セッション終了時 | No |
+
+**timeout の単位**: 秒（例: `"timeout": 10` → 10秒）
 
 ### env（環境変数）
 
@@ -213,6 +227,7 @@ cd VibeCordingJsons
 | `ENABLE_TOOL_SEARCH` | ツール検索の有効化 | `auto` |
 | `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE` | コンテキスト自動圧縮 (%) | `50` |
 | `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS` | Agent Teams 有効化 | `1` |
+| `CLAUDE_CODE_AUTO_MEMORY_PATH` | 自動メモリ保存先パス | `""` (デフォルト) |
 | `MAX_THINKING_TOKENS` | 思考トークン上限 | モデル依存 |
 
 ### その他の設定項目
@@ -253,15 +268,19 @@ Claude Code は以下の優先順位で設定を適用する:
 ## 参考
 
 ### Claude Code
-- [Claude Code 公式ドキュメント](https://code.claude.com/docs)
-- [Settings](https://code.claude.com/docs/settings)
-- [Hooks](https://code.claude.com/docs/hooks)
-- [Skills](https://code.claude.com/docs/skills)
-- [Sub-Agents](https://code.claude.com/docs/sub-agents)
-- [MCP](https://code.claude.com/docs/mcp)
-- [Agent Teams](https://code.claude.com/docs/agent-teams)
-- [Memory (CLAUDE.md)](https://code.claude.com/docs/memory)
-- [Best Practices](https://code.claude.com/docs/best-practices)
+- [Claude Code 公式ドキュメント](https://code.claude.com/docs/en/overview)
+- [Settings](https://code.claude.com/docs/en/settings)
+- [Permissions](https://code.claude.com/docs/en/permissions)
+- [Hooks リファレンス](https://code.claude.com/docs/en/hooks)
+- [Hooks ガイド](https://code.claude.com/docs/en/hooks-guide)
+- [Skills](https://code.claude.com/docs/en/skills)
+- [Sub-Agents](https://code.claude.com/docs/en/sub-agents)
+- [MCP](https://code.claude.com/docs/en/mcp)
+- [Agent Teams](https://code.claude.com/docs/en/agent-teams)
+- [Memory (CLAUDE.md)](https://code.claude.com/docs/en/memory)
+- [Sandboxing](https://code.claude.com/docs/en/sandboxing)
+- [Best Practices](https://code.claude.com/docs/en/best-practices)
+- [Changelog](https://code.claude.com/docs/en/changelog)
 
 ### GitHub Copilot CLI
 - [Copilot CLI 公式ドキュメント](https://docs.github.com/copilot/concepts/agents/about-copilot-cli)
