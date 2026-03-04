@@ -91,7 +91,7 @@ cd VibeCordingJsons
 │   ├── .claude/
 │   │   ├── settings.json
 │   │   └── settings.local.json
-│   ├── .copilot/
+│   ├── .github/
 │   │   └── copilot-instructions.md
 │   ├── AGENTS.md
 │   ├── CLAUDE.md
@@ -104,7 +104,7 @@ cd VibeCordingJsons
 │   │   ├── settings.local.json
 │   │   ├── skills/explain-code/SKILL.md
 │   │   └── rules/code-style.md
-│   ├── .copilot/
+│   ├── .github/
 │   │   ├── copilot-instructions.md
 │   │   └── skills/
 │   │       ├── explain-code/SKILL.md
@@ -129,7 +129,7 @@ cd VibeCordingJsons
 │   │   └── rules/
 │   │       ├── code-style.md
 │   │       └── api-conventions.md
-│   ├── .copilot/
+│   ├── .github/
 │   │   ├── copilot-instructions.md
 │   │   ├── skills/
 │   │   │   ├── explain-code/SKILL.md
@@ -245,10 +245,12 @@ cd VibeCordingJsons
 | `$schema` | IDE での自動補完を有効化 |
 | `model` | デフォルトモデルの指定 |
 | `language` | 応答言語（`"japanese"` 等） |
+| `autoMemoryEnabled` | 自動メモリ機能の有効/無効（デフォルト: `true`） |
 | `attribution` | コミット・PR への署名テキスト |
-| `sandbox` | Bash サンドボックス（enabled, excludedCommands, network） |
+| `sandbox` | Bash サンドボックス（enabled, autoAllowBashIfSandboxed, excludedCommands, network） |
 | `teammateMode` | Agent Teams 表示モード（`auto` / `in-process` / `tmux`） |
 | `enableAllProjectMcpServers` | `.mcp.json` のサーバー自動有効化 |
+| `enabledPlugins` | プラグインの有効/無効（例: `{"formatter@acme-tools": true}`） |
 
 ## 設定の階層
 

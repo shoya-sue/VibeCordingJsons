@@ -46,7 +46,7 @@ cd VibeCordingJsons
 
 | ファイル | 説明 |
 |---------|------|
-| `.copilot/copilot-instructions.md` | 読み取り専用モードの指示 |
+| `.github/copilot-instructions.md` | 読み取り専用モードの指示 |
 | `AGENTS.md` | Copilot CLI / Gemini CLI 等の汎用 AI エージェント指示 |
 
 ### 機能

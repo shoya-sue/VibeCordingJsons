@@ -3,6 +3,7 @@ name: fix-issue
 description: GitHub Issue を読み取り、修正コードを提案・適用する
 argument-hint: "<issue-number>"
 user-invokable: true
+allowed-tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash(gh issue *)", "Bash(git *)", "Bash(npm test *)"]
 ---
 
 # fix-issue

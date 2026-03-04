@@ -122,16 +122,16 @@ export GITHUB_PERSONAL_ACCESS_TOKEN="ghp_xxxx"
 
 | ファイル | 説明 |
 |---------|------|
-| `.copilot/copilot-instructions.md` | Fleet/Plan/Agent Teams 全機能指示 |
-| `.copilot/skills/explain-code/SKILL.md` | コード解説スキル |
-| `.copilot/skills/code-reviewer/SKILL.md` | 高精度レビュースキル |
-| `.copilot/skills/fix-issue/SKILL.md` | Issue 修正スキル |
-| `.copilot/skills/review-pr/SKILL.md` | PR レビュースキル |
-| `.copilot/skills/test-runner/SKILL.md` | テスト実行・修正スキル |
-| `.copilot/agents/code-reviewer.agent.md` | 読み取り専用レビューエージェント |
-| `.copilot/agents/github-workflow.agent.md` | GitHub ワークフローエージェント |
-| `.copilot/agents/code-explorer.agent.md` | コード解説エージェント |
-| `.copilot/agents/test-runner.agent.md` | テスト実行エージェント |
+| `.github/copilot-instructions.md` | Fleet/Plan/Agent Teams 全機能指示 |
+| `.github/skills/explain-code/SKILL.md` | コード解説スキル |
+| `.github/skills/code-reviewer/SKILL.md` | 高精度レビュースキル |
+| `.github/skills/fix-issue/SKILL.md` | Issue 修正スキル |
+| `.github/skills/review-pr/SKILL.md` | PR レビュースキル |
+| `.github/skills/test-runner/SKILL.md` | テスト実行・修正スキル |
+| `.github/agents/code-reviewer.agent.md` | 読み取り専用レビューエージェント |
+| `.github/agents/github-workflow.agent.md` | GitHub ワークフローエージェント |
+| `.github/agents/code-explorer.agent.md` | コード解説エージェント |
+| `.github/agents/test-runner.agent.md` | テスト実行エージェント |
 | `AGENTS.md` | Copilot CLI / Gemini CLI 等の汎用 AI エージェント指示 |
 
 ### 機能

@@ -74,9 +74,9 @@ export GITHUB_PERSONAL_ACCESS_TOKEN="ghp_xxxx"
 
 | ファイル | 説明 |
 |---------|------|
-| `.copilot/copilot-instructions.md` | 日常開発指示・Claude Code 連携 |
-| `.copilot/skills/explain-code/SKILL.md` | コード解説スキル |
-| `.copilot/skills/code-reviewer/SKILL.md` | 高精度レビュースキル |
+| `.github/copilot-instructions.md` | 日常開発指示・Claude Code 連携 |
+| `.github/skills/explain-code/SKILL.md` | コード解説スキル |
+| `.github/skills/code-reviewer/SKILL.md` | 高精度レビュースキル |
 | `AGENTS.md` | Copilot CLI / Gemini CLI 等の汎用 AI エージェント指示 |
 
 ### 機能
