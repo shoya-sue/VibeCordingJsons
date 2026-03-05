@@ -16,13 +16,12 @@ Patterns:
 
 Target:
   .          現在のプロジェクトにインストール（デフォルト）
-  ~          ホームディレクトリにグローバルインストール
+  ~          ホームディレクトリにグローバルインストール（個人利用におすすめ）
 
 Examples:
-  ./install.sh standard              # カレントディレクトリにインストール
-  ./install.sh full .                # カレントディレクトリにインストール
+  ./install.sh full ~                # グローバル設定（全プロジェクトに自動適用）
+  ./install.sh standard .            # カレントディレクトリにインストール
   ./install.sh standard ~/my-project # 指定プロジェクトにインストール
-  ./install.sh full ~                # グローバル設定としてインストール
 
 USAGE
   exit 1
@@ -83,8 +82,8 @@ for file in .mcp.json CLAUDE.md CLAUDE.local.md AGENTS.md; do
   fi
 done
 
-# Copy workspace file
-if [[ -f "$SCRIPT_DIR/$PATTERN/project.code-workspace" ]]; then
+# Copy workspace file (skip for global install)
+if [[ -f "$SCRIPT_DIR/$PATTERN/project.code-workspace" && "$TARGET" != "$HOME" ]]; then
   cp "$SCRIPT_DIR/$PATTERN/project.code-workspace" "$TARGET/project.code-workspace"
 fi
 
@@ -110,4 +109,10 @@ find "$TARGET/.github" -type f 2>/dev/null | sed "s|$TARGET/||" | sort
 [[ -f "$TARGET/project.code-workspace" ]] && echo "project.code-workspace"
 
 echo ""
-echo "Done! Edit CLAUDE.md, settings.json, and project.code-workspace to match your project."
+if [[ "$TARGET" == "$HOME" ]]; then
+  echo "Done! Global install complete."
+  echo "All projects will use these settings automatically."
+  echo "Edit ~/.claude/settings.json and ~/CLAUDE.md to customize."
+else
+  echo "Done! Edit CLAUDE.md, settings.json, and project.code-workspace to match your project."
+fi
