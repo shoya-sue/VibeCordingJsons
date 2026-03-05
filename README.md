@@ -5,11 +5,25 @@ Claude Code と GitHub Copilot CLI のベストプラクティステンプレー
 
 ## 使い方
 
-### install.sh で一括コピー（推奨）
+### グローバルインストール（個人利用におすすめ）
+
+ホームディレクトリにインストールすると、**全プロジェクトに自動適用**されます。
+プロジェクトごとの設定ファイルは不要です。
 
 ```bash
 git clone https://github.com/shoya-sue/VibeCordingJsons.git
 cd VibeCordingJsons
+./install.sh full ~
+```
+
+これだけで `~/.claude/settings.json` にフル設定が入り、以降どのプロジェクトで `claude` を起動しても同じ設定が使われます。
+プロジェクト固有の設定が必要になった場合のみ、そのプロジェクトの `.claude/settings.json` を追加してください（配列設定はマージ、単一値設定は上書き）。
+
+### プロジェクトインストール（チーム開発向け）
+
+チームで共有する設定をプロジェクトに配置する場合：
+
+```bash
 ./install.sh standard /path/to/your/project
 ```
 
@@ -254,13 +268,19 @@ cd VibeCordingJsons
 
 ## 設定の階層
 
-Claude Code は以下の優先順位で設定を適用する:
+Claude Code は以下の優先順位で設定を適用する（上ほど優先）:
 
 1. CLI 引数（セッション限定）
 2. `.claude/settings.local.json`（個人用、gitignore 推奨）
 3. `.claude/settings.json`（チーム共有、Git 管理）
 4. `~/.claude/settings.local.json`（グローバル個人用）
 5. `~/.claude/settings.json`（グローバルデフォルト）
+
+**グローバル設定のカスケード**: `~/.claude/settings.json` に設定すれば、プロジェクト側に `.claude/settings.json` がなくても全プロジェクトに自動適用される。個人利用であればグローバル設定だけで十分。
+
+**マージルール**:
+- **単一値**（`model`, `language` 等）→ 上位が完全に上書き
+- **配列値**（`permissions.allow`, `deny` 等）→ 全レベルの値がマージされる
 
 ## VSCode ワークスペース設定
 
