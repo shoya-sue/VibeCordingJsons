@@ -164,6 +164,8 @@ cd VibeCordingJsons
 │   └── README.md
 ├── install.sh
 ├── .claude/settings.json
+├── .mcp.json
+├── AGENTS.md
 ├── CLAUDE.md
 ├── LICENSE
 └── README.md
