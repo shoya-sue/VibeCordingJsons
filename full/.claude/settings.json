@@ -14,8 +14,26 @@
       "Write(*.md)",
       "Write(Makefile)",
       "Write(Dockerfile)",
-      "Edit(**/*)",
-      "Bash(git *)",
+      "Edit(src/**)",
+      "Edit(tests/**)",
+      "Edit(docs/**)",
+      "Edit(scripts/**)",
+      "Edit(*.json)",
+      "Edit(*.yml)",
+      "Edit(*.yaml)",
+      "Edit(*.toml)",
+      "Edit(*.md)",
+      "Edit(Makefile)",
+      "Edit(Dockerfile)",
+      "Bash(git status)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git branch *)",
+      "Bash(git show *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git checkout *)",
+      "Bash(git stash *)",
       "Bash(npm *)",
       "Bash(yarn *)",
       "Bash(pnpm *)",
@@ -26,8 +44,10 @@
       "Bash(cargo *)",
       "Bash(go *)",
       "Bash(make *)",
-      "Bash(docker *)",
-      "Bash(docker-compose *)",
+      "Bash(docker build *)",
+      "Bash(docker run *)",
+      "Bash(docker-compose up *)",
+      "Bash(docker-compose down *)",
       "Bash(kubectl get *)",
       "Bash(kubectl describe *)",
       "Bash(kubectl logs *)",
@@ -35,44 +55,42 @@
       "Bash(terraform show *)",
       "Bash(gh *)",
       "Bash(jq *)",
-      "Bash(cat *)",
-      "Bash(ls *)",
-      "Bash(find *)",
-      "Bash(grep *)",
-      "Bash(rg *)",
-      "Bash(wc *)",
-      "Bash(sort *)",
-      "Bash(head *)",
-      "Bash(tail *)",
       "Bash(aws s3 ls *)",
       "Bash(aws s3 cp *)",
       "Bash(gcloud *)",
       "Bash(sentry-cli *)",
       "mcp__*",
-      "Skill(*)",
-      "MCPSearch"
+      "Skill(*)"
     ],
     "ask": [
       "Bash(git push *)",
       "Bash(npm publish *)",
       "Bash(docker push *)",
       "Bash(terraform apply *)",
-      "Bash(kubectl apply *)"
+      "Bash(kubectl apply *)",
+      "Bash(gh issue create *)"
     ],
     "deny": [
-      "Read(**/.env.production)",
+      "Read(**/.env*)",
       "Read(**/secrets/**)",
-      "Read(**/.aws/credentials)",
-      "Read(**/.ssh/id_*)",
+      "Read(**/.aws/**)",
+      "Read(**/.ssh/**)",
+      "Read(**/*.key)",
+      "Read(**/*.pem)",
       "Write(**/.git/**)",
       "Write(**/node_modules/**)",
-      "Bash(rm -rf /)",
-      "Bash(sudo rm -rf *)",
+      "Write(**/dist/**)",
+      "Write(**/build/**)",
+      "Bash(rm -rf *)",
+      "Bash(sudo *)",
+      "Bash(chmod 777 *)",
+      "Bash(chmod -R 777 *)",
+      "Bash(git push --force *)",
+      "Bash(git reset --hard *)",
+      "Bash(curl * | bash)",
+      "Bash(wget * | bash)",
       "Bash(mkfs *)",
       "Bash(dd if=/dev/zero *)",
-      "Bash(chmod -R 777 /)",
-      "Bash(git push --force origin main)",
-      "Bash(git push --force origin master)",
       "Bash(terraform apply -auto-approve)",
       "Bash(terraform destroy *)",
       "Bash(kubectl delete namespace *)",
@@ -80,7 +98,6 @@
     ]
   },
   "model": "claude-sonnet-4-6",
-  "language": "japanese",
   "enableAllProjectMcpServers": true,
   "autoMemoryEnabled": true,
   "env": {
@@ -89,9 +106,10 @@
     "MCP_TIMEOUT": "15000",
     "MAX_MCP_OUTPUT_TOKENS": "50000",
     "BASH_MAX_TIMEOUT_MS": "300000",
-    "ENABLE_TOOL_SEARCH": "auto",
-    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "50",
-    "CLAUDE_CODE_AUTO_MEMORY_PATH": ""
+    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "50"
+  },
+  "worktree": {
+    "sparsePaths": ["src/", "tests/", "docs/", "scripts/"]
   },
   "hooks": {
     "SessionStart": [
@@ -99,7 +117,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "osascript -e 'display notification \"Claude Code session started\" with title \"Claude Code\" sound name \"Glass\"' ; echo \"[SessionStart] $(date '+%Y-%m-%d %H:%M:%S')\"",
+            "command": "echo \"[SessionStart] $(date '+%Y-%m-%d %H:%M:%S')\"",
             "timeout": 10
           }
         ]
@@ -128,11 +146,21 @@
         ]
       },
       {
-        "matcher": "Write|Edit",
+        "matcher": "Write",
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[PreToolUse:File] $(jq -r '.tool_input.file_path // empty' 2>/dev/null)\"",
+            "command": "echo \"[PreToolUse:Write] $(jq -r '.tool_input.file_path // empty' 2>/dev/null)\"",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"[PreToolUse:Edit] $(jq -r '.tool_input.file_path // empty' 2>/dev/null)\"",
             "timeout": 10
           }
         ]
@@ -153,7 +181,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "TOOL=$(jq -r '.tool_name // \"unknown\"') ; osascript -e \"display notification \\\"Permission required: $TOOL\\\" with title \\\"Claude Code\\\" sound name \\\"Basso\\\"\" ; echo \"[PermissionRequest] tool=$TOOL $(date '+%H:%M:%S')\"",
+            "command": "echo \"[PermissionRequest] tool=$(jq -r '.tool_name // \"unknown\"' 2>/dev/null) $(date '+%H:%M:%S')\"",
             "timeout": 10
           }
         ]
@@ -161,11 +189,21 @@
     ],
     "PostToolUse": [
       {
-        "matcher": "Write|Edit",
+        "matcher": "Write",
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[PostToolUse:File] modified: $(jq -r '.tool_input.file_path // empty' 2>/dev/null)\"",
+            "command": "echo \"[PostToolUse:Write] modified: $(jq -r '.tool_input.file_path // empty' 2>/dev/null)\"",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"[PostToolUse:Edit] modified: $(jq -r '.tool_input.file_path // empty' 2>/dev/null)\"",
             "timeout": 10
           }
         ]
@@ -186,7 +224,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "TOOL=$(jq -r '.tool_name // \"unknown\"') ; osascript -e \"display notification \\\"Tool failed: $TOOL\\\" with title \\\"Claude Code\\\" sound name \\\"Basso\\\"\" ; echo \"[PostToolUseFailure] tool=$TOOL $(date '+%H:%M:%S')\"",
+            "command": "echo \"[PostToolUseFailure] tool=$(jq -r '.tool_name // \"unknown\"' 2>/dev/null) $(date '+%H:%M:%S')\"",
             "timeout": 10
           }
         ]
@@ -197,7 +235,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "TYPE=$(jq -r '.notification_type // .type // \"info\"') ; osascript -e \"display notification \\\"$TYPE\\\" with title \\\"Claude Code\\\" sound name \\\"Tink\\\"\" ; echo \"[Notification] type=$TYPE $(date '+%H:%M:%S')\"",
+            "command": "echo \"[Notification] type=$(jq -r '.notification_type // .type // \"info\"' 2>/dev/null) $(date '+%H:%M:%S')\"",
             "timeout": 10
           }
         ]
@@ -208,7 +246,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "AGENT=$(jq -r '.agent_type // \"unknown\"') ; osascript -e \"display notification \\\"Subagent started: $AGENT\\\" with title \\\"Claude Code\\\" sound name \\\"Tink\\\"\" ; echo \"[SubagentStart] agent=$AGENT $(date '+%H:%M:%S')\"",
+            "command": "echo \"[SubagentStart] agent=$(jq -r '.agent_type // \"unknown\"' 2>/dev/null) $(date '+%H:%M:%S')\"",
             "timeout": 10
           }
         ]
@@ -219,7 +257,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "AGENT=$(jq -r '.agent_type // \"unknown\"') ; osascript -e \"display notification \\\"Subagent finished: $AGENT\\\" with title \\\"Claude Code\\\" sound name \\\"Tink\\\"\" ; echo \"[SubagentStop] agent=$AGENT $(date '+%H:%M:%S')\"",
+            "command": "echo \"[SubagentStop] agent=$(jq -r '.agent_type // \"unknown\"' 2>/dev/null) $(date '+%H:%M:%S')\"",
             "timeout": 10
           }
         ]
@@ -230,7 +268,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "osascript -e 'display notification \"Claude finished responding\" with title \"Claude Code\" sound name \"Glass\"' ; echo \"[Stop] $(date '+%Y-%m-%d %H:%M:%S')\"",
+            "command": "echo \"[Stop] $(date '+%Y-%m-%d %H:%M:%S')\"",
             "timeout": 10
           }
         ]
@@ -252,7 +290,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "osascript -e 'display notification \"Task completed\" with title \"Claude Code\" sound name \"Hero\"' ; echo \"[TaskCompleted] $(date '+%H:%M:%S')\"",
+            "command": "echo \"[TaskCompleted] $(date '+%H:%M:%S')\"",
             "timeout": 10
           }
         ]
@@ -296,7 +334,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "osascript -e 'display notification \"Context compaction starting\" with title \"Claude Code\" sound name \"Tink\"' ; echo \"[PreCompact] $(date '+%H:%M:%S')\"",
+            "command": "echo \"[PreCompact] $(date '+%H:%M:%S')\"",
             "timeout": 10
           }
         ]
@@ -318,7 +356,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "osascript -e 'display notification \"Session ended\" with title \"Claude Code\" sound name \"Hero\"' ; echo \"[SessionEnd] $(date '+%Y-%m-%d %H:%M:%S')\"",
+            "command": "echo \"[SessionEnd] $(date '+%Y-%m-%d %H:%M:%S')\"",
             "timeout": 10
           }
         ]
@@ -329,6 +367,9 @@
     "enabled": true,
     "autoAllowBashIfSandboxed": true,
     "excludedCommands": ["git", "docker", "gh", "kubectl"],
+    "filesystem": {
+      "allowWrite": ["/tmp", "~/.claude"]
+    },
     "network": {
       "allowedDomains": ["github.com", "registry.npmjs.org", "pypi.org"]
     }

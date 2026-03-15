@@ -1,7 +1,7 @@
 ---
 name: code-reviewer
 description: コードの品質・セキュリティ・パフォーマンスをレビューする読み取り専用エージェント
-tools: Read, Glob, Grep
+allowed-tools: ["Read", "Glob", "Grep"]
 model: haiku
 maxTurns: 30
 permissionMode: plan

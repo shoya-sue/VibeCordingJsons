@@ -32,8 +32,7 @@
       "Bash(sudo *)",
       "Bash(curl *)",
       "Bash(wget *)",
-      "Skill(*)",
-      "MCPSearch"
+      "Skill(*)"
     ]
   }
 }
