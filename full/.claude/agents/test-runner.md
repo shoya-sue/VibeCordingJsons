@@ -1,7 +1,7 @@
 ---
 name: test-runner
 description: テストを実行し、失敗したテストの原因を分析・修正する
-tools: Read, Write, Edit, Glob, Grep, Bash
+allowed-tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash"]
 model: sonnet
 maxTurns: 50
 permissionMode: acceptEdits
