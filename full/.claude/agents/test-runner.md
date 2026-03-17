@@ -5,12 +5,12 @@ allowed-tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash"]
 model: sonnet
 maxTurns: 50
 permissionMode: acceptEdits
-# memory: project
+memory: project
+background: true
 # isolation: worktree
 # skills: []
 # mcpServers: []
 # hooks: {}
-# background: false
 ---
 
 # Test Runner Agent

@@ -60,10 +60,12 @@ make deploy-staging   # ステージングデプロイ
 - `/memory` — 自動メモリの管理（閲覧・編集・削除）
 - `/loop 5m check deploy` — 定期的にプロンプトを繰り返し実行
 - `/plan fix the auth bug` — 説明付きでプランモードを開始
+- `/branch` — 現在の会話を分岐して新しいブランチを作成（旧 `/fork`）
+- `/color` — プロンプトバーの色を設定（複数セッション識別用）
 - `/simplify` — コードを簡素化
 - `/batch` — 複数タスクを一括実行
-- `/context` — コンテキスト最適化の提案を表示
-- `/copy N` — N番目のアシスタント応答をクリップボードにコピー
+- `/context` — コンテキスト最適化の提案を表示（アクション可能な改善案付き）
+- `/copy N` — N番目のアシスタント応答をクリップボードにコピー（`w` キーでファイル出力）
 
 ## Important Notes
 
@@ -72,4 +74,7 @@ make deploy-staging   # ステージングデプロイ
 - Sandbox 有効 — Bash コマンドはサンドボックス内で実行
 - Hooks でコマンドログ・ファイル変更ログを自動記録（全21イベント対応）
 - MCP Elicitation 対応 — MCP サーバーがタスク中に構造化入力を要求可能
-- 自動メモリ有効 — Claude が作業中に有用なコンテキストを自動保存
+- 自動メモリ有効 — Claude が作業中に有用なコンテキストを自動保存（`.claude/memory` に保存）
+- Opus 4.6 出力トークン上限: 64k（最大128k）。`CLAUDE_CODE_MAX_OUTPUT_TOKENS` で制御
+- HTTP hooks 対応 — `type: "http"` で外部 URL に JSON を POST 可能
+- Agent tool の `resume` パラメータは廃止 → `SendMessage({to: agentId})` を使用

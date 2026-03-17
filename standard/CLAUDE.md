@@ -45,6 +45,8 @@ npm run build     # ビルド
 - `/effort low|medium|high` — モデルの思考レベルを設定（○ ◐ ●）
 - `/memory` — 自動メモリの管理
 - `/plan` — プランモードを開始（Shift+Tab でも切替可能）
+- `/branch` — 現在の会話を分岐（旧 `/fork`）
+- `/color` — プロンプトバーの色を設定（複数セッション識別用）
 - `/context` — コンテキスト最適化の提案を表示
 
 ## Important Notes

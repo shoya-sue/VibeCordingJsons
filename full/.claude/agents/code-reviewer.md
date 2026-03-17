@@ -5,7 +5,8 @@ allowed-tools: ["Read", "Glob", "Grep"]
 model: haiku
 maxTurns: 30
 permissionMode: plan
-# memory: project
+memory: project
+background: false
 # isolation: worktree
 # skills: [explain-code]
 ---

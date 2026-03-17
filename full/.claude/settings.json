@@ -100,13 +100,17 @@
   "model": "claude-sonnet-4-6",
   "enableAllProjectMcpServers": true,
   "autoMemoryEnabled": true,
+  "autoMemoryDirectory": ".claude/memory",
+  "includeGitInstructions": true,
+  "modelOverrides": {},
   "env": {
     "NODE_ENV": "development",
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
     "MCP_TIMEOUT": "15000",
     "MAX_MCP_OUTPUT_TOKENS": "50000",
     "BASH_MAX_TIMEOUT_MS": "300000",
-    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "50"
+    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "50",
+    "CLAUDE_CODE_MAX_OUTPUT_TOKENS": "64000"
   },
   "worktree": {
     "sparsePaths": ["src/", "tests/", "docs/", "scripts/"]
@@ -270,6 +274,11 @@
             "type": "command",
             "command": "echo \"[Stop] $(date '+%Y-%m-%d %H:%M:%S')\"",
             "timeout": 10
+          },
+          {
+            "type": "http",
+            "url": "http://localhost:3000/hooks/stop",
+            "timeout": 5
           }
         ]
       }
