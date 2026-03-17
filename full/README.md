@@ -38,10 +38,10 @@ export GITHUB_PERSONAL_ACCESS_TOKEN="ghp_xxxx"
 
 - **permissions**: allow / ask / deny の3段階制御
 - **ask**: `git push`, `npm publish`, `docker push`, `terraform apply`, `kubectl apply`
-- **hooks**: 全18イベント対応 + macOS 通知（osascript）
-  - SessionStart, UserPromptSubmit, PreToolUse, PermissionRequest, PostToolUse, PostToolUseFailure, Notification, SubagentStart, SubagentStop, Stop, TeammateIdle, TaskCompleted, ConfigChange, WorktreeCreate, WorktreeRemove, PreCompact, InstructionsLoaded, SessionEnd
+- **hooks**: 全21イベント対応 + macOS 通知（osascript）
+  - SessionStart, UserPromptSubmit, PreToolUse, PermissionRequest, PostToolUse, PostToolUseFailure, Notification, SubagentStart, SubagentStop, Stop, TeammateIdle, TaskCompleted, ConfigChange, WorktreeCreate, WorktreeRemove, PreCompact, PostCompact, Elicitation, ElicitationResult, InstructionsLoaded, SessionEnd
   - サウンド使い分け: Glass（開始/完了）、Basso（エラー/許可要求）、Tink（情報）、Hero（達成）
-- **skills**: `/explain-code`, `/fix-issue`, `/review-pr`
+- **skills**: `/explain-code`, `/fix-issue`, `/review-pr`, `/generate-changelog`, `/dependency-audit`
 - **agents**: code-reviewer（読み取り専用レビュー）、test-runner（テスト実行・修正）
 - **rules**: code-style, api-conventions（パス別ルール）
 - **MCP**: 5サーバー（Context7, Playwright, DeepWiki, Excalidraw, GitHub）

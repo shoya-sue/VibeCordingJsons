@@ -39,6 +39,14 @@ npm run lint      # リント
 npm run build     # ビルド
 ```
 
+## Slash Commands
+
+- `/model opusplan` — Opus で計画、Sonnet で実行の自動切り替え（コスト最適化）
+- `/effort low|medium|high` — モデルの思考レベルを設定（○ ◐ ●）
+- `/memory` — 自動メモリの管理
+- `/plan` — プランモードを開始（Shift+Tab でも切替可能）
+- `/context` — コンテキスト最適化の提案を表示
+
 ## Important Notes
 
 - `.env` に API キーを格納（Git 管理外）
