@@ -25,7 +25,7 @@ Bash, JSON, Markdown（コードは含まない。設定テンプレートのみ
 │   └── README.md
 ├── full/              # 全機能パターン
 │   ├── .claude/       # settings + skills + agents + rules
-│   ├── .github/       # copilot-instructions.md + 5 skills + 4 agents
+│   ├── .github/       # copilot-instructions.md + 8 skills + 4 agents
 │   ├── .mcp.json
 │   ├── AGENTS.md
 │   ├── CLAUDE.md
@@ -40,6 +40,7 @@ Bash, JSON, Markdown（コードは含まない。設定テンプレートのみ
 - settings.json の権限は最小権限の原則に従う
 - SKILL.md のフロントマターは `user-invokable`（`user-invocable` ではない）
 - SKILL.md に `allowed-tools` でツール制限が可能（例: `allowed-tools: ["Read", "Glob", "Grep"]`）
+- SKILL.md で `${CLAUDE_SKILL_DIR}` 変数を使用してスキルの自ディレクトリを参照可能
 - `.mcp.json` の API キーは `${ENV_VAR}` 形式で参照
 - テンプレート内のコメントは `<!-- -->` で記載
 - CLAUDE.md と AGENTS.md の両方をプロジェクトルートおよび各ティアに配置
@@ -59,3 +60,5 @@ Bash, JSON, Markdown（コードは含まない。設定テンプレートのみ
 - 各パターンの README.md は GitHub ブラウザで自動表示される
 - install.sh は既存ファイルを上書きする（プロジェクト固有設定は先にバックアップ）
 - このリポジトリ自体の `.claude/settings.json` はテンプレート開発用に最適化済み
+- settings.local.json のモデルは `opusplan` を推奨（Opus で計画 → Sonnet で実行の自動切替）
+- Hooks は全21イベント対応（PostCompact, Elicitation, ElicitationResult を含む）
