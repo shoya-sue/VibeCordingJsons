@@ -1,18 +1,22 @@
 ---
 name: explain-code
-description: コードの構造・ロジック・依存関係を日本語で解説する
+description: Explain code structure, logic, and dependencies
 user-invokable: true
 allowed-tools: ["Read", "Glob", "Grep", "Bash(find *)"]
 ---
 
 # explain-code
 
-指定されたファイルやコードブロックを日本語で分かりやすく解説してください。
+Explain the specified file or code block clearly.
 
-## 解説に含める内容
+## Include in Explanation
 
-1. **概要** — このコードが何をしているか（1-2文）
-2. **構造** — 主要な関数・クラス・モジュールの関係
-3. **ロジック** — 重要なアルゴリズムやビジネスロジックの説明
-4. **依存関係** — インポートしているモジュール・外部 API
-5. **注意点** — 潜在的な問題点や改善の余地
+1. **Overview** — What this code does (1-2 sentences)
+2. **Structure** — Key functions, classes, and module relationships
+3. **Logic** — Important algorithms and business logic
+4. **Dependencies** — Imported modules and external APIs
+5. **Caveats** — Potential issues or improvement opportunities
+
+## Output Language
+
+Respond in the user's language (default: Japanese).

@@ -1,62 +1,39 @@
 ---
 name: test-runner
-description: テストを実行し、失敗したテストの原因を分析・修正する。Jest, Vitest, pytest, cargo test, go test など主要フレームワークに対応。
+description: Run tests, analyze failures, and apply fixes. Supports Jest, Vitest, pytest, cargo test, go test.
 user-invokable: true
 ---
 
-# Test Runner — テスト実行・修正スキル
+# test-runner
 
-テストを実行し、失敗を分析・修正するスキルです。
+When to use: Test execution, failure debugging, coverage improvement.
 
-## いつ使うか
+## Step 1: Framework Detection
 
-- 「テストを実行して失敗を修正して」
-- 「このファイルのテストを書いて」
-- 「テストカバレッジを上げて」
+Check for package.json (Jest/Vitest), pyproject.toml (pytest), Cargo.toml, go.mod.
 
-## 手順
-
-### Step 1: テストフレームワーク検出
+## Step 2: Execute Tests
 
 ```bash
-cat package.json 2>/dev/null | grep -E '"test"|"jest"|"vitest"'
-ls pyproject.toml pytest.ini setup.cfg 2>/dev/null
-ls Cargo.toml go.mod 2>/dev/null
-```
-
-### Step 2: テスト実行
-
-```bash
-# JavaScript/TypeScript
 npm test -- --passWithNoTests 2>&1 | tail -50
-
-# Python
 python -m pytest -v 2>&1 | tail -50
-
-# Rust
 cargo test 2>&1 | tail -50
-
-# Go
 go test ./... 2>&1 | tail -50
 ```
 
-### Step 3: 失敗分析
+## Step 3: Failure Analysis
 
-1. **プロダクションコードのバグ** → プロダクションコードを修正
-2. **テストコードのバグ** → テストを修正（仕様変更追従）
-3. **環境・依存関係問題** → 設定確認
-4. **フレイキーテスト** → 非決定性の原因を調査・報告
+1. **Production code bug** → Fix production code
+2. **Test code bug** → Update test for spec changes
+3. **Environment issue** → Check configuration
+4. **Flaky test** → Investigate non-determinism
 
-## テスト記述 (TDD)
+## TDD Pattern (AAA)
 
 ```typescript
-// AAA パターン
-it('should [期待する動作]', () => {
-  // Arrange
-  const input = setupTestData();
-  // Act
-  const result = functionUnderTest(input);
-  // Assert
-  expect(result).toBe(expected);
+it('should [expected behavior]', () => {
+  // Arrange — setup
+  // Act — execute
+  // Assert — verify
 });
 ```

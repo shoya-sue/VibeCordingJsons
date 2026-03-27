@@ -1,151 +1,65 @@
-# Full - 全機能
+# Full Pattern — All Features Enabled
 
-信頼できる環境向け。Agent Teams・Sandbox・Hooks・Skills・Agents のフル構成。
+Complete configuration for Claude Code and GitHub Copilot CLI with all features activated.
 
-## コピー先
+## What's Included
 
-| ファイル | コピー先 |
-|---------|---------|
-| `.claude/settings.json` | `.claude/settings.json` |
-| `.claude/settings.local.json` | `.claude/settings.local.json`（個人用、gitignore） |
-| `.claude/skills/explain-code/SKILL.md` | `.claude/skills/explain-code/SKILL.md` |
-| `.claude/skills/fix-issue/SKILL.md` | `.claude/skills/fix-issue/SKILL.md` |
-| `.claude/skills/review-pr/SKILL.md` | `.claude/skills/review-pr/SKILL.md` |
-| `.claude/agents/code-reviewer.md` | `.claude/agents/code-reviewer.md` |
-| `.claude/agents/test-runner.md` | `.claude/agents/test-runner.md` |
-| `.claude/rules/code-style.md` | `.claude/rules/code-style.md` |
-| `.claude/rules/api-conventions.md` | `.claude/rules/api-conventions.md` |
-| `project.code-workspace` | `<プロジェクト名>.code-workspace` |
-| `.mcp.json` | プロジェクトルート `.mcp.json` |
-| `CLAUDE.md` | プロジェクトルート `CLAUDE.md` |
-| `CLAUDE.local.md` | プロジェクトルート `CLAUDE.local.md`（個人用、gitignore） |
-| `AGENTS.md` | プロジェクトルート `AGENTS.md` |
+| Category | Contents |
+|----------|----------|
+| Claude Code settings | 3-tier permissions, 21 hooks, Agent Teams, auto-memory |
+| Skills (Claude) | explain-code, fix-issue, review-pr, generate-changelog, dependency-audit, create-issue, gh-workflow |
+| Agents (Claude) | code-reviewer (haiku), test-runner (sonnet) |
+| Rules | code-style, api-conventions, subagent-delegation, team-coordination |
+| MCP Servers | context7, playwright, deepwiki, excalidraw, github |
+| Copilot CLI | copilot-instructions.md, 8 skills, 4 agents |
+| VSCode | Workspace config with auto-start task |
+
+## Quick Start
 
 ```bash
-# install.sh で一括コピー
-git clone https://github.com/shoya-sue/VibeCordingJsons.git
-cd VibeCordingJsons
+# Global install (applies to all projects)
+./install.sh full ~
+
+# Project install
 ./install.sh full /path/to/your/project
 ```
 
-GitHub PAT を使う場合は環境変数を設定:
+## Key Features
 
-```bash
-export GITHUB_PERSONAL_ACCESS_TOKEN="ghp_xxxx"
-```
+### Subagent Cost Optimization
 
-## 含まれる機能
+Subagent usage does not count against billing quotas. The configuration enforces:
+- Read-only tasks → Explore agent (haiku)
+- Code review → code-reviewer agent (haiku)
+- Tests → test-runner agent (sonnet)
+- GitHub ops → always via `gh` CLI
 
-- **permissions**: allow / ask / deny の3段階制御
-- **ask**: `git push`, `npm publish`, `docker push`, `terraform apply`, `kubectl apply`
-- **hooks**: 全21イベント対応 + macOS 通知（osascript）
-  - SessionStart, UserPromptSubmit, PreToolUse, PermissionRequest, PostToolUse, PostToolUseFailure, Notification, SubagentStart, SubagentStop, Stop, TeammateIdle, TaskCompleted, ConfigChange, WorktreeCreate, WorktreeRemove, PreCompact, PostCompact, Elicitation, ElicitationResult, InstructionsLoaded, SessionEnd
-  - サウンド使い分け: Glass（開始/完了）、Basso（エラー/許可要求）、Tink（情報）、Hero（達成）
-- **skills**: `/explain-code`, `/fix-issue`, `/review-pr`, `/generate-changelog`, `/dependency-audit`
-- **agents**: code-reviewer（読み取り専用レビュー）、test-runner（テスト実行・修正）
-- **rules**: code-style, api-conventions（パス別ルール）
-- **MCP**: 5サーバー（Context7, Playwright, DeepWiki, Excalidraw, GitHub）
-- **sandbox**: 有効（network: github.com, npmjs, pypi のみ許可）
-- **Agent Teams**: 有効（teammateMode: auto）
-- **attribution**: コミット・PR に Claude Code 署名を自動付与
+### Team Coordination
 
-## 拒否される操作
+Use Agent Teams when:
+- 3+ independent files/modules need simultaneous changes
+- Frontend + backend work can proceed in parallel
+- Research and implementation can overlap
 
-`rm -rf /`, `mkfs`, `terraform destroy`, `kubectl delete namespace/node`, 本番 secrets 読み取り
+### Permissions Model
 
-## VSCode ワークスペース設定
+- **Allow**: File read/write on standard dirs, git ops, package managers, gh CLI, MCP tools
+- **Ask**: git push, npm publish, docker push, terraform apply, kubectl apply
+- **Deny**: Destructive ops, secret files, force push, hard reset
 
-`project.code-workspace` に以下の設定を含む:
+### Hooks (21 Events)
 
-| カテゴリ | 設定内容 |
-|---------|---------|
-| **エディタ** | formatOnSave, tabSize: 2, bracketPairColorization, minimap: off |
-| **ファイル管理** | autoSave (1秒遅延), exclude, watcherExclude |
-| **検索除外** | node_modules, vendor, dist, build, .next, out, coverage, lock files |
-| **Git** | repositoryScanMaxDepth: 3, autoRepositoryDetection |
-| **ターミナル** | zsh（macOS デフォルト） |
-| **拡張機能** | Copilot, Copilot Chat, GitLens, Prettier, ESLint, EditorConfig, Docker |
-| **タスク** | Claude Code 自動起動 + フォルダオープン時自動実行 |
-| **Launch** | デバッグ構成テンプレート（空） |
+All lifecycle events are logged:
+- Session: SessionStart, SessionEnd, Stop
+- Tools: PreToolUse, PostToolUse, PostToolUseFailure, PermissionRequest
+- User: UserPromptSubmit
+- Notifications: Notification, InstructionsLoaded, ConfigChange
+- Subagents: SubagentStart, SubagentStop
+- Teams: TeammateIdle, TaskCompleted
+- Worktrees: WorktreeCreate, WorktreeRemove
+- Compaction: PreCompact, PostCompact
+- MCP: Elicitation, ElicitationResult
 
-### Claude Code 自動起動タスク
+## Customization
 
-`🚀 Auto Start` タスクにより、ワークスペースを開くと Claude Code が自動起動:
-
-- `claude -c` で既存セッション復帰、なければ新規起動
-- zsh ログインシェルで実行（環境変数・パスを完全読み込み）
-- `runOn: folderOpen` でワークスペースオープン時に自動実行
-- タスクグループでプロジェクト別にパネルを整理可能
-
-### マルチプロジェクト構成
-
-複数プロジェクトを1つのワークスペースで管理する場合、`folders` と `tasks` を拡張:
-
-```jsonc
-{
-  "folders": [
-    { "name": "frontend", "path": "./frontend" },
-    { "name": "backend", "path": "./backend" },
-    { "name": "infra", "path": "./infra" }
-  ],
-  "tasks": {
-    "tasks": [
-      {
-        "label": "🟩 frontend",
-        "command": "claude -c || claude",
-        "options": { "cwd": "${workspaceFolder:frontend}" },
-        // ... （他の設定は同じ）
-        "presentation": { "group": "frontend" }
-      },
-      {
-        "label": "🟦 backend",
-        "command": "claude -c || claude",
-        "options": { "cwd": "${workspaceFolder:backend}" },
-        "presentation": { "group": "backend" }
-      },
-      {
-        "label": "🚀 Auto Start",
-        "dependsOn": ["🟩 frontend", "🟦 backend"],
-        "dependsOrder": "parallel",
-        "runOptions": { "runOn": "folderOpen" }
-      }
-    ]
-  }
-}
-```
-
-> **Tip**: 各タスクの `presentation.group` で色分けされた専用パネルに表示される。
-
-## Copilot CLI 設定
-
-### 含まれるファイル
-
-| ファイル | 説明 |
-|---------|------|
-| `.github/copilot-instructions.md` | Fleet/Plan/Agent Teams 全機能指示 |
-| `.github/skills/explain-code/SKILL.md` | コード解説スキル |
-| `.github/skills/code-reviewer/SKILL.md` | 高精度レビュースキル |
-| `.github/skills/fix-issue/SKILL.md` | Issue 修正スキル |
-| `.github/skills/review-pr/SKILL.md` | PR レビュースキル |
-| `.github/skills/test-runner/SKILL.md` | テスト実行・修正スキル |
-| `.github/agents/code-reviewer.agent.md` | 読み取り専用レビューエージェント |
-| `.github/agents/github-workflow.agent.md` | GitHub ワークフローエージェント |
-| `.github/agents/code-explorer.agent.md` | コード解説エージェント |
-| `.github/agents/test-runner.agent.md` | テスト実行エージェント |
-| `AGENTS.md` | Copilot CLI / Gemini CLI 等の汎用 AI エージェント指示 |
-
-### 機能
-
-- **copilot-instructions.md**: Fleet / Plan / Agent Teams の全機能指示
-- **Skills**: explain-code, code-reviewer, fix-issue, review-pr, test-runner (5個)
-- **Agents**: code-reviewer, github-workflow, code-explorer, test-runner (4個)
-
-### 使い方
-
-```
-/explain-code @src/auth.ts
-/code-reviewer
-/fix-issue #123
-/review-pr #42
-/test-runner
-```
+Edit `CLAUDE.md` and `settings.json` to match your project's needs. Use `CLAUDE.local.md` and `settings.local.json` for personal overrides (not committed to git).

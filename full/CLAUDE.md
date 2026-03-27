@@ -2,79 +2,78 @@
 
 ## Overview
 
-<!-- プロジェクトの概要を1-2行で記載 -->
+<!-- Describe your project here -->
 
 ## Tech Stack
 
-<!-- 使用技術を記載 -->
-<!-- 例: TypeScript, React, Node.js, PostgreSQL, Docker, Kubernetes -->
+<!-- List technologies used -->
 
 ## Project Structure
 
 ```text
 src/
-├── components/    # UI コンポーネント
-├── pages/         # ページ
-├── services/      # API クライアント・ビジネスロジック
-├── utils/         # ユーティリティ
-└── types/         # 型定義
+├── components/    # UI components
+├── pages/         # Pages
+├── services/      # API clients, business logic
+├── utils/         # Utilities
+└── types/         # Type definitions
 tests/
-├── unit/          # ユニットテスト
-├── integration/   # 統合テスト
-└── e2e/           # E2E テスト（Playwright）
-docs/              # ドキュメント
-scripts/           # ビルド・デプロイスクリプト
+├── unit/          # Unit tests
+├── integration/   # Integration tests
+└── e2e/           # E2E tests (Playwright)
+docs/              # Documentation
+scripts/           # Build and deploy scripts
 .claude/
-├── skills/        # カスタムスキル定義
-└── agents/        # カスタムエージェント定義
+├── skills/        # Custom skill definitions
+├── agents/        # Custom agent definitions
+└── rules/         # Coding rules
 ```
 
 ## Conventions
 
-- <!-- コーディング規約を記載 -->
-- <!-- 命名規則を記載 -->
-- テストは `tests/` 配下に配置
-- コミットメッセージは Conventional Commits 形式
-- Docker イメージは `Dockerfile` で定義
+- Naming: camelCase (JS/TS), snake_case (Python/Rust/Go), kebab-case (files)
+- Tests go in `tests/` (separated from production code)
+- Commit messages: Conventional Commits format (`feat:`, `fix:`, `docs:`, `chore:`)
+- Docker images defined in `Dockerfile`
 
 ## Commands
 
 ```bash
-npm test              # テスト実行
-npm run lint          # リント
-npm run build         # ビルド
-docker compose up     # ローカル環境起動
-make deploy-staging   # ステージングデプロイ
+npm test              # Run tests
+npm run lint          # Lint
+npm run build         # Build
+docker compose up     # Start local environment
+make deploy-staging   # Deploy to staging
 ```
 
 ## Infrastructure
 
-- <!-- インフラ構成を記載 -->
-- `terraform plan` は許可、`terraform apply` は手動確認必須
-- `kubectl delete namespace/node` は禁止
+<!-- Describe infrastructure here -->
+- `terraform plan` is allowed; `terraform apply` requires manual confirmation
+- `kubectl delete namespace/node` is forbidden
 
 ## Slash Commands
 
-- `/model opusplan` — Opus で計画、Sonnet で実行の自動切り替え（コスト最適化）
-- `/effort low|medium|high` — モデルの思考レベルを設定（○ ◐ ●）。`/effort auto` でリセット
-- `/memory` — 自動メモリの管理（閲覧・編集・削除）
-- `/loop 5m check deploy` — 定期的にプロンプトを繰り返し実行
-- `/plan fix the auth bug` — 説明付きでプランモードを開始
-- `/branch` — 現在の会話を分岐して新しいブランチを作成（旧 `/fork`）
-- `/color` — プロンプトバーの色を設定（複数セッション識別用）
-- `/simplify` — コードを簡素化
-- `/batch` — 複数タスクを一括実行
-- `/context` — コンテキスト最適化の提案を表示（アクション可能な改善案付き）
-- `/copy N` — N番目のアシスタント応答をクリップボードにコピー（`w` キーでファイル出力）
+- `/model opusplan` — Auto-switch: Opus for planning, Sonnet for execution (cost optimized)
+- `/effort low|medium|high` — Set model thinking level. `/effort auto` to reset
+- `/memory` — Manage auto-memory (view/edit/delete)
+- `/loop 5m check deploy` — Repeat a prompt on schedule
+- `/plan fix the auth bug` — Start plan mode with description
+- `/branch` — Fork current conversation into a new branch
+- `/color` — Set prompt bar color (multi-session identification)
+- `/simplify` — Simplify code
+- `/batch` — Execute multiple tasks at once
+- `/context` — Show context optimization suggestions
+- `/copy N` — Copy Nth assistant response to clipboard (`w` key for file output)
 
 ## Important Notes
 
-- `.env.production` は読み取り禁止（settings.json の deny で制御済み）
-- Agent Teams 有効 — 複数エージェントが並行作業可能
-- Sandbox 有効 — Bash コマンドはサンドボックス内で実行
-- Hooks でコマンドログ・ファイル変更ログを自動記録（全21イベント対応）
-- MCP Elicitation 対応 — MCP サーバーがタスク中に構造化入力を要求可能
-- 自動メモリ有効 — Claude が作業中に有用なコンテキストを自動保存（`.claude/memory` に保存）
-- Opus 4.6 出力トークン上限: 64k（最大128k）。`CLAUDE_CODE_MAX_OUTPUT_TOKENS` で制御
-- HTTP hooks 対応 — `type: "http"` で外部 URL に JSON を POST 可能
-- Agent tool の `resume` パラメータは廃止 → `SendMessage({to: agentId})` を使用
+- `.env.production` is read-prohibited (controlled via settings.json deny list)
+- Agent Teams enabled — multiple agents can work in parallel
+- Hooks record command logs and file changes (all 21 events supported)
+- MCP Elicitation supported — MCP servers can request structured input during tasks
+- Auto-memory enabled — Claude saves useful context to `.claude/memory/`
+- Opus 4.6 output token limit: 64k (max 128k). Control via `CLAUDE_CODE_MAX_OUTPUT_TOKENS`
+- HTTP hooks supported — `type: "http"` POSTs JSON to external URLs
+- Agent tool `resume` parameter is deprecated → use `SendMessage({to: agentId})`
+- Subagent usage does not count against billing — delegate aggressively

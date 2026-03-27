@@ -1,52 +1,42 @@
 ---
 name: explain-code
-description: コードの構造・ロジック・依存関係を日本語で解説する
+description: Explain code structure, logic, and dependencies in detail
 user-invokable: true
 ---
 
-# Explain Code — コード解説スキル
+# explain-code
 
-コードベースを深く理解するためのスキルです。
+When to use: Understanding unfamiliar code, algorithm explanations, dependency insights.
 
-## いつ使うか
-
-- 「このコードは何をしているの？」
-- 「このアルゴリズムを説明して」
-- 「このファイルの依存関係を教えて」
-
-## 解説手順
-
-### Step 1: コンテキスト把握
+## Step 1: Capture Context
 
 ```bash
-find . -type f -name "*.ts" | head -20
+find . -type f -name "*.ts" -o -name "*.py" -o -name "*.go" -o -name "*.rs" | head -30
 ```
 
-### Step 2: コード読解
+## Step 2: Read and Analyze
 
-1. **目的** — このコード/ファイルは何をするか
-2. **入出力** — 引数・戻り値・副作用
-3. **アルゴリズム** — 処理フローをステップで説明
-4. **設計判断** — なぜこの実装を選んだか
-5. **依存関係** — 何に依存し、何から依存されるか
+Perspectives to cover:
+1. **Purpose** — What this code does
+2. **Input/Output** — Arguments, return values, side effects
+3. **Algorithm** — Processing flow
+4. **Design decisions** — Why this approach
+5. **Dependencies** — External modules and APIs
 
-## 出力形式
+## Output Format
 
 ```markdown
-## 概要
-[1-2行の要約]
+## Overview
+[1-2 line summary]
 
-## 詳細解説
-[ステップごとの説明]
+## Detailed Explanation
+[Step-by-step analysis]
 
-## 重要なポイント
-- [注目すべき実装の詳細]
+## Key Points
+- [Important observations]
 
-## 関連ファイル
-- [依存するファイル一覧]
+## Related Files
+- [List of connected files]
 ```
 
-## ヒント
-
-- `@ファイル名` でファイルをコンテキストに追加してから質問すると精度が上がる
-- `explore` エージェントを使って関連ファイルを事前調査するとより深い解説が可能
+Respond in the user's language (default: Japanese). Use `@filename` to add files to context.

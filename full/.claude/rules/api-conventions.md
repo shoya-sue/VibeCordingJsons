@@ -1,5 +1,5 @@
 ---
-description: API 設計に関するルール
+description: REST API design conventions
 paths:
   - "src/api/**"
   - "src/routes/**"
@@ -8,9 +8,9 @@ paths:
 
 # API Conventions
 
-- RESTful 設計に従う（GET=取得, POST=作成, PUT=更新, DELETE=削除）
-- レスポンスは常に JSON 形式
-- エラーレスポンスは `{ "error": { "code": "...", "message": "..." } }` 形式
-- ページネーションは `?page=1&per_page=20` 形式
-- 認証は Authorization ヘッダーで Bearer トークンを使用
-- バリデーションエラーは 422、認証エラーは 401、権限エラーは 403 を返す
+- Follow RESTful design: GET=retrieve, POST=create, PUT=update, DELETE=delete
+- Responses are always JSON
+- Error response format: `{ "error": { "code": "...", "message": "..." } }`
+- Pagination: `?page=1&per_page=20`
+- Authentication via Bearer token in Authorization header
+- HTTP status codes: 422 (validation error), 401 (auth error), 403 (permission error)
