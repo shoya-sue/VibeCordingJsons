@@ -127,7 +127,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[SessionStart] $(date '+%Y-%m-%d %H:%M:%S')\"",
+            "command": "echo \"[セッション開始] $(date '+%Y-%m-%d %H:%M:%S')\"",
             "timeout": 10
           }
         ]
@@ -138,7 +138,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[UserPromptSubmit] $(date '+%H:%M:%S')\"",
+            "command": "echo \"[プロンプト送信] $(date '+%H:%M:%S')\"",
             "timeout": 10
           }
         ]
@@ -150,7 +150,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[PreToolUse:Bash] $(jq -r '.tool_input.command // empty' 2>/dev/null)\"",
+            "command": "echo \"[実行前:Bash] $(jq -r '.tool_input.command // empty' 2>/dev/null)\"",
             "timeout": 10
           }
         ]
@@ -160,7 +160,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[PreToolUse:Write] $(jq -r '.tool_input.file_path // empty' 2>/dev/null)\"",
+            "command": "echo \"[実行前:Write] $(jq -r '.tool_input.file_path // empty' 2>/dev/null)\"",
             "timeout": 10
           }
         ]
@@ -170,7 +170,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[PreToolUse:Edit] $(jq -r '.tool_input.file_path // empty' 2>/dev/null)\"",
+            "command": "echo \"[実行前:Edit] $(jq -r '.tool_input.file_path // empty' 2>/dev/null)\"",
             "timeout": 10
           }
         ]
@@ -180,7 +180,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[PreToolUse:MCP] $(jq -r '.tool_name // empty' 2>/dev/null)\"",
+            "command": "echo \"[実行前:MCP] $(jq -r '.tool_name // empty' 2>/dev/null)\"",
             "timeout": 10
           }
         ]
@@ -191,7 +191,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[PermissionRequest] tool=$(jq -r '.tool_name // \"unknown\"' 2>/dev/null) $(date '+%H:%M:%S')\"",
+            "command": "echo \"[権限要求] ツール=$(jq -r '.tool_name // \"不明\"' 2>/dev/null) $(date '+%H:%M:%S')\"",
             "timeout": 10
           }
         ]
@@ -203,7 +203,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[PostToolUse:Write] modified: $(jq -r '.tool_input.file_path // empty' 2>/dev/null)\"",
+            "command": "echo \"[実行後:Write] 変更: $(jq -r '.tool_input.file_path // empty' 2>/dev/null)\"",
             "timeout": 10
           }
         ]
@@ -213,7 +213,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[PostToolUse:Edit] modified: $(jq -r '.tool_input.file_path // empty' 2>/dev/null)\"",
+            "command": "echo \"[実行後:Edit] 変更: $(jq -r '.tool_input.file_path // empty' 2>/dev/null)\"",
             "timeout": 10
           }
         ]
@@ -223,7 +223,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[PostToolUse:Bash] completed: $(jq -r '.tool_input.command // empty' 2>/dev/null | head -c 100)\"",
+            "command": "echo \"[実行後:Bash] 完了: $(jq -r '.tool_input.command // empty' 2>/dev/null | head -c 100)\"",
             "timeout": 10
           }
         ]
@@ -234,7 +234,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[PostToolUseFailure] tool=$(jq -r '.tool_name // \"unknown\"' 2>/dev/null) $(date '+%H:%M:%S')\"",
+            "command": "echo \"[ツール失敗] ツール=$(jq -r '.tool_name // \"不明\"' 2>/dev/null) $(date '+%H:%M:%S')\"",
             "timeout": 10
           }
         ]
@@ -245,7 +245,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[Notification] type=$(jq -r '.notification_type // .type // \"info\"' 2>/dev/null) $(date '+%H:%M:%S')\"",
+            "command": "echo \"[通知] 種別=$(jq -r '.notification_type // .type // \"情報\"' 2>/dev/null) $(date '+%H:%M:%S')\"",
             "timeout": 10
           }
         ]
@@ -256,7 +256,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[SubagentStart] agent=$(jq -r '.agent_type // \"unknown\"' 2>/dev/null) $(date '+%H:%M:%S')\"",
+            "command": "echo \"[サブエージェント開始] 種別=$(jq -r '.agent_type // \"不明\"' 2>/dev/null) $(date '+%H:%M:%S')\"",
             "timeout": 10
           }
         ]
@@ -267,7 +267,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[SubagentStop] agent=$(jq -r '.agent_type // \"unknown\"' 2>/dev/null) $(date '+%H:%M:%S')\"",
+            "command": "echo \"[サブエージェント停止] 種別=$(jq -r '.agent_type // \"不明\"' 2>/dev/null) $(date '+%H:%M:%S')\"",
             "timeout": 10
           }
         ]
@@ -278,13 +278,13 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[Stop] $(date '+%Y-%m-%d %H:%M:%S')\"",
+            "command": "echo \"[応答完了] $(date '+%Y-%m-%d %H:%M:%S')\"",
             "timeout": 10
           },
           {
-            "type": "http",
-            "url": "http://localhost:3000/hooks/stop",
-            "timeout": 5
+            "type": "command",
+            "command": "proj=$(basename \"$(git remote get-url origin 2>/dev/null | sed 's/\\.git$//')\" 2>/dev/null || basename \"$(pwd)\") && task=$(cat .claude/current-task 2>/dev/null || git branch --show-current 2>/dev/null || echo '-') && curl -s -X POST -H 'Content-Type: application/json' -d '{\"content\":\"📨 **応答求**\\n📁 '\"$proj\"'\\n🔧 '\"$task\"'\"}' '${DISCORD_WEBHOOK_URL}' >/dev/null 2>&1",
+            "timeout": 10
           }
         ]
       }
@@ -294,7 +294,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[TeammateIdle] $(date '+%H:%M:%S')\"",
+            "command": "echo \"[チームメイト待機] $(date '+%H:%M:%S')\"",
             "timeout": 10
           }
         ]
@@ -305,7 +305,12 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[TaskCompleted] $(date '+%H:%M:%S')\"",
+            "command": "echo \"[タスク完了] $(date '+%H:%M:%S')\"",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "proj=$(basename \"$(git remote get-url origin 2>/dev/null | sed 's/\\.git$//')\" 2>/dev/null || basename \"$(pwd)\") && task=$(cat .claude/current-task 2>/dev/null || git branch --show-current 2>/dev/null || echo '-') && curl -s -X POST -H 'Content-Type: application/json' -d '{\"content\":\"✅ **完了**\\n📁 '\"$proj\"'\\n🔧 '\"$task\"'\"}' '${DISCORD_WEBHOOK_URL}' >/dev/null 2>&1",
             "timeout": 10
           }
         ]
@@ -316,7 +321,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[ConfigChange] $(jq -r '.source // \"unknown\"' 2>/dev/null) $(date '+%H:%M:%S')\"",
+            "command": "echo \"[設定変更] 元=$(jq -r '.source // \"不明\"' 2>/dev/null) $(date '+%H:%M:%S')\"",
             "timeout": 10
           }
         ]
@@ -327,7 +332,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[WorktreeCreate] $(date '+%H:%M:%S')\"",
+            "command": "echo \"[ワークツリー作成] $(date '+%H:%M:%S')\"",
             "timeout": 10
           }
         ]
@@ -338,7 +343,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[WorktreeRemove] $(date '+%H:%M:%S')\"",
+            "command": "echo \"[ワークツリー削除] $(date '+%H:%M:%S')\"",
             "timeout": 10
           }
         ]
@@ -349,7 +354,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[PreCompact] $(date '+%H:%M:%S')\"",
+            "command": "echo \"[コンテキスト圧縮前] $(date '+%H:%M:%S')\"",
             "timeout": 10
           }
         ]
@@ -360,7 +365,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[PostCompact] $(date '+%H:%M:%S')\"",
+            "command": "echo \"[コンテキスト圧縮後] $(date '+%H:%M:%S')\"",
             "timeout": 10
           }
         ]
@@ -371,7 +376,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[Elicitation] server=$(jq -r '.mcp_server_name // \"unknown\"' 2>/dev/null) $(date '+%H:%M:%S')\"",
+            "command": "echo \"[MCP入力要求] サーバー=$(jq -r '.mcp_server_name // \"不明\"' 2>/dev/null) $(date '+%H:%M:%S')\"",
             "timeout": 10
           }
         ]
@@ -382,7 +387,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[ElicitationResult] $(date '+%H:%M:%S')\"",
+            "command": "echo \"[MCP入力結果] $(date '+%H:%M:%S')\"",
             "timeout": 10
           }
         ]
@@ -393,7 +398,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[InstructionsLoaded] $(jq -r '.files // empty' 2>/dev/null) $(date '+%H:%M:%S')\"",
+            "command": "echo \"[設定ファイル読込] $(jq -r '.files // empty' 2>/dev/null) $(date '+%H:%M:%S')\"",
             "timeout": 10
           }
         ]
@@ -404,7 +409,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[SessionEnd] $(date '+%Y-%m-%d %H:%M:%S')\"",
+            "command": "echo \"[セッション終了] $(date '+%Y-%m-%d %H:%M:%S')\"",
             "timeout": 10
           }
         ]
