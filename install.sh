@@ -10,18 +10,18 @@ usage() {
 Usage: ./install.sh <pattern> [target]
 
 Patterns:
-  minimal    読み取り専用（コードレビュー・探索向け）
-  standard   日常開発（推奨）
-  full       全機能（Agent Teams / Sandbox / Hooks / Skills / Agents）
+  minimal    Read-only (for code review and exploration)
+  standard   Everyday development (recommended)
+  full       All features (Agent Teams / Hooks / Skills / Agents)
 
 Target:
-  .          現在のプロジェクトにインストール（デフォルト）
-  ~          ホームディレクトリにグローバルインストール（個人利用におすすめ）
+  .          Install to current project (default)
+  ~          Global install to home directory (recommended for personal use)
 
 Examples:
-  ./install.sh full ~                # グローバル設定（全プロジェクトに自動適用）
-  ./install.sh standard .            # カレントディレクトリにインストール
-  ./install.sh standard ~/my-project # 指定プロジェクトにインストール
+  ./install.sh full ~                # Global settings (auto-applies to all projects)
+  ./install.sh standard .            # Install to current directory
+  ./install.sh standard ~/my-project # Install to specified project
 
 USAGE
   exit 1

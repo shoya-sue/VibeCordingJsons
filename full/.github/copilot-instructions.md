@@ -1,96 +1,96 @@
-# GitHub Copilot CLI — Full 設定
+# GitHub Copilot CLI — Full Configuration
 
-## 役割と思想
+## Philosophy
 
-このプロジェクトでは **全機能モード** で GitHub Copilot CLI を使用します。
-Fleet 並列実行・Agent Teams・Skills・Agents のフル構成で開発を加速します。
+This project uses **full-featured mode** for GitHub Copilot CLI.
+Fleet parallel execution, Agent Teams, Skills, and Agents are all enabled.
 
-## エージェント活用方針
+## Agent Usage Policy
 
-| タスク種別 | 使用エージェント | 理由 |
-|-----------|----------------|------|
-| コードベース探索・質問 | `explore` (Haiku) | 高速・安価・並列安全 |
-| テスト/ビルド/lint 実行 | `task` (Haiku) | 冗長出力を隔離 |
-| コードレビュー | `code-review` | 専用プロンプト最適化 |
-| 複雑な多段階タスク | `general-purpose` (Sonnet) | 高品質な推論が必要 |
-| カスタムレビュー | `code-reviewer` agent | 高 S/N 比レビュー |
-| テスト実行・修正 | `test-runner` agent | TDD サポート |
-| GitHub ワークフロー | `github-workflow` agent | Issue/PR 一貫管理 |
-| コード解説 | `code-explorer` agent | 日本語詳細解説 |
+| Task Type | Agent | Reason |
+|-----------|-------|--------|
+| Codebase exploration | `explore` (Haiku) | Fast, cheap, parallel-safe |
+| Test/build/lint execution | `task` (Haiku) | Isolate verbose output |
+| Code review | `code-review` | Dedicated prompt optimization |
+| Complex multi-step tasks | `general-purpose` (Sonnet) | High-quality reasoning |
+| Custom review | `code-reviewer` agent | High S/N review |
+| Test execution/fixing | `test-runner` agent | TDD support |
+| GitHub workflow | `github-workflow` agent | Issue-to-PR pipeline |
+| Code explanation | `code-explorer` agent | Detailed analysis |
 
-### Fleet モード活用
+### Fleet Mode
 
-独立した並列タスクには `/fleet` を使用:
-- 複数ファイルの同時リファクタリング
-- 複数サービスの並列テスト実行
+Use `/fleet` for independent parallel tasks:
+- Simultaneous multi-file refactoring
+- Parallel test execution across services
 
-### Plan モード活用
+### Plan Mode
 
-複雑なタスク開始前に `Shift+Tab` で Plan モードへ切替。
+Switch to Plan mode with `Shift+Tab` before starting complex tasks.
 
-## Claude Code との連携
+## Claude Code Integration
 
-| Copilot CLI が得意 | Claude Code が得意 |
-|------------------|------------------|
-| GitHub Issues/PR 操作 | 大規模リファクタリング |
-| Fleet 並列エージェント | 複雑なデバッグセッション |
-| MCP サーバー経由のツール | 対話的なコード設計 |
-| Quick fixes & snippets | アーキテクチャ設計 |
+| Copilot CLI Strengths | Claude Code Strengths |
+|----------------------|----------------------|
+| GitHub Issues/PR ops | Large-scale refactoring |
+| Fleet parallel agents | Complex debug sessions |
+| MCP server tools | Interactive code design |
+| Quick fixes & snippets | Architecture design |
 
-### Claude Code Hooks 構成
+## Subagent Delegation Rules (Global)
 
-Claude Code は全21イベントの hooks を設定済み（macOS 通知付き）:
-- **ライフサイクル**: SessionStart, SessionEnd, Stop
-- **ツール**: PreToolUse, PostToolUse, PostToolUseFailure, PermissionRequest
-- **ユーザー入力**: UserPromptSubmit
-- **通知/情報**: Notification, InstructionsLoaded, ConfigChange
-- **サブエージェント**: SubagentStart, SubagentStop
-- **チーム**: TeammateIdle, TaskCompleted
-- **ワークツリー**: WorktreeCreate, WorktreeRemove
-- **コンテキスト**: PreCompact, PostCompact
-- **MCP Elicitation**: Elicitation, ElicitationResult
+> **This rule applies to ALL skills with highest priority.**
 
-共有コンテキスト:
-- `CLAUDE.md` / `AGENTS.md` に両ツール共通の指示を記載
-- プロジェクト固有の規約は `.github/copilot-instructions.md` に配置
+When executing skills, the main agent MUST:
 
-## スキル活用ガイド
+1. **Never write code directly** — delegate all file edits to subagents
+2. **Always delegate to subagent** — launch `general-purpose` subagent via `task` tool
+3. **Forward results verbatim** — do not summarize or modify subagent output
 
-- **explain-code** — コードの構造・ロジックを日本語解説
-- **code-reviewer** — コード品質・セキュリティ・パフォーマンスレビュー
-- **fix-issue** — GitHub Issue を読み取り修正コードを適用
-- **review-pr** — Pull Request のコードレビュー実施
-- **test-runner** — テスト実行・失敗分析・修正
+## Skills Guide
 
-利用可能スキルは `/skills` コマンドで確認。
+- **explain-code** — Explain code structure and logic
+- **code-reviewer** — Quality/security/performance review
+- **fix-issue** — Read GitHub Issue, apply fix
+- **review-pr** — Pull Request code review
+- **test-runner** — Test execution, failure analysis, fixing
+- **create-issue** — Create GitHub Issues
+- **generate-changelog** — Generate CHANGELOG from git history
+- **dependency-audit** — Audit dependencies for vulnerabilities
 
-## カスタムエージェント
+## Custom Agents
 
-- `code-reviewer` — 読み取り専用・高精度レビュー
-- `test-runner` — TDD サポート・失敗分析
-- `github-workflow` — Issue から PR まで一貫管理
-- `code-explorer` — コードベース詳細解説
+- `code-reviewer` — Read-only, high-precision review
+- `test-runner` — TDD support, failure analysis
+- `github-workflow` — Issue-to-PR pipeline management
+- `code-explorer` — Codebase detailed explanation
 
-## コーディング規約
+## GitHub Operations
 
-- コミットメッセージは **Conventional Commits** 形式 (`feat:`, `fix:`, `chore:` 等)
-- コメントは **日本語** で記述
-- テストファーストで開発 (TDD)
-- 最小限の変更で目的を達成する（外科的な修正）
+- Always use `gh` CLI for GitHub API operations
+- Never use `curl` to api.github.com directly
+- Use `gh api` only as a last resort
 
-## セキュリティ規則
+## Coding Conventions
 
-- `.env.production` は読み取り禁止
-- `kubectl delete namespace/node` は禁止
-- `terraform apply` は手動確認必須
-- シークレットをコードにコミットしない
-- 本番環境への直接 push は行わない
+- Commit messages: **Conventional Commits** format (`feat:`, `fix:`, `chore:`, etc.)
+- Naming: camelCase (JS/TS), snake_case (Python/Rust/Go), kebab-case (files)
+- Test-first development (TDD)
+- Minimal changes to achieve the goal (surgical edits)
 
-## プロンプトのベストプラクティス (GitHub 公式)
+## Security Rules
 
-1. **複雑なタスクは分割** — 1 プロンプト 1 タスク
-2. **具体的に指定** — 入出力の例を提供
-3. **コンテキストを提供** — 関連ファイルを `@` で参照
-4. **フィードバックを活用** — 不満足な回答は言い換えて再試行
-5. **モデルを選択** — `/model` で用途に応じたモデルを使用
-6. **Copilot をガイドする** — ロールを明示して質問の精度を上げる
+- `.env.production` is read-prohibited
+- `kubectl delete namespace/node` is forbidden
+- `terraform apply` requires manual confirmation
+- Never commit secrets to code
+- Never push directly to production
+
+## Prompt Best Practices (GitHub Official)
+
+1. **Break complex tasks down** — one prompt, one task
+2. **Be specific** — provide input/output examples
+3. **Provide context** — reference files with `@`
+4. **Use feedback** — rephrase unsatisfactory responses
+5. **Select models** — use `/model` for task-appropriate model
+6. **Guide Copilot** — specify roles to improve answer quality
