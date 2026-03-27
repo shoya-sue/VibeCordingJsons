@@ -1,6 +1,6 @@
 ---
 name: review-pr
-description: Pull Request のコードレビューを実施する
+description: Review a Pull Request for bugs, security, and performance issues
 argument-hint: "<pr-number>"
 user-invokable: true
 allowed-tools: ["Read", "Glob", "Grep", "Bash(gh pr *)"]
@@ -8,18 +8,16 @@ allowed-tools: ["Read", "Glob", "Grep", "Bash(gh pr *)"]
 
 # review-pr
 
-Pull Request `$ARGUMENTS` のコードレビューを行ってください。
+Review Pull Request `$ARGUMENTS`.
 
-## レビュー観点
+## Review Criteria
 
-1. **正しさ** — ロジックにバグがないか
-2. **セキュリティ** — インジェクション、認証漏れ等の脆弱性
-3. **パフォーマンス** — N+1 クエリ、不要な再レンダリング等
-4. **可読性** — 命名、構造、コメントの適切さ
-5. **テスト** — テストカバレッジ、エッジケース
+1. **Correctness** — Logic bugs
+2. **Security** — Injection, auth gaps, etc.
+3. **Performance** — N+1 queries, unnecessary re-renders
+4. **Readability** — Naming, structure, comments
+5. **Tests** — Coverage and edge cases
 
-## 出力形式
+## Output Format
 
-各指摘を以下の形式で出力:
-
-- **[重要度: High/Medium/Low]** ファイル名:行番号 — 指摘内容
+Per finding: **[High/Medium/Low]** filename:line — Description

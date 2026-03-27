@@ -1,6 +1,6 @@
 ---
 name: create-issue
-description: 発見した問題・改善案を GitHub Issue として起票する
+description: Create a GitHub Issue for discovered problems or improvements
 argument-hint: "<title>"
 user-invokable: true
 allowed-tools: ["Bash(gh issue *)", "Bash(git log *)", "Bash(git blame *)", "Read", "Glob", "Grep"]
@@ -8,47 +8,46 @@ allowed-tools: ["Bash(gh issue *)", "Bash(git log *)", "Bash(git blame *)", "Rea
 
 # create-issue
 
-`$ARGUMENTS` の内容で GitHub Issue を作成してください。
+Create a GitHub Issue for `$ARGUMENTS`.
 
-## 手順
+## Procedure
 
-1. 問題の詳細を整理する（ファイル位置、再現手順、影響範囲）
-2. 適切なラベルを選定する
-3. Issue 本文を構成する
-4. `gh issue create` で起票する（実行前にユーザーに確認）
+1. Organize details (file location, reproduction steps, impact)
+2. Select appropriate labels
+3. Compose issue body
+4. Confirm with user before creating via `gh issue create`
 
-## ラベル選定ガイド
+## Labels
 
-| 状況 | ラベル |
-|------|--------|
-| 動作不良・クラッシュ | `bug` |
-| 新機能・改善案 | `enhancement` |
-| リファクタリング・負債解消 | `tech-debt` |
-| 脆弱性・認証漏れ | `security` |
+| Situation | Label |
+|-----------|-------|
+| Crash / malfunction | `bug` |
+| New feature / improvement | `enhancement` |
+| Refactoring / tech debt | `tech-debt` |
+| Vulnerability / auth gap | `security` |
 
-## Issue テンプレート
+## Issue Template
 
-```markdown
-## 概要
-<!-- 1-2行で問題を説明 -->
+```
+## Summary
+[1-2 line description]
 
-## 詳細
-- **ファイル**: `path/to/file.ts:L42`
-- **影響範囲**: <!-- 影響するコンポーネント・機能 -->
+## Details
+- **File**: `path/to/file.ts:L42`
+- **Impact**: [affected components/features]
 
-## 再現手順（バグの場合）
+## Reproduction Steps (for bugs)
 1. ...
-2. ...
 
-## 期待する動作
-<!-- あるべき姿 -->
+## Expected Behavior
+[what should happen]
 
-## 優先度提案
-<!-- High / Medium / Low と根拠 -->
+## Priority
+[High/Medium/Low with rationale]
 ```
 
-## 注意事項
+## Important
 
-- Issue 作成前に必ずユーザーの確認を取ること
-- 既存の Issue と重複していないか `gh issue list -s open` で確認する
-- シークレットやセンシティブ情報を Issue 本文に含めない
+- Always confirm with user before creating the issue
+- Check for duplicates: `gh issue list -s open`
+- Never include secrets or sensitive data in issue body

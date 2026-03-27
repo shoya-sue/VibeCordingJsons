@@ -1,6 +1,6 @@
 ---
 name: fix-issue
-description: GitHub Issue を読み取り、修正コードを提案・適用する
+description: Read a GitHub Issue and propose/apply code fixes
 argument-hint: "<issue-number>"
 user-invokable: true
 allowed-tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash(gh issue *)", "Bash(git *)", "Bash(npm test *)"]
@@ -8,13 +8,13 @@ allowed-tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash(gh issue *)", "Ba
 
 # fix-issue
 
-GitHub Issue `$ARGUMENTS` の内容を確認し、修正を行ってください。
+Fix GitHub Issue `$ARGUMENTS`.
 
-## 手順
+## Procedure
 
-1. `gh issue view $ARGUMENTS` で Issue の内容を確認
-2. 関連するコードを特定
-3. 原因を分析
-4. 修正コードを書く
-5. テストを実行して修正を確認
-6. 変更内容のサマリーを出力
+1. Run `gh issue view $ARGUMENTS` to read the issue
+2. Identify the relevant code
+3. Analyze root cause
+4. Write the fix
+5. Run tests to verify
+6. Output a summary of changes

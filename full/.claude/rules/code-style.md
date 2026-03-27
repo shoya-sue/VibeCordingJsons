@@ -1,11 +1,15 @@
 ---
-description: コーディングスタイルに関するルール
+description: Code style conventions applied across all languages
+paths:
+  - "src/**"
+  - "tests/**"
 ---
 
 # Code Style Rules
 
-- 変数名・関数名はキャメルケース（JavaScript/TypeScript）またはスネークケース（Python/Rust）
-- コメントは「なぜ」を説明する。「何を」はコードで表現する
-- 1関数は1責務。50行を超えたら分割を検討
-- マジックナンバーは定数に抽出する
-- エラーメッセージは具体的に書く（「Error occurred」ではなく「Failed to connect to database: connection refused」）
+- Variables/functions: camelCase (JavaScript/TypeScript), snake_case (Python/Rust/Go)
+- File names: kebab-case (e.g., `user-profile.ts`, `data-loader.py`)
+- Comments explain "why", not "what" — let the code express intent
+- One responsibility per function; consider splitting above 50 lines
+- Extract magic numbers to named constants
+- Error messages must be specific (e.g., "Failed to connect to database: connection refused")
