@@ -98,7 +98,7 @@
       "Bash(kubectl delete node *)"
     ]
   },
-  "model": "claude-sonnet-4-6",
+  "model": "opusplan",
   "enableAllProjectMcpServers": true,
   "autoMemoryEnabled": true,
   "autoMemoryDirectory": ".claude/memory",
