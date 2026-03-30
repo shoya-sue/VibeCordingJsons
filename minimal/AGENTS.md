@@ -2,36 +2,36 @@
 
 ## Overview
 
-<!-- プロジェクトの概要を1-2行で記載 -->
+<!-- Describe your project in 1-2 lines -->
 
 ## Tech Stack
 
-<!-- 使用技術を記載 -->
+<!-- List technologies used -->
 
-## AI エージェント使用ポリシー（Minimal）
+## AI Agent Usage Policy (Minimal)
 
-このプロジェクトでは **読み取り専用モード** で AI エージェントを使用します。
+This project uses AI agents in **read-only mode**.
 
-### 許可される操作
+### Allowed Operations
 
-- ソースコード・設定ファイルの読み取り
+- Read source code and configuration files
 - `git status` / `git diff` / `git log` / `git show` / `git branch`
-- テストの読み取り・解説
-- ドキュメントの読み取り
+- Read and explain tests
+- Read documentation
 
-### 禁止される操作
+### Prohibited Operations
 
-- ファイルの作成・編集・削除
+- File creation, editing, or deletion
 - git commit / git push
-- パッケージのインストール
-- テストの実行・変更
-- 環境変数・シークレットへのアクセス
+- Package installation
+- Test execution or modification
+- Access to environment variables or secrets
 
-## 優先ツール
+## Preferred Approach
 
-コード探索・解説に集中してください。提案のみ行い、実行は人間が判断します。
+Focus on code exploration and explanation. Provide suggestions only — execution decisions are made by the developer.
 
-## 注意事項
+## Notes
 
-- 提案する際は必ず根拠と影響範囲を説明すること
-- 不明な点は推測せず確認を求めること
+- Always explain the rationale and impact scope when making suggestions
+- When uncertain, ask for clarification rather than guessing

@@ -2,55 +2,52 @@
 
 ## Overview
 
-<!-- プロジェクトの概要を1-2行で記載 -->
+<!-- Describe your project here -->
 
 ## Tech Stack
 
-<!-- 使用技術を記載 -->
-<!-- 例: TypeScript, React, Node.js, PostgreSQL -->
+<!-- List technologies used -->
+<!-- e.g., TypeScript, React, Node.js, PostgreSQL -->
 
 ## Project Structure
 
 ```text
 src/
-├── components/    # UI コンポーネント
-├── pages/         # ページ
-├── services/      # API クライアント・ビジネスロジック
-├── utils/         # ユーティリティ
-└── types/         # 型定義
+├── components/    # UI components
+├── pages/         # Pages
+├── services/      # API clients, business logic
+├── utils/         # Utilities
+└── types/         # Type definitions
 tests/
-├── unit/          # ユニットテスト
-└── integration/   # 統合テスト
-docs/              # ドキュメント
+├── unit/          # Unit tests
+└── integration/   # Integration tests
+docs/              # Documentation
 ```
 
 ## Conventions
 
-- <!-- コーディング規約を記載 -->
-- <!-- 命名規則を記載 -->
-- テストは `tests/` 配下に配置
-- コミットメッセージは Conventional Commits 形式
+- Naming: see `rules/code-style.md` (language-idiomatic)
+- Tests go in `tests/` (separated from production code)
+- Commit messages: Conventional Commits format
 
 ## Commands
 
 ```bash
-npm test          # テスト実行
-npm run lint      # リント
-npm run build     # ビルド
+npm test          # Run tests
+npm run lint      # Lint
+npm run build     # Build
 ```
 
 ## Slash Commands
 
-- `/model opusplan` — Opus で計画、Sonnet で実行の自動切り替え（コスト最適化）
-- `/effort low|medium|high` — モデルの思考レベルを設定（○ ◐ ●）
-- `/memory` — 自動メモリの管理
-- `/plan` — プランモードを開始（Shift+Tab でも切替可能）
-- `/branch` — 現在の会話を分岐（旧 `/fork`）
-- `/color` — プロンプトバーの色を設定（複数セッション識別用）
-- `/context` — コンテキスト最適化の提案を表示
+- `/model opusplan` — Auto-switch: Opus for planning, Sonnet for execution
+- `/effort low|medium|high` — Set thinking level. `/effort auto` to reset
+- `/memory` — Manage auto-memory
+- `/plan` — Start plan mode (also Shift+Tab)
+- `/compact <summary>` — Compact context with focused summary
 
 ## Important Notes
 
-- `.env` に API キーを格納（Git 管理外）
-- `src/`, `tests/`, `docs/` のみ Claude Code で編集可能
-- force-push 禁止
+- Store API keys in `.env` (not git-tracked)
+- Only `src/`, `tests/`, `docs/` are editable by Claude Code
+- Force-push is prohibited

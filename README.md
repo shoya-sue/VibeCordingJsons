@@ -64,8 +64,8 @@ Similarly, `CLAUDE.md` (team-shared) and `CLAUDE.local.md` (personal) form a cor
 | Test execution | **None** | pytest/cargo/go | Same |
 | Docker / K8s | **None** | **None** | docker/kubectl |
 | MCP servers | **None** | 4 servers | 5 servers + full access |
-| Skills | **None** | explain-code, generate-changelog, create-issue | + fix-issue, review-pr, dependency-audit |
-| Agents | None | None | code-reviewer, test-runner |
+| Skills | **None** | explain-code | + fix-issue, review-pr, generate-changelog, dependency-audit, create-issue, gh-workflow |
+| Agents | None | None | code-reviewer, test-runner, security-reviewer |
 | Rules | None | code-style | + api-conventions |
 | Hooks | None | 5 events (logging) | All 21 events + macOS notifications |
 | Sandbox | None | None | Removed (use permissions deny list instead) |
@@ -138,10 +138,13 @@ Setting `~/.copilot/copilot-instructions.md` applies to all projects.
 │   │   │   ├── fix-issue/SKILL.md
 │   │   │   ├── review-pr/SKILL.md
 │   │   │   ├── generate-changelog/SKILL.md
-│   │   │   └── dependency-audit/SKILL.md
+│   │   │   ├── dependency-audit/SKILL.md
+│   │   │   ├── create-issue/SKILL.md
+│   │   │   └── gh-workflow/SKILL.md
 │   │   ├── agents/
 │   │   │   ├── code-reviewer.md
-│   │   │   └── test-runner.md
+│   │   │   ├── test-runner.md
+│   │   │   └── security-reviewer.md
 │   │   └── rules/
 │   │       ├── code-style.md
 │   │       └── api-conventions.md
@@ -278,7 +281,7 @@ All events:
 | `language` | Response language (e.g., `"japanese"`) |
 | `autoMemoryEnabled` | Enable/disable auto-memory (default: `true`) |
 | `attribution` | Commit/PR signature text |
-| `sandbox` | Bash sandbox (enabled, autoAllowBashIfSandboxed, excludedCommands, network) |
+| ~~`sandbox`~~ | Removed in v0.4.0 — use permissions deny list instead |
 | `teammateMode` | Agent Teams display mode (`auto` / `in-process` / `tmux`) |
 | `autoMemoryDirectory` | Auto-memory save directory |
 | `modelOverrides` | Map model picker entries to different model IDs |
@@ -393,6 +396,7 @@ Including "ultrathink" in your message enables high effort for the next turn onl
 Subagent usage does not count against billing quotas. Delegate aggressively:
 - Read-only tasks → Explore agent (haiku)
 - Code review → code-reviewer agent (haiku)
+- Security review → security-reviewer agent (haiku)
 - Tests → test-runner agent (sonnet)
 - GitHub ops → always via `gh` CLI
 

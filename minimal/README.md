@@ -1,62 +1,62 @@
-# Minimal - 読み取り専用
+# Minimal — Read-Only
 
-コードレビュー・探索専用。書き込み一切不可。
+Code review and exploration only. No write access.
 
-## コピー先
+## Copy Destinations
 
-| ファイル | コピー先 |
-|---------|---------|
+| File | Destination |
+|------|-------------|
 | `.claude/settings.json` | `.claude/settings.json` |
-| `.claude/settings.local.json` | `.claude/settings.local.json`（個人用、gitignore） |
-| `project.code-workspace` | `<プロジェクト名>.code-workspace` |
-| `CLAUDE.md` | プロジェクトルート `CLAUDE.md` |
-| `CLAUDE.local.md` | プロジェクトルート `CLAUDE.local.md`（個人用、gitignore） |
-| `AGENTS.md` | プロジェクトルート `AGENTS.md` |
+| `.claude/settings.local.json` | `.claude/settings.local.json` (personal, gitignored) |
+| `project.code-workspace` | `<project-name>.code-workspace` |
+| `CLAUDE.md` | Project root `CLAUDE.md` |
+| `CLAUDE.local.md` | Project root `CLAUDE.local.md` (personal, gitignored) |
+| `AGENTS.md` | Project root `AGENTS.md` |
 
 ```bash
-# install.sh で一括コピー
+# Batch install with install.sh
 git clone https://github.com/shoya-sue/VibeCordingJsons.git
 cd VibeCordingJsons
 ./install.sh minimal /path/to/your/project
 ```
 
-## 含まれる権限
+## Included Permissions
 
-- ソースコード・設定ファイルの読み取り
+- Read source code and configuration files
 - `git status` / `git diff` / `git log` / `git branch` / `git show`
-- Write / Edit / Skill / MCPSearch は全拒否
-- MCP サーバー不要
+- Write / Edit / Skill / MCPSearch are all denied
+- No MCP servers required
 
-## VSCode ワークスペース設定
+## VSCode Workspace Settings
 
-`project.code-workspace` に以下の設定を含む:
+`project.code-workspace` includes the following settings:
 
-| カテゴリ | 設定内容 |
-|---------|---------|
-| **エディタ** | formatOnSave, tabSize: 2, bracketPairColorization |
-| **ファイル除外** | `.git`, `.DS_Store`, `__pycache__` |
-| **ターミナル** | zsh（macOS デフォルト） |
-| **拡張機能** | GitHub Copilot, Copilot Chat |
+| Category | Settings |
+|----------|----------|
+| **Editor** | formatOnSave, tabSize: 2, bracketPairColorization |
+| **File excludes** | `.git`, `.DS_Store`, `__pycache__` |
+| **Terminal** | zsh (macOS default) |
+| **Extensions** | GitHub Copilot, Copilot Chat |
 
-> **Note**: 読み取り専用のため、Claude Code 自動起動タスクは含まれません。
+> **Note**: No Claude Code auto-start task is included since this is a read-only configuration.
 
-## Copilot CLI 設定
+## Copilot CLI Settings
 
-### 含まれるファイル
+### Included Files
 
-| ファイル | 説明 |
-|---------|------|
-| `.github/copilot-instructions.md` | 読み取り専用モードの指示 |
-| `AGENTS.md` | Copilot CLI / Gemini CLI 等の汎用 AI エージェント指示 |
+| File | Description |
+|------|-------------|
+| `.github/copilot-instructions.md` | Read-only mode instructions |
+| `AGENTS.md` | Universal AI agent instructions for Copilot CLI / Gemini CLI |
 
-### 機能
+### Features
 
-- **copilot-instructions.md**: 読み取り専用指示のみ
-- Skills: なし
-- Agents: なし
+- **copilot-instructions.md**: Read-only instructions only
+- Skills: None
+- Agents: None
 
-### 制約
+### Constraints
 
-- ファイルの作成・編集・削除: 不可
-- Git コミット・プッシュ: 不可
-- テスト実行: 不可
+- File creation / editing / deletion: Not allowed
+- Git commit / push: Not allowed
+- Test execution: Not allowed

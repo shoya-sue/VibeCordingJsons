@@ -8,7 +8,7 @@ Complete configuration for Claude Code and GitHub Copilot CLI with all features 
 |----------|----------|
 | Claude Code settings | 3-tier permissions, 21 hooks, Agent Teams, auto-memory |
 | Skills (Claude) | explain-code, fix-issue, review-pr, generate-changelog, dependency-audit, create-issue, gh-workflow |
-| Agents (Claude) | code-reviewer (haiku), test-runner (sonnet) |
+| Agents (Claude) | code-reviewer (haiku), test-runner (sonnet), security-reviewer (haiku) |
 | Rules | code-style, api-conventions, subagent-delegation, team-coordination |
 | MCP Servers | context7, playwright, deepwiki, excalidraw, github |
 | Copilot CLI | copilot-instructions.md, 8 skills, 4 agents |
@@ -31,6 +31,7 @@ Complete configuration for Claude Code and GitHub Copilot CLI with all features 
 Subagent usage does not count against billing quotas. The configuration enforces:
 - Read-only tasks → Explore agent (haiku)
 - Code review → code-reviewer agent (haiku)
+- Security review → security-reviewer agent (haiku)
 - Tests → test-runner agent (sonnet)
 - GitHub ops → always via `gh` CLI
 

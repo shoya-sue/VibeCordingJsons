@@ -2,71 +2,70 @@
 
 ## Overview
 
-<!-- プロジェクトの概要を1-2行で記載 -->
+<!-- Describe your project in 1-2 lines -->
 
 ## Tech Stack
 
-<!-- 使用技術を記載 -->
-<!-- 例: TypeScript, React, Node.js, PostgreSQL -->
+<!-- List technologies used -->
+<!-- e.g., TypeScript, React, Node.js, PostgreSQL -->
 
 ## Project Structure
 
 ```text
 src/
-├── components/    # UI コンポーネント
-├── pages/         # ページ
-├── utils/         # ユーティリティ
-└── types/         # 型定義
+├── components/    # UI components
+├── pages/         # Pages
+├── utils/         # Utilities
+└── types/         # Type definitions
 ```
 
 ## Commands
 
 ```bash
-# 開発サーバー起動
+# Start dev server
 npm run dev
 
-# テスト実行
+# Run tests
 npm test
 
-# ビルド
+# Build
 npm run build
 ```
 
-## AI エージェント使用ポリシー（Standard）
+## AI Agent Usage Policy (Standard)
 
-このプロジェクトでは **日常開発モード** で AI エージェントを使用します。
+This project uses AI agents in **everyday development mode**.
 
-### ツール使い分け
+### Tool Selection
 
-| 用途 | 使用するツール |
-|------|--------------|
-| コードレビュー・探索 | Copilot CLI / Claude Code |
-| GitHub Issues・PR | Copilot CLI (`/fix-issue`, `/review-pr`) |
-| 複雑なリファクタリング | Claude Code |
-| テスト実行・修正 | Copilot CLI (`/test-runner`) |
+| Purpose | Tool |
+|---------|------|
+| Code review and exploration | Copilot CLI / Claude Code |
+| Complex refactoring | Claude Code |
+| GitHub Issues and PRs | Copilot CLI |
+| Test execution and fixes | Claude Code |
 
-### 許可される操作
+### Allowed Operations
 
-- ソースコード・テスト・ドキュメントの読み取り・編集
-- `git add` / `git commit`（push は要確認）
-- `npm install` / テスト実行
-- MCP ツール経由の GitHub 操作
+- Read and edit source code, tests, and documentation
+- `git add` / `git commit` (push requires confirmation)
+- `npm install` / test execution
+- GitHub operations via MCP tools
 
-### 禁止される操作
+### Prohibited Operations
 
 - `git push --force`
 - `rm -rf`
-- シークレット・API キーの読み書き
-- 本番環境への直接デプロイ
+- Reading or writing secrets / API keys
+- Direct deployment to production
 
-## コーディング規約
+## Coding Conventions
 
-- コミットメッセージは Conventional Commits 形式（`feat:`, `fix:`, `chore:` 等）
-- コメントは日本語で記述
-- テストファーストで開発（TDD）
+- Commit messages follow Conventional Commits format (`feat:`, `fix:`, `chore:`, etc.)
+- Tests first (TDD)
 
-## 注意事項
+## Notes
 
-- 変更前に必ず `git diff` で確認
-- 大きな変更は小さなステップに分割して実行
-- 不明な仕様は推測せず Issue または PR のコメントで確認
+- Always verify with `git diff` before committing changes
+- Break large changes into small, incremental steps
+- When specifications are unclear, ask via Issue or PR comments rather than guessing
