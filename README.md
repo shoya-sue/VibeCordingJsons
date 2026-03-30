@@ -3,6 +3,25 @@
 Best practice templates for Claude Code and GitHub Copilot CLI.
 Provides `settings.json` / `.mcp.json` / `CLAUDE.md` / `AGENTS.md` / Skills / Agents / Rules / VSCode workspace configurations as a complete set.
 
+## Table of Contents
+
+- [Usage](#usage)
+- [3 Patterns](#3-patterns)
+- [settings.json vs settings.local.json](#settingsjson-vs-settingslocaljson)
+- [Pattern Comparison](#pattern-comparison)
+- [Instruction Files Read by AI Agents](#instruction-files-read-by-ai-agents)
+- [Directory Structure](#directory-structure)
+- [settings.json Configuration Reference](#settingsjson-configuration-reference)
+  - [permissions](#permissions-3-tier-access-control)
+  - [hooks](#hooks-event-hooks--all-21-events)
+  - [env](#env-environment-variables)
+  - [Other Settings](#other-settings)
+- [Settings Hierarchy](#settings-hierarchy)
+- [VSCode Workspace Settings](#vscode-workspace-settings)
+- [Model Selection and Cost Optimization](#model-selection-and-cost-optimization)
+- [Best Practices](#best-practices)
+- [References](#references)
+
 ## Usage
 
 ### Global Install (Recommended for Personal Use)
