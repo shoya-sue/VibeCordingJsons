@@ -367,6 +367,11 @@
             "type": "command",
             "command": "echo \"[コンテキスト圧縮後] $(date '+%H:%M:%S')\"",
             "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "echo \"[リマインダー] モデル=opusplan(計画:Opus/実行:Sonnet) | サブエージェント積極委任 | gh CLI優先 | TDD | コメント日本語 | 変更は最小限\"",
+            "timeout": 10
           }
         ]
       }
