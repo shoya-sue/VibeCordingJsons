@@ -2,29 +2,28 @@
 
 ## Overview
 
-<!-- プロジェクトの概要を1-2行で記載 -->
+<!-- Describe your project here -->
 
 ## Tech Stack
 
-<!-- 使用技術を記載 -->
-<!-- 例: TypeScript, React, Node.js, PostgreSQL -->
+<!-- List technologies used -->
 
 ## Project Structure
 
 ```text
 src/
-├── components/    # UI コンポーネント
-├── pages/         # ページ
-├── utils/         # ユーティリティ
-└── types/         # 型定義
+├── components/    # UI components
+├── pages/         # Pages
+├── utils/         # Utilities
+└── types/         # Type definitions
 ```
 
 ## Conventions
 
-- <!-- コーディング規約を記載 -->
-- <!-- 命名規則を記載 -->
+<!-- Add your coding conventions here -->
+<!-- Add your naming conventions here -->
 
 ## Important Notes
 
-- このプロジェクトは読み取り専用で Claude Code を使用
-- 変更は手動で行うこと
+- This project uses Claude Code in read-only mode
+- All changes must be made manually
