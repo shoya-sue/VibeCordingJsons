@@ -1,91 +1,91 @@
-# Standard - 日常開発（推奨）
+# Standard — Everyday Development (Recommended)
 
-ほとんどの開発者に最適なバランス設定。
+Optimal balanced settings for most developers.
 
-## コピー先
+## Copy Destinations
 
-| ファイル | コピー先 |
-|---------|---------|
+| File | Destination |
+|------|-------------|
 | `.claude/settings.json` | `.claude/settings.json` |
-| `.claude/settings.local.json` | `.claude/settings.local.json`（個人用、gitignore） |
+| `.claude/settings.local.json` | `.claude/settings.local.json` (personal, gitignored) |
 | `.claude/skills/explain-code/SKILL.md` | `.claude/skills/explain-code/SKILL.md` |
 | `.claude/rules/code-style.md` | `.claude/rules/code-style.md` |
-| `project.code-workspace` | `<プロジェクト名>.code-workspace` |
-| `.mcp.json` | プロジェクトルート `.mcp.json` |
-| `CLAUDE.md` | プロジェクトルート `CLAUDE.md` |
-| `CLAUDE.local.md` | プロジェクトルート `CLAUDE.local.md`（個人用、gitignore） |
-| `AGENTS.md` | プロジェクトルート `AGENTS.md` |
+| `project.code-workspace` | `<project-name>.code-workspace` |
+| `.mcp.json` | Project root `.mcp.json` |
+| `CLAUDE.md` | Project root `CLAUDE.md` |
+| `CLAUDE.local.md` | Project root `CLAUDE.local.md` (personal, gitignored) |
+| `AGENTS.md` | Project root `AGENTS.md` |
 
 ```bash
-# install.sh で一括コピー
+# Batch install with install.sh
 git clone https://github.com/shoya-sue/VibeCordingJsons.git
 cd VibeCordingJsons
 ./install.sh standard /path/to/your/project
 ```
 
-GitHub PAT を使う場合は環境変数を設定:
+If using a GitHub PAT, set the environment variable:
 
 ```bash
 export GITHUB_PERSONAL_ACCESS_TOKEN="ghp_xxxx"
 ```
 
-## 含まれる機能
+## Included Features
 
-- **permissions**: allow / ask / deny の3段階制御
-- **ask**: `git push`, `npm publish` は毎回確認
-- **hooks**: 5イベント対応（ログ出力のみ、通知なし）
+- **permissions**: 3-tier access control (allow / ask / deny)
+- **ask**: `git push`, `npm publish` require confirmation each time
+- **hooks**: 5 events (logging only, no notifications)
   - SessionStart, PreToolUse(Bash), PostToolUse(Write|Edit), PostToolUseFailure, Stop
-- **skills**: `/explain-code` — コード解説スキル
-- **rules**: code-style — コーディングスタイルルール
-- **MCP**: 4サーバー（Context7, Playwright, DeepWiki, GitHub）
-- **attribution**: コミット・PR に Claude Code 署名を自動付与
+- **skills**: `/explain-code` — code explanation skill
+- **rules**: code-style — coding style conventions
+- **MCP**: 4 servers (Context7, Playwright, DeepWiki, GitHub)
+- **attribution**: Automatic Claude Code signature on commits and PRs
 
-## 拒否される操作
+## Denied Operations
 
-`rm -rf`, `sudo`, `force-push`, `hard reset`, secrets 読み取り
+`rm -rf`, `sudo`, `force-push`, `hard reset`, reading secrets
 
-## VSCode ワークスペース設定
+## VSCode Workspace Settings
 
-`project.code-workspace` に以下の設定を含む:
+`project.code-workspace` includes the following settings:
 
-| カテゴリ | 設定内容 |
-|---------|---------|
-| **エディタ** | formatOnSave, tabSize: 2, bracketPairColorization |
-| **ファイル管理** | autoSave (1秒遅延), exclude, watcherExclude |
-| **検索除外** | node_modules, dist, build, .next, coverage, lock files |
+| Category | Settings |
+|----------|----------|
+| **Editor** | formatOnSave, tabSize: 2, bracketPairColorization |
+| **File management** | autoSave (1s delay), exclude, watcherExclude |
+| **Search excludes** | node_modules, dist, build, .next, coverage, lock files |
 | **Git** | repositoryScanMaxDepth: 3, autoRepositoryDetection |
-| **ターミナル** | zsh（macOS デフォルト） |
-| **拡張機能** | Copilot, Copilot Chat, GitLens, Prettier, ESLint, EditorConfig |
-| **タスク** | Claude Code 自動起動（バックグラウンド） |
+| **Terminal** | zsh (macOS default) |
+| **Extensions** | Copilot, Copilot Chat, GitLens, Prettier, ESLint, EditorConfig |
+| **Tasks** | Claude Code auto-start (background) |
 
-### Claude Code 自動起動タスク
+### Claude Code Auto-Start Task
 
-ワークスペースに定義された `🟩 Claude Code` タスクにより、VSCode のターミナルパネルで Claude Code を直接操作可能:
+The `Claude Code` task defined in the workspace runs Claude Code directly in the VSCode terminal panel:
 
-- `claude -c` で既存セッション復帰、なければ新規起動
-- zsh ログインシェルで実行（環境変数・パスを完全読み込み）
-- バックグラウンドタスクとして常駐
+- `claude -c` resumes an existing session, or starts a new one
+- Runs in a zsh login shell (full environment variables and PATH loaded)
+- Runs as a background task
 
-> **Tip**: `Cmd+Shift+P` → `Tasks: Run Task` → `🟩 Claude Code` で手動起動も可能。
+> **Tip**: `Cmd+Shift+P` → `Tasks: Run Task` → `Claude Code` for manual start.
 
-## Copilot CLI 設定
+## Copilot CLI Settings
 
-### 含まれるファイル
+### Included Files
 
-| ファイル | 説明 |
-|---------|------|
-| `.github/copilot-instructions.md` | 日常開発指示・Claude Code 連携 |
-| `.github/skills/explain-code/SKILL.md` | コード解説スキル |
-| `.github/skills/code-reviewer/SKILL.md` | 高精度レビュースキル |
-| `AGENTS.md` | Copilot CLI / Gemini CLI 等の汎用 AI エージェント指示 |
+| File | Description |
+|------|-------------|
+| `.github/copilot-instructions.md` | Everyday development instructions with Claude Code integration |
+| `.github/skills/explain-code/SKILL.md` | Code explanation skill |
+| `.github/skills/code-reviewer/SKILL.md` | High-accuracy review skill |
+| `AGENTS.md` | Universal AI agent instructions for Copilot CLI / Gemini CLI |
 
-### 機能
+### Features
 
-- **copilot-instructions.md**: 標準開発指示・Claude Code 連携
-- **Skills**: explain-code, code-reviewer (2個)
-- Agents: なし
+- **copilot-instructions.md**: Standard development instructions with Claude Code integration
+- **Skills**: explain-code, code-reviewer (2 skills)
+- Agents: None
 
-### 使い方
+### Usage
 
 ```
 /explain-code @src/auth.ts

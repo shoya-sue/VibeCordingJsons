@@ -10,7 +10,7 @@ Copy all files from the `full/` directory to your project root or home directory
 - 3-tier permissions (allow / ask / deny)
 - 21 event hooks (lifecycle, tools, subagents, teams, worktrees, compaction, elicitation)
 - 7 skills: explain-code, fix-issue, review-pr, generate-changelog, dependency-audit, create-issue, gh-workflow
-- 2 agents: code-reviewer (haiku, read-only), test-runner (sonnet, edits allowed)
+- 3 agents: code-reviewer (haiku, read-only), test-runner (sonnet, edits allowed), security-reviewer (haiku, read-only)
 - 4 rules: code-style, api-conventions, subagent-delegation, team-coordination
 - 5 MCP servers: context7, playwright, deepwiki, excalidraw, github
 - Agent Teams enabled with auto teammate mode
