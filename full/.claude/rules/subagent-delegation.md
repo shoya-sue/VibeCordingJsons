@@ -1,20 +1,30 @@
 ---
-description: Subagent delegation rules for cost optimization
+description: Subagent delegation rules for cost optimization — uses everything-claude-code agents
 ---
 
 # Subagent Delegation Rules
 
 Subagent usage does not count against billing quotas. Always delegate work to subagents when possible.
+Agents are provided by the `everything-claude-code` plugin — no custom agent files needed.
 
 ## Delegation Matrix
 
 | Task Type | Agent Type | Model |
 |-----------|-----------|-------|
-| Codebase exploration / questions | Explore | haiku |
-| Code review (read-only) | code-reviewer agent | haiku |
-| Test execution / fixing | test-runner agent | sonnet |
-| Heavy implementation | general-purpose agent | sonnet |
-| GitHub operations | general-purpose agent | sonnet |
+| Codebase exploration | Explore | haiku |
+| Code review | everything-claude-code:code-reviewer | sonnet |
+| Security review | everything-claude-code:security-reviewer | sonnet |
+| Test execution / fixing | test-runner (built-in) | sonnet |
+| Heavy implementation | general-purpose | sonnet |
+| Architecture planning | everything-claude-code:architect | opus |
+| Documentation updates | everything-claude-code:doc-updater | haiku |
+| Python review | everything-claude-code:python-reviewer | sonnet |
+| TypeScript review | everything-claude-code:typescript-reviewer | sonnet |
+| Go review | everything-claude-code:go-reviewer | sonnet |
+| Rust review | everything-claude-code:rust-reviewer | sonnet |
+| Java review | everything-claude-code:java-reviewer | sonnet |
+| Kotlin review | everything-claude-code:kotlin-reviewer | sonnet |
+| C++ review | everything-claude-code:cpp-reviewer | sonnet |
 
 ## GitHub Operations
 
@@ -26,4 +36,4 @@ Subagent usage does not count against billing quotas. Always delegate work to su
 
 - Do NOT perform research that a subagent could handle
 - Do NOT run tests in the main context when test-runner agent exists
-- Do NOT review code in the main context when code-reviewer agent exists
+- Do NOT review code in the main context when a language-specific reviewer exists
