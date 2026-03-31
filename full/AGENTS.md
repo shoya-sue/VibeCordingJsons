@@ -8,14 +8,15 @@ Copy all files from the `full/` directory to your project root or home directory
 
 ### Claude Code
 - 3-tier permissions (allow / ask / deny)
-- 21 event hooks (lifecycle, tools, subagents, teams, worktrees, compaction, elicitation)
+- 21 event hooks + ECC hooks (session continuity, cost tracking, MCP health, compact suggestion)
 - 7 skills: explain-code, fix-issue, review-pr, generate-changelog, dependency-audit, create-issue, gh-workflow
-- 3 agents: code-reviewer (haiku, read-only), test-runner (sonnet, edits allowed), security-reviewer (haiku, read-only)
-- 4 rules: code-style, api-conventions, subagent-delegation, team-coordination
+- 30 agents via `everything-claude-code` plugin (code-reviewer, security-reviewer, architect, tdd-guide, language-specific reviewers, etc.)
+- 50 rules: `ecc/common/` (10) + 8 languages × 5 (typescript, python, golang, rust, swift, java, kotlin, cpp)
+- 2 custom rules: subagent-delegation, team-coordination
 - 5 MCP servers: context7, playwright, deepwiki, excalidraw, github
 - Agent Teams enabled with auto teammate mode
 - Attribution enabled (commits and PRs)
-- everything-claude-code plugin enabled
+- **Requires** `everything-claude-code` plugin
 
 ### Copilot CLI
 - copilot-instructions.md with full agent/skill/fleet configuration
@@ -35,6 +36,7 @@ Copy all files from the `full/` directory to your project root or home directory
 All skills enforce subagent delegation for cost optimization:
 - Subagent usage does not count against billing quotas
 - Main agent coordinates; subagents execute
+- Language-specific reviewers: typescript, python, go, rust, java, kotlin, cpp
 - See `.claude/rules/subagent-delegation.md` for the full delegation matrix
 
 ### GitHub Operations
@@ -43,9 +45,14 @@ All skills enforce subagent delegation for cost optimization:
 - Never use `curl` to api.github.com
 - `gh api` is the last resort fallback
 
-## Installation
+## Plugin Setup
 
 ```bash
+# 1. Install plugin
+/plugin marketplace add affaan-m/everything-claude-code
+/plugin install everything-claude-code@everything-claude-code
+
+# 2. Install rules (plugins cannot auto-distribute rules)
 ./install.sh full ~              # Global (recommended for personal use)
 ./install.sh full /path/to/proj  # Project-specific
 ```

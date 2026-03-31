@@ -84,9 +84,9 @@ Similarly, `CLAUDE.md` (team-shared) and `CLAUDE.local.md` (personal) form a cor
 | Docker / K8s | **None** | **None** | docker/kubectl |
 | MCP servers | **None** | 4 servers | 5 servers + full access |
 | Skills | **None** | explain-code | + fix-issue, review-pr, generate-changelog, dependency-audit, create-issue, gh-workflow |
-| Agents | None | None | code-reviewer, test-runner, security-reviewer |
-| Rules | None | code-style | + api-conventions |
-| Hooks | None | 5 events (logging) | All 21 events + macOS notifications |
+| Agents | None | None | 30 via ECC plugin (code-reviewer, architect, language reviewers, etc.) |
+| Rules | None | code-style | 50 ECC rules (common + 8 languages) + subagent-delegation, team-coordination |
+| Hooks | None | 5 events (logging) | All 21 events + ECC hooks (session continuity, cost tracking, MCP health) |
 | Sandbox | None | None | Removed (use permissions deny list instead) |
 | Agent Teams | None | None | Enabled |
 | Attribution | None | Commit/PR signing | Same |
@@ -160,13 +160,19 @@ Setting `~/.copilot/copilot-instructions.md` applies to all projects.
 │   │   │   ├── dependency-audit/SKILL.md
 │   │   │   ├── create-issue/SKILL.md
 │   │   │   └── gh-workflow/SKILL.md
-│   │   ├── agents/
-│   │   │   ├── code-reviewer.md
-│   │   │   ├── test-runner.md
-│   │   │   └── security-reviewer.md
 │   │   └── rules/
-│   │       ├── code-style.md
-│   │       └── api-conventions.md
+│   │       ├── ecc/             # 50 rules from everything-claude-code
+│   │       │   ├── common/      # 10 cross-language rules
+│   │       │   ├── typescript/  # 5 TS/JS rules
+│   │       │   ├── python/      # 5 Python rules
+│   │       │   ├── golang/      # 5 Go rules
+│   │       │   ├── rust/        # 5 Rust rules
+│   │       │   ├── swift/       # 5 Swift rules
+│   │       │   ├── java/        # 5 Java rules
+│   │       │   ├── kotlin/      # 5 Kotlin rules
+│   │       │   └── cpp/         # 5 C++ rules
+│   │       ├── subagent-delegation.md
+│   │       └── team-coordination.md
 │   ├── .github/
 │   │   ├── copilot-instructions.md
 │   │   ├── skills/
@@ -414,10 +420,23 @@ Including "ultrathink" in your message enables high effort for the next turn onl
 
 Subagent usage does not count against billing quotas. Delegate aggressively:
 - Read-only tasks → Explore agent (haiku)
-- Code review → code-reviewer agent (haiku)
-- Security review → security-reviewer agent (haiku)
-- Tests → test-runner agent (sonnet)
+- Code review → `everything-claude-code:code-reviewer` (sonnet)
+- Security review → `everything-claude-code:security-reviewer` (sonnet)
+- Architecture → `everything-claude-code:architect` (opus)
+- Language reviews → `everything-claude-code:{lang}-reviewer` (sonnet)
+- Tests → test-runner (built-in, sonnet)
 - GitHub ops → always via `gh` CLI
+
+### everything-claude-code Plugin
+
+The Full pattern integrates the [everything-claude-code](https://github.com/affaan-m/everything-claude-code) plugin:
+
+```bash
+/plugin marketplace add affaan-m/everything-claude-code
+/plugin install everything-claude-code@everything-claude-code
+```
+
+Provides 30 agents, 136 skills, 60 commands. Rules must be installed separately via `install.sh` (plugins cannot auto-distribute rules).
 
 ## Best Practices
 
