@@ -20,7 +20,7 @@ scripts/       # Build and deploy scripts
 
 ## Conventions
 
-- Naming: see `rules/code-style.md` (language-idiomatic)
+- Naming: see `rules/ecc/common/coding-style.md` + language-specific rules
 - Commits: Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`)
 - Tests: separated from production code in `tests/`
 
@@ -53,8 +53,10 @@ make deploy-staging   # Deploy to staging
 
 - `.env.production` is read-prohibited (deny list)
 - Agent Teams enabled (`teammateMode: auto`)
-- All 21 hook events wired — see `settings.json`
+- All 21 hook events wired + ECC hooks (session continuity, cost tracking, MCP health)
 - Auto-memory enabled → `.claude/memory/`
 - Subagent usage does not count against billing — delegate aggressively
 - `gh` CLI for all GitHub operations, never raw `api.github.com`
 - Opus 4.6 output limit: 64k tokens (configurable via `CLAUDE_CODE_MAX_OUTPUT_TOKENS`)
+- **Requires** `everything-claude-code` plugin for agents and skills
+- Rules: `ecc/common/` (10) + language-specific rules (8 languages × 5 = 40)
