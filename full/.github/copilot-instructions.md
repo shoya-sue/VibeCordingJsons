@@ -18,6 +18,16 @@ Fleet parallel execution, Agent Teams, Skills, and Agents are all enabled.
 | GitHub workflow | `github-workflow` agent | Issue-to-PR pipeline |
 | Code explanation | `code-explorer` agent | Detailed analysis |
 
+### Copilot CLI Commands (GA: 2026-02-25)
+
+| コマンド | 説明 |
+|---------|------|
+| `/pr` | Pull Request の作成・管理 |
+| `/fleet` | 独立した並列タスクの実行 |
+| `/delegate` | エージェントへタスクを委任 |
+| `/model` | タスクに応じてモデルを切り替え |
+| `/agent:<name>` | 特定のエージェントを指定して呼び出し |
+
 ### Fleet Mode
 
 Use `/fleet` for independent parallel tasks:

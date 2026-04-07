@@ -84,9 +84,9 @@ Similarly, `CLAUDE.md` (team-shared) and `CLAUDE.local.md` (personal) form a cor
 | Docker / K8s | **None** | **None** | docker/kubectl |
 | MCP servers | **None** | 4 servers | 5 servers + full access |
 | Skills | **None** | explain-code | + fix-issue, review-pr, generate-changelog, dependency-audit, create-issue, gh-workflow |
-| Agents | None | None | 30 via ECC plugin (code-reviewer, architect, language reviewers, etc.) |
+| Agents | None | None | 47 via ECC plugin (code-reviewer, architect, language reviewers, etc.) |
 | Rules | None | code-style | 50 ECC rules (common + 8 languages) + subagent-delegation, team-coordination |
-| Hooks | None | 5 events (logging) | All 21 events + ECC hooks (session continuity, cost tracking, MCP health) |
+| Hooks | None | 5 events (logging) | All 26 events + ECC hooks (session continuity, cost tracking, MCP health) |
 | Sandbox | None | None | Removed (use permissions deny list instead) |
 | Agent Teams | None | None | Enabled |
 | Attribution | None | Commit/PR signing | Same |
@@ -175,6 +175,8 @@ Setting `~/.copilot/copilot-instructions.md` applies to all projects.
 │   │       └── team-coordination.md
 │   ├── .github/
 │   │   ├── copilot-instructions.md
+│   │   ├── instructions/
+│   │   │   └── example.instructions.md   # path-targeted instructions (applyTo glob)
 │   │   ├── skills/
 │   │   │   ├── explain-code/SKILL.md
 │   │   │   ├── code-reviewer/SKILL.md
@@ -230,7 +232,7 @@ Supported patterns:
 | `Skill(pattern)` | Skill execution | `Skill(explain-code:*)` |
 | `MCPSearch` | MCP search | `MCPSearch` |
 
-### hooks (Event Hooks — All 21 Events)
+### hooks (Event Hooks — All 26 Events)
 
 4 hook types: `command` (shell), `http` (HTTP request), `prompt` (LLM judgment), `agent` (subagent)
 
@@ -436,7 +438,7 @@ The Full pattern integrates the [everything-claude-code](https://github.com/affa
 /plugin install everything-claude-code@everything-claude-code
 ```
 
-Provides 30 agents, 136 skills, 60 commands. Rules must be installed separately via `install.sh` (plugins cannot auto-distribute rules).
+Provides 47 agents, 181 skills, 60 commands. Rules must be installed separately via `install.sh` (plugins cannot auto-distribute rules).
 
 ## Best Practices
 
