@@ -53,7 +53,7 @@ make deploy-staging   # Deploy to staging
 
 - `.env.production` is read-prohibited (deny list)
 - Agent Teams enabled (`teammateMode: auto`)
-- All 21 hook events wired + ECC hooks (session continuity, cost tracking, MCP health)
+- All 26 hook events wired + ECC hooks (session continuity, cost tracking, MCP health)
 - Auto-memory enabled → `.claude/memory/`
 - Subagent usage does not count against billing — delegate aggressively
 - `gh` CLI for all GitHub operations, never raw `api.github.com`

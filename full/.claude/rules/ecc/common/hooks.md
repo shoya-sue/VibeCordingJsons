@@ -1,10 +1,66 @@
 # Hooks System
 
-## Hook Types
+## Hook Types (handlers)
 
-- **PreToolUse**: Before tool execution (validation, parameter modification)
-- **PostToolUse**: After tool execution (auto-format, checks)
-- **Stop**: When session ends (final verification)
+| タイプ | 説明 |
+|--------|------|
+| `command` | シェルコマンドを実行 |
+| `http` | JSON を URL に POST（v2.1.69+） |
+| `prompt` | Claude へのシングルターン評価（v2.1.85+） |
+| `agent` | サブエージェントを起動してツール操作（v2.1.85+） |
+
+## All Hook Events (26 events)
+
+| イベント | タイミング | ブロッキング |
+|---------|-----------|-------------|
+| `SessionStart` | セッション開始時 | No |
+| `UserPromptSubmit` | プロンプト送信前 | Yes |
+| `PreToolUse` | ツール実行前 | Yes |
+| `PostToolUse` | ツール実行後 | No |
+| `PostToolUseFailure` | ツール実行失敗後 | No |
+| `PermissionRequest` | 権限確認時 | No |
+| `PermissionDenied` | 権限拒否時（`retry: true` 返却可） | No |
+| `Notification` | 通知発生時 | No |
+| `SubagentStart` | サブエージェント開始時 | No |
+| `SubagentStop` | サブエージェント停止時 | Yes |
+| `Stop` | 応答完了時 | Yes |
+| `StopFailure` | Stop フック失敗時 | No |
+| `TeammateIdle` | チームメイト待機時 | No |
+| `TaskCreated` | タスク作成時 | Yes |
+| `TaskCompleted` | タスク完了時 | No |
+| `ConfigChange` | 設定変更時 | No |
+| `CwdChanged` | カレントディレクトリ変更時 | No |
+| `FileChanged` | ファイル変更検知時 | No |
+| `WorktreeCreate` | ワークツリー作成時 | No |
+| `WorktreeRemove` | ワークツリー削除時 | No |
+| `PreCompact` | コンテキスト圧縮前 | No |
+| `PostCompact` | コンテキスト圧縮後 | No |
+| `Elicitation` | MCP サーバーが構造化入力を要求時 | Yes |
+| `ElicitationResult` | MCP Elicitation 応答後 | No |
+| `InstructionsLoaded` | 設定ファイル読み込み時 | No |
+| `SessionEnd` | セッション終了時 | No |
+
+## Advanced Features
+
+### Conditional Filtering (`if` field, v2.1.85+)
+
+```jsonc
+{
+  "matcher": "Bash",
+  "if": "Bash(git *)",   // 権限ルール構文でフィルタ
+  "hooks": [...]
+}
+```
+
+### Input Modification (`returnPolicy`, v2.1.85+)
+
+```jsonc
+{
+  "type": "command",
+  "command": "...",
+  "returnPolicy": "updatedInput"   // PreToolUse でインプット変更
+}
+```
 
 ## Auto-Accept Permissions
 
