@@ -62,6 +62,24 @@
 }
 ```
 
+### PreToolUse `defer` 権限決定 (v2.1.89+)
+
+```jsonc
+// PreToolUse フックから "defer" を返すと通常の権限確認フローに委ねる
+{ "decision": "defer" }
+```
+
+### UserPromptSubmit セッションタイトル設定 (v2.1.94+)
+
+```jsonc
+// UserPromptSubmit フックから sessionTitle を返すとセッションタイトルを設定
+{
+  "hookSpecificOutput": {
+    "sessionTitle": "My Session Title"
+  }
+}
+```
+
 ## Auto-Accept Permissions
 
 Use with caution:
