@@ -87,6 +87,24 @@ if [[ -f "$SCRIPT_DIR/$PATTERN/project.code-workspace" && "$TARGET" != "$HOME" ]
   cp "$SCRIPT_DIR/$PATTERN/project.code-workspace" "$TARGET/project.code-workspace"
 fi
 
+# Post-process full pattern settings.json: expand ${HOME} and detect ECC version
+if [[ "$PATTERN" == "full" && -f "$TARGET/.claude/settings.json" ]]; then
+  # Expand ${HOME} literal to actual home directory
+  sed -i.bak "s|\${HOME}|${HOME}|g" "$TARGET/.claude/settings.json"
+
+  # Auto-detect installed ECC version and substitute
+  ECC_CACHE="$HOME/.claude/plugins/cache/everything-claude-code/everything-claude-code"
+  if [[ -d "$ECC_CACHE" ]]; then
+    ECC_LATEST=$(ls -1 "$ECC_CACHE" 2>/dev/null | sort -V | tail -1)
+    if [[ -n "$ECC_LATEST" ]]; then
+      # Replace any hardcoded ECC version in the path with the detected version
+      sed -i.bak "s|/everything-claude-code/[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*/|/everything-claude-code/${ECC_LATEST}/|g" "$TARGET/.claude/settings.json"
+      echo "ECC version: ${ECC_LATEST} (auto-detected)"
+    fi
+  fi
+  rm -f "$TARGET/.claude/settings.json.bak"
+fi
+
 # Add CLAUDE.local.md and settings.local.json to .gitignore if exists
 if [[ -f "$TARGET/.gitignore" ]]; then
   for entry in "CLAUDE.local.md" ".claude/settings.local.json" ".claude/*.local.*"; do
