@@ -560,7 +560,8 @@
     ]
   },
   "teammateMode": "auto",
-  "effortLevel": "medium",
+  "effortLevel": "high",
+  "showThinkingSummaries": true,
   "disableSkillShellExecution": false,
   "sandbox": {
     "failIfUnavailable": false
