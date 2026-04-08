@@ -48,6 +48,7 @@ make deploy-staging   # Deploy to staging
 - `/loop 5m check deploy` — Repeat a prompt on schedule
 - `/plan <description>` — Start plan mode
 - `/compact <summary>` — Compact context with focused summary
+- `/powerup` — インタラクティブな学習レッスンを起動
 
 ## Important Notes
 
