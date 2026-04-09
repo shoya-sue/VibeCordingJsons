@@ -2,20 +2,18 @@
 # Claude Code Status Line — Dual Fighting Game HP Gauges
 #
 # Reads JSON from stdin (provided by Claude Code):
-#   .context_window.remaining_percentage  — current session context remaining
-#   .rate_limits["5hour"].used_percentage — Claude.ai 5-hour usage
-#   .rate_limits["5hour"].resets_at       — next reset time (ISO 8601)
+#   .context_window.remaining_percentage        — context window remaining %
+#   .rate_limits.five_hour.used_percentage      — 5-hour usage %
+#   .rate_limits.five_hour.resets_at            — reset time (Unix timestamp)
+#   .cost.total_cost_usd                        — session total cost
 
 input=$(cat)
 
 # --- Parse stdin JSON ---
 CTX_REMAINING=$(echo "$input" | jq -r '.context_window.remaining_percentage // empty')
-RATE_USED=$(echo "$input"     | jq -r '.rate_limits["5hour"].used_percentage // empty')
-RESETS_AT=$(echo "$input"     | jq -r '.rate_limits["5hour"].resets_at // empty')
-
-# Cost falls back to env var (Claude Code also passes it as CLAUDE_COST_USD)
-COST="${CLAUDE_COST_USD:-}"
-[ -z "$COST" ] && COST=$(echo "$input" | jq -r '.cost_usd // empty')
+RATE_USED=$(echo "$input"     | jq -r '.rate_limits.five_hour.used_percentage // empty')
+RESETS_AT=$(echo "$input"     | jq -r '.rate_limits.five_hour.resets_at // empty')
+COST=$(echo "$input"          | jq -r '.cost.total_cost_usd // empty')
 
 BAR_WIDTH=20
 RESET="\033[0m"
@@ -39,16 +37,13 @@ color_for() {
   fi
 }
 
-# Compute minutes until reset (e.g. "2h30m" or "45m")
+# Compute time until reset from Unix timestamp
 time_until() {
-  local iso="$1"
-  [ -z "$iso" ] && return
-  local now reset diff h m
+  local ts="$1"
+  [ -z "$ts" ] && return
+  local now diff h m
   now=$(date +%s)
-  reset=$(date -j -f "%Y-%m-%dT%H:%M:%SZ" "$iso" +%s 2>/dev/null) \
-    || reset=$(date -d "$iso" +%s 2>/dev/null)
-  [ -z "$reset" ] && return
-  diff=$(( reset - now ))
+  diff=$(( ts - now ))
   [ "$diff" -le 0 ] && { printf "now"; return; }
   h=$(( diff / 3600 ))
   m=$(( (diff % 3600) / 60 ))
