@@ -39,12 +39,23 @@ Control extended thinking via:
 - **Config**: Set `effortLevel: "low" | "medium" | "high"` in settings.json (v2.1.68+, default restored to `"high"` in v2.1.94)
 - **Verbose mode**: Ctrl+O to see thinking output
 - **Display summaries**: Set `showThinkingSummaries: true` in settings.json (v2.1.89+, display-only)
+- **No-flicker mode**: `CLAUDE_CODE_NO_FLICKER=1` — チラつきなし alt-screen レンダリング（v2.1.91+）
 
 For complex tasks requiring deep reasoning:
 1. Ensure extended thinking is enabled (on by default)
 2. Enable **Plan Mode** for structured approach
 3. Use multiple critique rounds for thorough analysis
 4. Use split role sub-agents for diverse perspectives
+
+### スキル単位の effort 上書き (v2.1.80+)
+
+SKILL.md の frontmatter で個別スキルの effort を指定可能:
+
+```yaml
+effort: low   # このスキル実行時は low に固定
+```
+
+軽量なユーティリティ系スキルに `low` を指定するとコスト削減になる。
 
 ## Build Troubleshooting
 
