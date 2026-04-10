@@ -1,78 +1,43 @@
 ---
 name: sync-memory
-description: Link this project's Claude memory to .github/claude-memory for Copilot CLI access
+description: Check Copilot CLI memory sync status for this project
 user-invokable: true
-allowed-tools: ["Bash(ln *)", "Bash(ls *)", "Bash(mkdir *)", "Bash(grep *)", "Read"]
+allowed-tools: ["Bash(ls *)", "Bash(echo *)", "Bash(test *)"]
 ---
 
 # sync-memory
 
-このプロジェクトの Claude メモリを `.github/claude-memory` にシンボリックリンクし、
-Copilot CLI からも同一メモリを参照できるようにする。
+> **v0.13.0 以降: 手動実行は不要です。**
+>
+> `install.sh full ~` を実行済みであれば、プロジェクトに `cd` するだけで
+> Copilot CLI がこのプロジェクトのメモリを自動的に読み込みます。
 
-Claude Code が使えない状況（障害・セッション上限）でも、
-`gh copilot suggest` や `gh copilot explain` がプロジェクトのコンテキストを引き継げる。
+## 仕組み
 
-## 手順
+`~/.github/claude-projects` が `~/.claude/projects/` へのグローバルシンボリックリンクになっており、
+`~/.zshrc` の `_update_copilot_dirs` precmd hook が `cd` のたびに以下を実行しています:
 
-1. 現在のプロジェクトパスを確認する
+1. 現在の `$PWD` からプロジェクトハッシュを計算
+2. `~/.github/claude-projects/<hash>/memory/` が存在するか確認
+3. 存在する場合、`COPILOT_CUSTOM_INSTRUCTIONS_DIRS` に自動追加
 
-```bash
-echo "$PWD"
-```
-
-2. Claude のプロジェクトハッシュを計算する（パスの `/` と `.` を `-` に変換）
-
-```bash
-echo "$PWD" | sed 's|/|-|g; s|\.|-|g'
-```
-
-3. メモリディレクトリの存在を確認する
+## 現在の同期状態を確認する
 
 ```bash
+# COPILOT_CUSTOM_INSTRUCTIONS_DIRS の現在値を確認
+echo $COPILOT_CUSTOM_INSTRUCTIONS_DIRS
+
+# このプロジェクトのメモリが含まれているか確認
 HASH=$(echo "$PWD" | sed 's|/|-|g; s|\.|-|g')
-ls "$HOME/.claude/projects/${HASH}/memory/" 2>/dev/null || echo "NOT FOUND"
+ls "$HOME/.github/claude-projects/${HASH}/memory/" 2>/dev/null && echo "✓ メモリ同期済み" || echo "✗ このプロジェクトにはまだ Claude メモリがありません"
 ```
 
-メモリが見つからない場合は、プロジェクト名で検索する:
+## セットアップが必要な場合
 
 ```bash
-ls "$HOME/.claude/projects/" | grep "$(basename "$PWD")"
+# install.sh を再実行してシンボリックリンクを設定する
+./install.sh full ~
+
+# zshrc を再読み込み
+source ~/.zshrc
 ```
-
-4. シンボリックリンクを作成する
-
-```bash
-HASH=$(echo "$PWD" | sed 's|/|-|g; s|\.|-|g')
-MEMORY_DIR="$HOME/.claude/projects/${HASH}/memory"
-mkdir -p "$PWD/.github"
-ln -sf "$MEMORY_DIR" "$PWD/.github/claude-memory"
-echo "Linked: $PWD/.github/claude-memory -> $MEMORY_DIR"
-```
-
-5. `.gitignore` に追記する（コミット対象外にする）
-
-```bash
-if [[ -f "$PWD/.gitignore" ]] && ! grep -qF '.github/claude-memory' "$PWD/.gitignore"; then
-  echo '.github/claude-memory' >> "$PWD/.gitignore"
-  echo "Added .github/claude-memory to .gitignore"
-fi
-```
-
-6. リンクされたメモリファイルを表示して完了を確認する
-
-```bash
-ls -la "$PWD/.github/claude-memory/"
-```
-
-## 完了後の使い方
-
-```bash
-# Copilot CLI でプロジェクトコンテキストを参照
-gh copilot suggest "このプロジェクトの最新リリースバージョンは？"
-gh copilot explain "前回のセッションで発生したエラーは何でしたか？"
-```
-
-`COPILOT_CUSTOM_INSTRUCTIONS_DIRS` に `.github/claude-memory` が含まれていれば
-（`install.sh full ~` 実行後の `~/.zshrc` 設定による自動設定）、
-そのディレクトリ配下のメモリファイルが自動的に Copilot CLI に渡される。

@@ -167,53 +167,49 @@ if [[ "$TARGET" == "$HOME" ]]; then
     fi
   done
 
-  # 3. ~/.zshrc に precmd フックと copilot-sync-memory 関数を追加 (冪等)
-  ZSHRC="$HOME/.zshrc"
-  MARKER="# VibeCording: copilot-sync"
-  if ! grep -qF "$MARKER" "$ZSHRC" 2>/dev/null; then
-    cat >> "$ZSHRC" <<'ZSHRC_BLOCK'
+  # 3. プロジェクトメモリ: ~/.github/claude-projects → ~/.claude/projects/ (グローバルシンボリックリンク)
+  rm -rf "$GITHUB_HOME/claude-projects"
+  ln -sfn "$CLAUDE_HOME/projects" "$GITHUB_HOME/claude-projects"
+  echo "  projects: $GITHUB_HOME/claude-projects -> $CLAUDE_HOME/projects"
 
-# VibeCording: copilot-sync
-# プロジェクト切替時に COPILOT_CUSTOM_INSTRUCTIONS_DIRS を自動更新
+  # 4. ~/.zshrc に precmd フックを追加 (冪等: 旧形式・新形式ともに置き換え)
+  ZSHRC="$HOME/.zshrc"
+
+  # 既存の VibeCording copilot-sync ブロックを除去 (BEGIN/END 形式と旧形式の両方に対応)
+  if grep -q "VibeCording: copilot-sync" "$ZSHRC" 2>/dev/null; then
+    python3 -c "
+import re, sys
+with open(sys.argv[1], 'r') as f:
+    c = f.read()
+# 新形式 (BEGIN/END マーカー)
+c = re.sub(r'\n?# VibeCording: copilot-sync BEGIN\n.*?# VibeCording: copilot-sync END\n?', '', c, flags=re.DOTALL)
+# 旧形式 (END マーカーなし、末尾に追記されていた)
+c = re.sub(r'\n# VibeCording: copilot-sync\n.*\$', '', c, flags=re.DOTALL)
+with open(sys.argv[1], 'w') as f:
+    f.write(c)
+" "$ZSHRC" && echo "  zshrc: Removed old copilot-sync block"
+  fi
+
+  # 新しいブロックを末尾に追加
+  cat >> "$ZSHRC" <<'ZSHRC_BLOCK'
+
+# VibeCording: copilot-sync BEGIN
+# cd するだけで COPILOT_CUSTOM_INSTRUCTIONS_DIRS を自動更新 (手動 sync 不要)
 _update_copilot_dirs() {
   local base="$HOME/.github/instructions"
-  if [[ -d "$PWD/.github/claude-memory" ]]; then
-    export COPILOT_CUSTOM_INSTRUCTIONS_DIRS="${base}:${PWD}/.github/claude-memory"
-  else
-    export COPILOT_CUSTOM_INSTRUCTIONS_DIRS="$base"
-  fi
+  local projects="$HOME/.github/claude-projects"
+  local hash
+  hash=$(echo "$PWD" | sed 's|/|-|g; s|\.|-|g')
+  local dirs="$base"
+  local mem="${projects}/${hash}/memory"
+  [[ -d "$mem" ]] && dirs="${dirs}:${mem}"
+  export COPILOT_CUSTOM_INSTRUCTIONS_DIRS="$dirs"
 }
 autoload -Uz add-zsh-hook
 add-zsh-hook precmd _update_copilot_dirs
-
-# プロジェクトの Claude メモリを Copilot CLI にリンクするコマンド
-# 使い方: copilot-sync-memory [project_path]
-copilot-sync-memory() {
-  local project_path="${1:-$PWD}"
-  local hash
-  hash=$(echo "$project_path" | sed 's|/|-|g; s|\.|-|g')
-  local memory_dir="$HOME/.claude/projects/${hash}/memory"
-  if [[ ! -d "$memory_dir" ]]; then
-    echo "Claude memory not found: $memory_dir"
-    echo "Available projects (matching basename):"
-    ls "$HOME/.claude/projects/" | grep "$(basename "$project_path")" || echo "  (none matched)"
-    return 1
-  fi
-  mkdir -p "${project_path}/.github"
-  local link="${project_path}/.github/claude-memory"
-  [[ -L "$link" ]] && rm "$link"
-  ln -s "$memory_dir" "$link"
-  echo "Linked: $link"
-  echo "  -> $memory_dir"
-  local gitignore="${project_path}/.gitignore"
-  if [[ -f "$gitignore" ]] && ! grep -qF '.github/claude-memory' "$gitignore"; then
-    echo '.github/claude-memory' >> "$gitignore"
-    echo "Added .github/claude-memory to .gitignore"
-  fi
-}
+# VibeCording: copilot-sync END
 ZSHRC_BLOCK
-    echo "  zshrc: Added copilot-sync to $ZSHRC"
-  fi
+  echo "  zshrc: Added copilot-sync to $ZSHRC"
 
   echo "Copilot CLI symlink bridge complete."
   echo ""
