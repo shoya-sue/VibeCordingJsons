@@ -98,7 +98,8 @@ if [[ "$PATTERN" == "full" && -f "$TARGET/.claude/settings.json" ]]; then
     ECC_LATEST=$(ls -1 "$ECC_CACHE" 2>/dev/null | sort -V | tail -1)
     if [[ -n "$ECC_LATEST" ]]; then
       # Replace any hardcoded ECC version in the path with the detected version
-      sed -i.bak "s|/everything-claude-code/[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*/|/everything-claude-code/${ECC_LATEST}/|g" "$TARGET/.claude/settings.json"
+      # Match version followed by either "/" (mid-path) or '"' (end of value)
+      sed -i.bak -E "s|/everything-claude-code/[0-9]+\.[0-9]+\.[0-9]+([/\"])|/everything-claude-code/${ECC_LATEST}\1|g" "$TARGET/.claude/settings.json"
       echo "ECC version: ${ECC_LATEST} (auto-detected)"
     fi
   fi
