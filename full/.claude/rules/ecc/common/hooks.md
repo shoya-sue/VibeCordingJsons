@@ -31,7 +31,7 @@
 | `ConfigChange` | 設定変更時 | No |
 | `CwdChanged` | カレントディレクトリ変更時 | No |
 | `FileChanged` | ファイル変更検知時 | No |
-| `WorktreeCreate` | ワークツリー作成時 | No |
+| `WorktreeCreate` | ワークツリー作成時（`type:"http"` で `worktreePath` 返却可、v2.1.84+） | No |
 | `WorktreeRemove` | ワークツリー削除時 | No |
 | `PreCompact` | コンテキスト圧縮前 | No |
 | `PostCompact` | コンテキスト圧縮後 | No |
