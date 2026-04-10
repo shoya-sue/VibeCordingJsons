@@ -113,8 +113,7 @@
     "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "50",
     "CLAUDE_CODE_MAX_OUTPUT_TOKENS": "64000",
     "ECC_HOOK_PROFILE": "standard",
-    "ECC_DISABLED_HOOKS": "",
-    "CLAUDE_PLUGIN_ROOT": "${HOME}/.claude/plugins/cache/everything-claude-code/everything-claude-code/1.10.0"
+    "ECC_DISABLED_HOOKS": ""
   },
   "worktree": {
     "sparsePaths": [
@@ -132,11 +131,6 @@
             "type": "command",
             "command": "echo \"[セッション開始] $(date '+%Y-%m-%d %H:%M:%S')\"",
             "timeout": 10
-          },
-          {
-            "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"session:start\" \"scripts/hooks/session-start.js\" \"minimal,standard,strict\"",
-            "timeout": 15
           }
         ]
       }
@@ -175,16 +169,6 @@
             "type": "command",
             "command": "echo \"[実行前:Write] $(jq -r '.tool_input.file_path // empty' 2>/dev/null)\"",
             "timeout": 10
-          },
-          {
-            "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"pre:edit-write:suggest-compact\" \"scripts/hooks/suggest-compact.js\" \"standard,strict\"",
-            "timeout": 10
-          },
-          {
-            "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"pre:write:doc-file-warning\" \"scripts/hooks/doc-file-warning.js\" \"standard,strict\"",
-            "timeout": 10
           }
         ]
       },
@@ -195,11 +179,6 @@
             "type": "command",
             "command": "echo \"[実行前:Edit] $(jq -r '.tool_input.file_path // empty' 2>/dev/null)\"",
             "timeout": 10
-          },
-          {
-            "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"pre:edit-write:suggest-compact\" \"scripts/hooks/suggest-compact.js\" \"standard,strict\"",
-            "timeout": 10
           }
         ]
       },
@@ -209,11 +188,6 @@
           {
             "type": "command",
             "command": "echo \"[実行前:MCP] $(jq -r '.tool_name // empty' 2>/dev/null)\"",
-            "timeout": 10
-          },
-          {
-            "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"pre:mcp-health-check\" \"scripts/hooks/mcp-health-check.js\" \"standard,strict\"",
             "timeout": 10
           }
         ]
@@ -248,11 +222,6 @@
             "type": "command",
             "command": "echo \"[実行後:Edit] 変更: $(jq -r '.tool_input.file_path // empty' 2>/dev/null)\"",
             "timeout": 10
-          },
-          {
-            "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"post:edit:console-warn\" \"scripts/hooks/post-edit-console-warn.js\" \"standard,strict\"",
-            "timeout": 10
           }
         ]
       },
@@ -262,11 +231,6 @@
           {
             "type": "command",
             "command": "echo \"[実行後:Bash] 完了: $(jq -r '.tool_input.command // empty' 2>/dev/null | head -c 100)\"",
-            "timeout": 10
-          },
-          {
-            "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"post:bash:pr-created\" \"scripts/hooks/post-bash-pr-created.js\" \"standard,strict\"",
             "timeout": 10
           }
         ]
@@ -278,16 +242,6 @@
           {
             "type": "command",
             "command": "echo \"[ツール失敗] ツール=$(jq -r '.tool_name // \"不明\"' 2>/dev/null) $(date '+%H:%M:%S')\"",
-            "timeout": 10
-          }
-        ]
-      },
-      {
-        "matcher": "mcp__.*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"post:mcp-health-check\" \"scripts/hooks/mcp-health-check.js\" \"standard,strict\"",
             "timeout": 10
           }
         ]
@@ -336,27 +290,7 @@
           },
           {
             "type": "command",
-            "command": "proj=$(basename \"$(git remote get-url origin 2>/dev/null | sed 's/\\.git$//')\" 2>/dev/null || basename \"$(pwd)\") && task=$(cat .claude/current-task 2>/dev/null || git branch --show-current 2>/dev/null || echo '-') && curl -s -X POST -H 'Content-Type: application/json' -d '{\"content\":\"📨 **応答求**\\n📁 '\"$proj\"'\\n🔧 '\"$task\"'\"}' '${DISCORD_WEBHOOK_URL}' >/dev/null 2>&1",
-            "timeout": 10
-          },
-          {
-            "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"stop:session-end\" \"scripts/hooks/session-end.js\" \"minimal,standard,strict\"",
-            "timeout": 10
-          },
-          {
-            "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"stop:cost-tracker\" \"scripts/hooks/cost-tracker.js\" \"minimal,standard,strict\"",
-            "timeout": 10
-          },
-          {
-            "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"stop:check-console-log\" \"scripts/hooks/check-console-log.js\" \"standard,strict\"",
-            "timeout": 10
-          },
-          {
-            "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"stop:desktop-notify\" \"scripts/hooks/desktop-notify.js\" \"standard,strict\"",
+            "command": "proj=$(basename \"$(git remote get-url origin 2>/dev/null | sed 's/\\.git$//')\" 2>/dev/null || basename \"$(pwd)\") && task=$(cat .claude/current-task 2>/dev/null || git branch --show-current 2>/dev/null || echo '-') && curl -s -X POST -H 'Content-Type: application/json' -d '{\"content\":\"📨 **応答求**\\n📁 '\"$proj\"'\\n🔧 '\"$task\"'\"}' \"${DISCORD_WEBHOOK_URL}\" >/dev/null 2>&1",
             "timeout": 10
           }
         ]
@@ -383,7 +317,7 @@
           },
           {
             "type": "command",
-            "command": "proj=$(basename \"$(git remote get-url origin 2>/dev/null | sed 's/\\.git$//')\" 2>/dev/null || basename \"$(pwd)\") && task=$(cat .claude/current-task 2>/dev/null || git branch --show-current 2>/dev/null || echo '-') && curl -s -X POST -H 'Content-Type: application/json' -d '{\"content\":\"✅ **完了**\\n📁 '\"$proj\"'\\n🔧 '\"$task\"'\"}' '${DISCORD_WEBHOOK_URL}' >/dev/null 2>&1",
+            "command": "proj=$(basename \"$(git remote get-url origin 2>/dev/null | sed 's/\\.git$//')\" 2>/dev/null || basename \"$(pwd)\") && task=$(cat .claude/current-task 2>/dev/null || git branch --show-current 2>/dev/null || echo '-') && curl -s -X POST -H 'Content-Type: application/json' -d '{\"content\":\"✅ **完了**\\n📁 '\"$proj\"'\\n🔧 '\"$task\"'\"}' \"${DISCORD_WEBHOOK_URL}\" >/dev/null 2>&1",
             "timeout": 10
           }
         ]
@@ -428,11 +362,6 @@
           {
             "type": "command",
             "command": "echo \"[コンテキスト圧縮前] $(date '+%H:%M:%S')\"",
-            "timeout": 10
-          },
-          {
-            "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"pre:compact\" \"scripts/hooks/pre-compact.js\" \"standard,strict\"",
             "timeout": 10
           }
         ]
@@ -493,11 +422,6 @@
           {
             "type": "command",
             "command": "echo \"[セッション終了] $(date '+%Y-%m-%d %H:%M:%S')\"",
-            "timeout": 10
-          },
-          {
-            "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"session:end:marker\" \"scripts/hooks/session-end-marker.js\" \"minimal,standard,strict\"",
             "timeout": 10
           }
         ]
