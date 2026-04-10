@@ -290,7 +290,7 @@
           },
           {
             "type": "command",
-            "command": "proj=$(basename \"$(git remote get-url origin 2>/dev/null | sed 's/\\.git$//')\" 2>/dev/null || basename \"$(pwd)\") && task=$(cat .claude/current-task 2>/dev/null || git branch --show-current 2>/dev/null || echo '-') && curl -s -X POST -H 'Content-Type: application/json' -d '{\"content\":\"📨 **応答求**\\n📁 '\"$proj\"'\\n🔧 '\"$task\"'\"}' \"${DISCORD_WEBHOOK_URL}\" >/dev/null 2>&1",
+            "command": "[[ -z \"${DISCORD_WEBHOOK_URL}\" ]] && exit 0; proj=$(basename \"$(git remote get-url origin 2>/dev/null | sed 's/\\.git$//')\" 2>/dev/null || basename \"$(pwd)\") && task=$(cat .claude/current-task 2>/dev/null || git branch --show-current 2>/dev/null || echo '-') && curl -s -X POST -H 'Content-Type: application/json' -d '{\"content\":\"📨 **応答求**\\n📁 '\"$proj\"'\\n🔧 '\"$task\"'\"}' \"${DISCORD_WEBHOOK_URL}\" >/dev/null 2>&1",
             "timeout": 10
           }
         ]
@@ -317,7 +317,7 @@
           },
           {
             "type": "command",
-            "command": "proj=$(basename \"$(git remote get-url origin 2>/dev/null | sed 's/\\.git$//')\" 2>/dev/null || basename \"$(pwd)\") && task=$(cat .claude/current-task 2>/dev/null || git branch --show-current 2>/dev/null || echo '-') && curl -s -X POST -H 'Content-Type: application/json' -d '{\"content\":\"✅ **完了**\\n📁 '\"$proj\"'\\n🔧 '\"$task\"'\"}' \"${DISCORD_WEBHOOK_URL}\" >/dev/null 2>&1",
+            "command": "[[ -z \"${DISCORD_WEBHOOK_URL}\" ]] && exit 0; proj=$(basename \"$(git remote get-url origin 2>/dev/null | sed 's/\\.git$//')\" 2>/dev/null || basename \"$(pwd)\") && task=$(cat .claude/current-task 2>/dev/null || git branch --show-current 2>/dev/null || echo '-') && curl -s -X POST -H 'Content-Type: application/json' -d '{\"content\":\"✅ **完了**\\n📁 '\"$proj\"'\\n🔧 '\"$task\"'\"}' \"${DISCORD_WEBHOOK_URL}\" >/dev/null 2>&1",
             "timeout": 10
           }
         ]
