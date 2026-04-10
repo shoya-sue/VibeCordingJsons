@@ -105,6 +105,119 @@ if [[ "$PATTERN" == "full" && -f "$TARGET/.claude/settings.json" ]]; then
   rm -f "$TARGET/.claude/settings.json.bak"
 fi
 
+# ─── Copilot CLI symlink bridge ───────────────────────────────────────────────
+# グローバルインストール時のみ: ~/.claude/ のルール・スキルを ~/.github/ にシンボリックリンク
+# Claude Code が使えない場合でも Copilot CLI が同一設定・メモリを参照できるようにする
+if [[ "$TARGET" == "$HOME" ]]; then
+  CLAUDE_HOME="$HOME/.claude"
+  GITHUB_HOME="$HOME/.github"
+
+  echo "Setting up Copilot CLI symlinks..."
+
+  # 1. 共有スキル: ~/.github/skills/<name> → ~/.claude/skills/<name>
+  SHARED_SKILLS=(create-issue dependency-audit explain-code fix-issue generate-changelog review-pr)
+  for skill in "${SHARED_SKILLS[@]}"; do
+    src="$CLAUDE_HOME/skills/$skill"
+    dst="$GITHUB_HOME/skills/$skill"
+    if [[ -d "$src" ]]; then
+      rm -rf "$dst"
+      ln -sfn "$src" "$dst"
+      echo "  skill: $dst -> $src"
+    fi
+  done
+
+  # 2. ルール → ~/.github/instructions/ (ディレクトリシンボリックリンク)
+  mkdir -p "$GITHUB_HOME/instructions"
+
+  # 共通ルールファイル (ファイル単位)
+  for rule_file in subagent-delegation.md team-coordination.md; do
+    src="$CLAUDE_HOME/rules/$rule_file"
+    dst="$GITHUB_HOME/instructions/$rule_file"
+    if [[ -f "$src" ]]; then
+      rm -f "$dst"
+      ln -sf "$src" "$dst"
+      echo "  rule: $dst -> $src"
+    fi
+  done
+
+  # ECC 共通ルール + 言語別ルール (ディレクトリ単位)
+  # bash 3.2 (macOS) では declare -A 非対応のため parallel 配列で対応
+  RULE_LINK_NAMES=(claude-common claude-lang-golang claude-lang-typescript claude-lang-python claude-lang-rust claude-lang-java claude-lang-kotlin claude-lang-cpp claude-lang-php claude-lang-swift)
+  RULE_LINK_SRCS=(
+    "$CLAUDE_HOME/rules/ecc/common"
+    "$CLAUDE_HOME/rules/ecc/golang"
+    "$CLAUDE_HOME/rules/ecc/typescript"
+    "$CLAUDE_HOME/rules/ecc/python"
+    "$CLAUDE_HOME/rules/ecc/rust"
+    "$CLAUDE_HOME/rules/ecc/java"
+    "$CLAUDE_HOME/rules/ecc/kotlin"
+    "$CLAUDE_HOME/rules/ecc/cpp"
+    "$CLAUDE_HOME/rules/ecc/php"
+    "$CLAUDE_HOME/rules/ecc/swift"
+  )
+  for i in "${!RULE_LINK_NAMES[@]}"; do
+    link_name="${RULE_LINK_NAMES[$i]}"
+    src="${RULE_LINK_SRCS[$i]}"
+    dst="$GITHUB_HOME/instructions/$link_name"
+    if [[ -d "$src" ]]; then
+      rm -rf "$dst"
+      ln -sfn "$src" "$dst"
+      echo "  rules: $dst -> $src"
+    fi
+  done
+
+  # 3. ~/.zshrc に precmd フックと copilot-sync-memory 関数を追加 (冪等)
+  ZSHRC="$HOME/.zshrc"
+  MARKER="# VibeCording: copilot-sync"
+  if ! grep -qF "$MARKER" "$ZSHRC" 2>/dev/null; then
+    cat >> "$ZSHRC" <<'ZSHRC_BLOCK'
+
+# VibeCording: copilot-sync
+# プロジェクト切替時に COPILOT_CUSTOM_INSTRUCTIONS_DIRS を自動更新
+_update_copilot_dirs() {
+  local base="$HOME/.github/instructions"
+  if [[ -d "$PWD/.github/claude-memory" ]]; then
+    export COPILOT_CUSTOM_INSTRUCTIONS_DIRS="${base}:${PWD}/.github/claude-memory"
+  else
+    export COPILOT_CUSTOM_INSTRUCTIONS_DIRS="$base"
+  fi
+}
+autoload -Uz add-zsh-hook
+add-zsh-hook precmd _update_copilot_dirs
+
+# プロジェクトの Claude メモリを Copilot CLI にリンクするコマンド
+# 使い方: copilot-sync-memory [project_path]
+copilot-sync-memory() {
+  local project_path="${1:-$PWD}"
+  local hash
+  hash=$(echo "$project_path" | sed 's|/|-|g; s|\.|-|g')
+  local memory_dir="$HOME/.claude/projects/${hash}/memory"
+  if [[ ! -d "$memory_dir" ]]; then
+    echo "Claude memory not found: $memory_dir"
+    echo "Available projects (matching basename):"
+    ls "$HOME/.claude/projects/" | grep "$(basename "$project_path")" || echo "  (none matched)"
+    return 1
+  fi
+  mkdir -p "${project_path}/.github"
+  local link="${project_path}/.github/claude-memory"
+  [[ -L "$link" ]] && rm "$link"
+  ln -s "$memory_dir" "$link"
+  echo "Linked: $link"
+  echo "  -> $memory_dir"
+  local gitignore="${project_path}/.gitignore"
+  if [[ -f "$gitignore" ]] && ! grep -qF '.github/claude-memory' "$gitignore"; then
+    echo '.github/claude-memory' >> "$gitignore"
+    echo "Added .github/claude-memory to .gitignore"
+  fi
+}
+ZSHRC_BLOCK
+    echo "  zshrc: Added copilot-sync to $ZSHRC"
+  fi
+
+  echo "Copilot CLI symlink bridge complete."
+  echo ""
+fi
+
 # Add CLAUDE.local.md and settings.local.json to .gitignore if exists
 if [[ -f "$TARGET/.gitignore" ]]; then
   for entry in "CLAUDE.local.md" ".claude/settings.local.json" ".claude/*.local.*"; do
