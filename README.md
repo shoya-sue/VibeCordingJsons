@@ -298,6 +298,7 @@ All events:
 | `CLAUDE_CODE_SIMPLE` | Minimal mode (Skills/Memory/Hooks/MCP disabled) | `1` |
 | `CLAUDE_CODE_DISABLE_GIT_INSTRUCTIONS` | Disable built-in git instructions | `1` |
 | `MAX_THINKING_TOKENS` | Thinking token limit | Model-dependent |
+| `refreshInterval` | Status line auto-refresh interval (seconds) | `30` |
 
 ### Other Settings
 
