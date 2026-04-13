@@ -114,6 +114,7 @@
     "CLAUDE_CODE_MAX_OUTPUT_TOKENS": "64000",
     "ECC_HOOK_PROFILE": "standard",
     "ECC_DISABLED_HOOKS": "",
+    "CLAUDE_PLUGIN_ROOT": "${HOME}/.claude/plugins/cache/everything-claude-code/everything-claude-code/1.10.0",
     "CLAUDE_CODE_SUBPROCESS_ENV_SCRUB": "1",
     "CLAUDE_CODE_NO_FLICKER": "1"
   },
@@ -131,19 +132,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[セッション開始] $(date '+%Y-%m-%d %H:%M:%S')\"",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo \"[プロンプト送信] $(date '+%H:%M:%S')\"",
-            "timeout": 10
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"session:start\" \"scripts/hooks/session-start.js\" \"minimal,standard,strict\"",
+            "timeout": 15
           }
         ]
       }
@@ -154,12 +144,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[実行前:Bash] $(jq -r '.tool_input.command // empty' 2>/dev/null)\"",
-            "timeout": 10
-          },
-          {
-            "type": "command",
-            "command": "npx block-no-verify@1.1.2",
+            "command": "npx block-no-verify@1.1.2 >/dev/null",
             "timeout": 10
           }
         ]
@@ -169,7 +154,12 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[実行前:Write] $(jq -r '.tool_input.file_path // empty' 2>/dev/null)\"",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"pre:edit-write:suggest-compact\" \"scripts/hooks/suggest-compact.js\" \"standard,strict\"",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"pre:write:doc-file-warning\" \"scripts/hooks/doc-file-warning.js\" \"standard,strict\"",
             "timeout": 10
           }
         ]
@@ -179,7 +169,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[実行前:Edit] $(jq -r '.tool_input.file_path // empty' 2>/dev/null)\"",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"pre:edit-write:suggest-compact\" \"scripts/hooks/suggest-compact.js\" \"standard,strict\"",
             "timeout": 10
           }
         ]
@@ -189,18 +179,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[実行前:MCP] $(jq -r '.tool_name // empty' 2>/dev/null)\"",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "PermissionRequest": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo \"[権限要求] ツール=$(jq -r '.tool_name // \"不明\"' 2>/dev/null) $(date '+%H:%M:%S')\"",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"pre:mcp-health-check\" \"scripts/hooks/mcp-health-check.js\" \"standard,strict\"",
             "timeout": 10
           }
         ]
@@ -208,21 +187,11 @@
     ],
     "PostToolUse": [
       {
-        "matcher": "Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo \"[実行後:Write] 変更: $(jq -r '.tool_input.file_path // empty' 2>/dev/null)\"",
-            "timeout": 10
-          }
-        ]
-      },
-      {
         "matcher": "Edit",
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[実行後:Edit] 変更: $(jq -r '.tool_input.file_path // empty' 2>/dev/null)\"",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"post:edit:console-warn\" \"scripts/hooks/post-edit-console-warn.js\" \"standard,strict\"",
             "timeout": 10
           }
         ]
@@ -232,7 +201,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[実行後:Bash] 完了: $(jq -r '.tool_input.command // empty' 2>/dev/null | head -c 100)\"",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"post:bash:pr-created\" \"scripts/hooks/post-bash-pr-created.js\" \"standard,strict\"",
             "timeout": 10
           }
         ]
@@ -240,43 +209,11 @@
     ],
     "PostToolUseFailure": [
       {
+        "matcher": "mcp__.*",
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[ツール失敗] ツール=$(jq -r '.tool_name // \"不明\"' 2>/dev/null) $(date '+%H:%M:%S')\"",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "Notification": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo \"[通知] 種別=$(jq -r '.notification_type // .type // \"情報\"' 2>/dev/null) $(date '+%H:%M:%S')\"",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "SubagentStart": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo \"[サブエージェント開始] 種別=$(jq -r '.agent_type // \"不明\"' 2>/dev/null) $(date '+%H:%M:%S')\"",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "SubagentStop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo \"[サブエージェント停止] 種別=$(jq -r '.agent_type // \"不明\"' 2>/dev/null) $(date '+%H:%M:%S')\"",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"post:mcp-health-check\" \"scripts/hooks/mcp-health-check.js\" \"standard,strict\"",
             "timeout": 10
           }
         ]
@@ -287,72 +224,22 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[応答完了] $(date '+%Y-%m-%d %H:%M:%S')\"",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"stop:session-end\" \"scripts/hooks/session-end.js\" \"minimal,standard,strict\"",
             "timeout": 10
           },
           {
             "type": "command",
-            "command": "[[ -z \"${DISCORD_WEBHOOK_URL}\" ]] && exit 0; proj=$(basename \"$(git remote get-url origin 2>/dev/null | sed 's/\\.git$//')\" 2>/dev/null || basename \"$(pwd)\") && task=$(cat .claude/current-task 2>/dev/null || git branch --show-current 2>/dev/null || echo '-') && curl -s -X POST -H 'Content-Type: application/json' -d '{\"content\":\"📨 **応答求**\\n📁 '\"$proj\"'\\n🔧 '\"$task\"'\"}' \"${DISCORD_WEBHOOK_URL}\" >/dev/null 2>&1",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "TeammateIdle": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo \"[チームメイト待機] $(date '+%H:%M:%S')\"",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "TaskCompleted": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo \"[タスク完了] $(date '+%H:%M:%S')\"",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"stop:cost-tracker\" \"scripts/hooks/cost-tracker.js\" \"minimal,standard,strict\"",
             "timeout": 10
           },
           {
             "type": "command",
-            "command": "[[ -z \"${DISCORD_WEBHOOK_URL}\" ]] && exit 0; proj=$(basename \"$(git remote get-url origin 2>/dev/null | sed 's/\\.git$//')\" 2>/dev/null || basename \"$(pwd)\") && task=$(cat .claude/current-task 2>/dev/null || git branch --show-current 2>/dev/null || echo '-') && curl -s -X POST -H 'Content-Type: application/json' -d '{\"content\":\"✅ **完了**\\n📁 '\"$proj\"'\\n🔧 '\"$task\"'\"}' \"${DISCORD_WEBHOOK_URL}\" >/dev/null 2>&1",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"stop:check-console-log\" \"scripts/hooks/check-console-log.js\" \"standard,strict\"",
             "timeout": 10
-          }
-        ]
-      }
-    ],
-    "ConfigChange": [
-      {
-        "hooks": [
+          },
           {
             "type": "command",
-            "command": "echo \"[設定変更] 元=$(jq -r '.source // \"不明\"' 2>/dev/null) $(date '+%H:%M:%S')\"",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "WorktreeCreate": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo \"[ワークツリー作成] $(date '+%H:%M:%S')\"",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "WorktreeRemove": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo \"[ワークツリー削除] $(date '+%H:%M:%S')\"",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"stop:desktop-notify\" \"scripts/hooks/desktop-notify.js\" \"standard,strict\"",
             "timeout": 10
           }
         ]
@@ -363,7 +250,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[コンテキスト圧縮前] $(date '+%H:%M:%S')\"",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"pre:compact\" \"scripts/hooks/pre-compact.js\" \"standard,strict\"",
             "timeout": 10
           }
         ]
@@ -374,45 +261,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[コンテキスト圧縮後] $(date '+%H:%M:%S')\"",
-            "timeout": 10
-          },
-          {
-            "type": "command",
             "command": "echo \"[リマインダー] モデル=opusplan(計画:Opus/実行:Sonnet) | サブエージェント積極委任 | gh CLI優先 | TDD | コメント日本語 | 変更は最小限\"",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "Elicitation": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo \"[MCP入力要求] サーバー=$(jq -r '.mcp_server_name // \"不明\"' 2>/dev/null) $(date '+%H:%M:%S')\"",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "ElicitationResult": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo \"[MCP入力結果] $(date '+%H:%M:%S')\"",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "InstructionsLoaded": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo \"[設定ファイル読込] $(jq -r '.files // empty' 2>/dev/null) $(date '+%H:%M:%S')\"",
             "timeout": 10
           }
         ]
@@ -423,51 +272,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[セッション終了] $(date '+%Y-%m-%d %H:%M:%S')\"",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "TaskCreated": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo \"[タスク作成] $(date '+%H:%M:%S')\"",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "StopFailure": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo \"[応答完了失敗] $(date '+%H:%M:%S')\"",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "CwdChanged": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo \"[作業ディレクトリ変更] $(jq -r '.cwd // empty' 2>/dev/null) $(date '+%H:%M:%S')\"",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "FileChanged": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo \"[ファイル変更検知] $(jq -r '.file // empty' 2>/dev/null) $(date '+%H:%M:%S')\"",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"session:end:marker\" \"scripts/hooks/session-end-marker.js\" \"minimal,standard,strict\"",
             "timeout": 10
           }
         ]
