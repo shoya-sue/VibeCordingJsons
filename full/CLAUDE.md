@@ -50,6 +50,8 @@ make deploy-staging   # Deploy to staging
 - `/compact <summary>` — Compact context with focused summary
 - `/powerup` — インタラクティブな学習レッスンを起動
 - `/reload-plugins` — プラグインスキルを再起動なしで再読み込み
+- `/team-onboarding` — チームメイト向けのランプアップガイドを生成
+- `/proactive` — `/loop` のエイリアス（プロアクティブなループ実行）
 
 ## Important Notes
 
@@ -61,4 +63,4 @@ make deploy-staging   # Deploy to staging
 - `gh` CLI for all GitHub operations, never raw `api.github.com`
 - Opus 4.6 output limit: 64k tokens (configurable via `CLAUDE_CODE_MAX_OUTPUT_TOKENS`)
 - **Requires** `everything-claude-code` plugin for agents and skills
-- Rules: `ecc/common/` (10) + language-specific rules (8 languages × 5 = 40)
+- Rules: `ecc/common/` (10) + language-specific rules (9 languages × 5 = 45)
