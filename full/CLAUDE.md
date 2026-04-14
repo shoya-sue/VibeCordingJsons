@@ -50,15 +50,17 @@ make deploy-staging   # Deploy to staging
 - `/compact <summary>` — Compact context with focused summary
 - `/powerup` — インタラクティブな学習レッスンを起動
 - `/reload-plugins` — プラグインスキルを再起動なしで再読み込み
+- `/team-onboarding` — チームメイト向けのランプアップガイドを生成
+- `/proactive` — `/loop` のエイリアス（プロアクティブなループ実行）
 
 ## Important Notes
 
 - `.env.production` is read-prohibited (deny list)
 - Agent Teams enabled (`teammateMode: auto`)
-- ECC hooks only (session continuity, cost tracking, MCP health, console-log check, compact reminder)
+- ECC hooks: session continuity (SessionStart/Stop/SessionEnd), --no-verify guard (PreToolUse), compact quality (PreCompact)
 - Auto-memory enabled → `.claude/memory/`
 - Subagent usage does not count against billing — delegate aggressively
 - `gh` CLI for all GitHub operations, never raw `api.github.com`
 - Opus 4.6 output limit: 64k tokens (configurable via `CLAUDE_CODE_MAX_OUTPUT_TOKENS`)
 - **Requires** `everything-claude-code` plugin for agents and skills
-- Rules: `ecc/common/` (10) + language-specific rules (8 languages × 5 = 40)
+- Rules: `ecc/common/` (10) + language-specific rules (9 languages × 5 = 45)
