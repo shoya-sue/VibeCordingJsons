@@ -116,7 +116,10 @@
     "ECC_DISABLED_HOOKS": "",
     "CLAUDE_PLUGIN_ROOT": "${HOME}/.claude/plugins/cache/everything-claude-code/everything-claude-code/1.10.0",
     "CLAUDE_CODE_SUBPROCESS_ENV_SCRUB": "1",
-    "CLAUDE_CODE_NO_FLICKER": "1"
+    "CLAUDE_CODE_NO_FLICKER": "1",
+    "CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING": "1",
+    "CLAUDE_CODE_DISABLE_1M_CONTEXT": "1",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "sonnet"
   },
   "worktree": {
     "sparsePaths": [
