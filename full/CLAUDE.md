@@ -52,6 +52,7 @@ make deploy-staging   # Deploy to staging
 - `/reload-plugins` — プラグインスキルを再起動なしで再読み込み
 - `/team-onboarding` — チームメイト向けのランプアップガイドを生成
 - `/proactive` — `/loop` のエイリアス（プロアクティブなループ実行）
+- `/recap` — 離席後のセッションサマリーを手動表示
 
 ## Important Notes
 
