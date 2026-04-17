@@ -53,6 +53,10 @@ make deploy-staging   # Deploy to staging
 - `/team-onboarding` — チームメイト向けのランプアップガイドを生成
 - `/proactive` — `/loop` のエイリアス（プロアクティブなループ実行）
 - `/recap` — 離席後のセッションサマリーを手動表示
+- `/tui [fullscreen]` — チラつきなし全画面レンダリングに切り替え
+- `/focus` — フォーカスビュー表示切り替え（Ctrl+O はノーマル/詳細トランスクリプト切り替えのみ）
+- `/less-permission-prompts` — トランスクリプトをスキャンしてパーミッションプロンプトを減らす allow リストを提案
+- `/ultrareview` — クラウドで並列マルチエージェント分析による包括的コードレビューを実行（引数なしで現ブランチ、`<PR#>` で特定 PR）
 
 ## Important Notes
 
@@ -62,6 +66,6 @@ make deploy-staging   # Deploy to staging
 - Auto-memory enabled → `.claude/memory/`
 - Subagent usage does not count against billing — delegate aggressively
 - `gh` CLI for all GitHub operations, never raw `api.github.com`
-- Opus 4.6 output limit: 64k tokens (configurable via `CLAUDE_CODE_MAX_OUTPUT_TOKENS`)
+- Opus 4.7 output limit: 64k tokens (configurable via `CLAUDE_CODE_MAX_OUTPUT_TOKENS`)
 - **Requires** `everything-claude-code` plugin for agents and skills
 - Rules: `ecc/common/` (10) + language-specific rules (9 languages × 5 = 45)

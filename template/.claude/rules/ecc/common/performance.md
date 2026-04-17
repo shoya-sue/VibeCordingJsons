@@ -12,7 +12,7 @@
 - Orchestrating multi-agent workflows
 - Complex coding tasks
 
-**Opus 4.6** (Deepest reasoning):
+**Opus 4.7** (Deepest reasoning):
 - Complex architectural decisions
 - Maximum reasoning requirements
 - Research and analysis tasks
@@ -36,7 +36,7 @@ Extended thinking is enabled by default, reserving up to 31,999 tokens for inter
 
 Control extended thinking via:
 - **Toggle**: Option+T (macOS) / Alt+T (Windows/Linux)
-- **Config**: Set `effortLevel: "low" | "medium" | "high"` in settings.json (v2.1.68+, default restored to `"high"` in v2.1.94)
+- **Config**: Set `effortLevel: "low" | "medium" | "high" | "xhigh"` in settings.json (v2.1.68+, `"xhigh"` added in v2.1.111 for Opus 4.7, default `"high"`)
 - **Verbose mode**: Ctrl+O to see thinking output
 - **Display summaries**: Set `showThinkingSummaries: true` in settings.json (v2.1.89+, display-only)
 - **No-flicker mode**: `CLAUDE_CODE_NO_FLICKER=1` — チラつきなし alt-screen レンダリング（v2.1.91+）
