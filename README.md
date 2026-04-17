@@ -6,14 +6,12 @@ Provides `settings.json` / `.mcp.json` / `CLAUDE.md` / `AGENTS.md` / Skills / Ag
 ## Table of Contents
 
 - [Usage](#usage)
-- [3 Patterns](#3-patterns)
 - [settings.json vs settings.local.json](#settingsjson-vs-settingslocaljson)
-- [Pattern Comparison](#pattern-comparison)
 - [Instruction Files Read by AI Agents](#instruction-files-read-by-ai-agents)
 - [Directory Structure](#directory-structure)
 - [settings.json Configuration Reference](#settingsjson-configuration-reference)
   - [permissions](#permissions-3-tier-access-control)
-  - [hooks](#hooks-event-hooks--all-21-events)
+  - [hooks](#hooks-event-hooks--all-26-events)
   - [env](#env-environment-variables)
   - [Other Settings](#other-settings)
 - [Settings Hierarchy](#settings-hierarchy)
@@ -24,7 +22,7 @@ Provides `settings.json` / `.mcp.json` / `CLAUDE.md` / `AGENTS.md` / Skills / Ag
 
 ## Usage
 
-### Global Install (Recommended for Personal Use)
+### Global Install (Recommended)
 
 Installing to your home directory **automatically applies to all projects**.
 No per-project configuration files needed.
@@ -32,33 +30,23 @@ No per-project configuration files needed.
 ```bash
 git clone https://github.com/shoya-sue/VibeCordingJsons.git
 cd VibeCordingJsons
-./install.sh full ~
+./install.sh
 ```
 
-This places the full configuration in `~/.claude/settings.json`, and every project where you run `claude` will use those settings.
+This places the configuration in `~/.claude/settings.json`, and every project where you run `claude` will use those settings.
 If you need project-specific settings later, add `.claude/settings.json` in that project (array settings are merged, single-value settings are overridden).
 
-### Project Install (For Team Development)
+### Project Install
 
-To place shared settings in a project:
+To place shared settings in a specific project directory:
 
 ```bash
-./install.sh standard /path/to/your/project
+./install.sh /path/to/your/project
 ```
 
 ### Manual Copy from GitHub
 
-Open the directory of the pattern you want and copy the contents of each file.
-
-## 3 Patterns
-
-| Pattern | Use Case | Included Files |
-|---------|----------|----------------|
-| **[Minimal](minimal/)** | Code review and exploration only | `.claude/settings.json`, `CLAUDE.md`, `AGENTS.md`, VSCode workspace |
-| **[Standard](standard/)** | Everyday development (**recommended**) | Above + `.mcp.json`, Skills, Rules |
-| **[Full](full/)** | All features enabled | Above + Agents, Agent Teams, Auto Start |
-
-Each directory's README has detailed copy destinations and installation instructions.
+Open the `template/` directory on GitHub and copy the contents of each file directly.
 
 ## settings.json vs settings.local.json
 
@@ -69,37 +57,6 @@ Each directory's README has detailed copy destinations and installation instruct
 
 `settings.local.json` overrides `settings.json` settings.
 Similarly, `CLAUDE.md` (team-shared) and `CLAUDE.local.md` (personal) form a corresponding pair.
-
-## Pattern Comparison
-
-| Feature | Minimal | Standard | Full |
-|---------|---------|----------|------|
-| **Claude Code** | | | |
-| File read | src/tests/docs | src/tests/docs + config files | All files |
-| File write | **None** | src/tests/docs | Major directories |
-| Git operations | Read-only | add/commit | All operations |
-| permissions.ask | None | git push, npm publish | + docker/terraform/kubectl |
-| Package managers | **None** | npm/yarn/pnpm/bun | Same |
-| Test execution | **None** | pytest/cargo/go | Same |
-| Docker / K8s | **None** | **None** | docker/kubectl |
-| MCP servers | **None** | 4 servers | 5 servers + full access |
-| Skills | **None** | explain-code | + fix-issue, review-pr, generate-changelog, dependency-audit, create-issue, gh-workflow |
-| Agents | None | None | 47 via ECC plugin (code-reviewer, architect, language reviewers, etc.) |
-| Rules | None | code-style | 50 ECC rules (common + 8 languages) + subagent-delegation, team-coordination |
-| Hooks | None | 5 events (logging) | All 26 events + ECC hooks (session continuity, cost tracking, MCP health) |
-| Sandbox | None | None | Removed (use permissions deny list instead) |
-| Agent Teams | None | None | Enabled |
-| Attribution | None | Commit/PR signing | Same |
-| **Copilot CLI** | | | |
-| copilot-instructions.md | Read-only instructions | Standard dev instructions | Full-feature instructions |
-| Skills | None | explain-code, code-reviewer | + fix-issue, review-pr, test-runner |
-| Agents | None | None | code-reviewer, github-workflow, code-explorer, test-runner |
-| AGENTS.md | Yes | Yes | Yes |
-| **VSCode Workspace** | | | |
-| Editor settings | Basic (formatOnSave, tabSize) | Full (autoSave, git, search) | Same + minimap: off |
-| Extensions | Copilot only | + GitLens, Prettier, ESLint, EditorConfig | + Docker |
-| Claude Code task | None | Background task x1 | + Auto Start (folderOpen) |
-| Launch config template | None | None | Empty template included |
 
 ## Instruction Files Read by AI Agents
 
@@ -120,35 +77,7 @@ Setting `~/.copilot/copilot-instructions.md` applies to all projects.
 
 ```text
 .
-├── minimal/
-│   ├── .claude/
-│   │   ├── settings.json
-│   │   └── settings.local.json
-│   ├── .github/
-│   │   └── copilot-instructions.md
-│   ├── AGENTS.md
-│   ├── CLAUDE.md
-│   ├── CLAUDE.local.md
-│   ├── project.code-workspace
-│   └── README.md
-├── standard/
-│   ├── .claude/
-│   │   ├── settings.json
-│   │   ├── settings.local.json
-│   │   ├── skills/explain-code/SKILL.md
-│   │   └── rules/code-style.md
-│   ├── .github/
-│   │   ├── copilot-instructions.md
-│   │   └── skills/
-│   │       ├── explain-code/SKILL.md
-│   │       └── code-reviewer/SKILL.md
-│   ├── .mcp.json
-│   ├── AGENTS.md
-│   ├── CLAUDE.md
-│   ├── CLAUDE.local.md
-│   ├── project.code-workspace
-│   └── README.md
-├── full/
+├── template/
 │   ├── .claude/
 │   │   ├── settings.json
 │   │   ├── settings.local.json
@@ -253,7 +182,7 @@ Supported patterns:
 }
 ```
 
-All events:
+All 26 events:
 
 | Event | Timing | Blocking |
 |-------|--------|----------|
@@ -263,13 +192,18 @@ All events:
 | `PostToolUse` | After tool execution | No |
 | `PostToolUseFailure` | After tool execution failure | No |
 | `PermissionRequest` | On permission check | No |
+| `PermissionDenied` | On permission denied (`retry: true` available) | No |
 | `Notification` | On notification | No |
 | `SubagentStart` | On subagent start | No |
 | `SubagentStop` | On subagent stop | Yes |
 | `Stop` | On response stop | Yes |
+| `StopFailure` | On Stop hook failure | No |
 | `TeammateIdle` | When teammate is idle | No |
+| `TaskCreated` | On task creation | Yes |
 | `TaskCompleted` | On task completion | No |
 | `ConfigChange` | On config change | No |
+| `CwdChanged` | On directory change | No |
+| `FileChanged` | On file change detected | No |
 | `WorktreeCreate` | On worktree creation | No |
 | `WorktreeRemove` | On worktree removal | No |
 | `PreCompact` | Before context compaction | No |
@@ -288,7 +222,7 @@ All events:
 | `MCP_TIMEOUT` | MCP timeout (ms) | `10000`-`15000` |
 | `MAX_MCP_OUTPUT_TOKENS` | MCP output token limit | `25000`-`50000` |
 | `BASH_MAX_TIMEOUT_MS` | Bash timeout (ms) | `120000`-`300000` |
-| `CLAUDE_CODE_MAX_OUTPUT_TOKENS` | Output token limit (Opus 4.6: max 128k) | `64000` |
+| `CLAUDE_CODE_MAX_OUTPUT_TOKENS` | Output token limit (Opus 4.7: max 64k) | `64000` |
 | `ENABLE_TOOL_SEARCH` | Enable tool search | `auto` |
 | `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE` | Auto context compaction (%) | `50` |
 | `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS` | Enable Agent Teams | `1` |
@@ -308,8 +242,8 @@ All events:
 | `model` | Default model |
 | `language` | Response language (e.g., `"japanese"`) |
 | `autoMemoryEnabled` | Enable/disable auto-memory (default: `true`) |
+| `autoScrollEnabled` | Auto-scroll in fullscreen mode (default: `true`) |
 | `attribution` | Commit/PR signature text |
-| ~~`sandbox`~~ | Removed in v0.4.0 — use permissions deny list instead |
 | `teammateMode` | Agent Teams display mode (`auto` / `in-process` / `tmux`) |
 | `autoMemoryDirectory` | Auto-memory save directory |
 | `modelOverrides` | Map model picker entries to different model IDs |
@@ -317,6 +251,7 @@ All events:
 | `worktree.sparsePaths` | Paths to sparse-checkout when using `--worktree` |
 | `enableAllProjectMcpServers` | Auto-enable `.mcp.json` servers |
 | `enabledPlugins` | Enable/disable plugins (e.g., `{"formatter@acme-tools": true}`) |
+| `effortLevel` | Default thinking depth (`"low"` / `"medium"` / `"high"` / `"xhigh"`) |
 
 ## Settings Hierarchy
 
@@ -336,20 +271,16 @@ Claude Code applies settings in the following priority order (higher = higher pr
 
 ## VSCode Workspace Settings
 
-Each pattern includes a `project.code-workspace` file. Load it via VSCode's "File > Open Workspace from File".
+The template includes a `project.code-workspace` file. Load it via VSCode's "File > Open Workspace from File".
 
-### Features by Pattern
-
-| Feature | Minimal | Standard | Full |
-|---------|---------|----------|------|
-| Editor settings | formatOnSave, tabSize: 2 | + autoSave, search/watcher excludes | + minimap: off, vendor excludes |
-| Recommended extensions | Copilot, Copilot Chat | + GitLens, Prettier, ESLint, EditorConfig | + Docker |
-| Claude Code task | — | `Claude Code` (background) | + `Auto Start` (runs on folder open) |
-| Launch config | — | — | Empty template |
+| Feature | Included |
+|---------|---------|
+| Editor settings | formatOnSave, tabSize: 2, autoSave, minimap: off |
+| Recommended extensions | Copilot, Copilot Chat, GitLens, Prettier, ESLint, Docker |
+| Claude Code task | Background task + Auto Start (runs on folder open) |
+| Launch config template | Empty template included |
 
 ### Claude Code Background Task
-
-Standard / Full patterns can launch Claude Code as a background VSCode task.
 
 ```jsonc
 // Task definition in project.code-workspace (excerpt)
@@ -364,12 +295,11 @@ Standard / Full patterns can launch Claude Code as a background VSCode task.
 }
 ```
 
-- **Standard**: `Cmd+Shift+P` → `Tasks: Run Task` → `Claude Code` for manual start
-- **Full**: Claude Code terminal starts automatically on folder open (`runOn: folderOpen`)
+Claude Code terminal starts automatically on folder open (`runOn: folderOpen`).
 
 ### Multi-Project Configuration
 
-Edit the Full pattern's `project.code-workspace` to manage Claude Code across multiple projects in parallel.
+Edit `project.code-workspace` to manage Claude Code across multiple projects in parallel.
 
 ```jsonc
 {
@@ -386,21 +316,19 @@ Edit the Full pattern's `project.code-workspace` to manage Claude Code across mu
 }
 ```
 
-Use `presentation.group` to color-code task panels (see `full/README.md` for details).
-
 ## Model Selection and Cost Optimization
 
 Claude Code lets you switch models mid-session with the `/model` command.
 
 | Model Alias | Description | Recommended For |
 |-------------|-------------|-----------------|
-| `opus` | Opus 4.6 (highest performance) | Complex architecture design |
+| `opus` | Opus 4.7 (highest performance) | Complex architecture design |
 | `sonnet` | Sonnet 4.6 (balanced) | Everyday development |
 | `haiku` | Haiku 4.5 (fast, low cost) | Simple questions, code review |
 | **`opusplan`** | **Opus for planning → Sonnet for execution (auto-switch)** | **Cost-optimized (recommended)** |
 
 **`/model opusplan` workflow**:
-1. Plan mode (Shift+Tab) uses Opus 4.6 for complex thinking and design
+1. Plan mode (Shift+Tab) uses Opus 4.7 for complex thinking and design
 2. After plan confirmation, automatically switches to Sonnet 4.6 for implementation
 3. Saves weekly subscription quota while maintaining high-quality planning
 
@@ -413,8 +341,9 @@ Control model thinking depth with the `/effort` command:
 | Level | Symbol | Use Case |
 |-------|--------|----------|
 | `low` | ○ | Simple tasks, quick responses |
-| `medium` | ◐ | Normal development (Opus 4.6 default) |
-| `high` | ● | Complex reasoning, deep analysis |
+| `medium` | ◐ | Normal development |
+| `high` | ● | Complex reasoning, deep analysis (default) |
+| `xhigh` | ◉ | Maximum reasoning (Opus 4.7, v2.1.111+) |
 | `auto` | — | Reset to default |
 
 Including "ultrathink" in your message enables high effort for the next turn only.
@@ -432,7 +361,7 @@ Subagent usage does not count against billing quotas. Delegate aggressively:
 
 ### everything-claude-code Plugin
 
-The Full pattern integrates the [everything-claude-code](https://github.com/affaan-m/everything-claude-code) plugin:
+The template integrates the [everything-claude-code](https://github.com/affaan-m/everything-claude-code) plugin:
 
 ```bash
 /plugin marketplace add affaan-m/everything-claude-code
@@ -455,7 +384,7 @@ Provides 47 agents, 181 skills, 60 commands. Rules must be installed separately 
 - **Place both CLAUDE.md + AGENTS.md**: Cover both Claude Code and Copilot CLI
 - **Use project.code-workspace**: Unify editor settings, extensions, and Claude Code tasks across the team
 - **Manage auto-memory with `/memory`**: Regularly review and organize context Claude has saved
-- **Control costs with `/effort`**: Use `low` for simple tasks, `high` for complex design
+- **Control costs with `/effort`**: Use `low` for simple tasks, `xhigh` for complex design
 - **HTTP hooks for integrations**: Use `type: "http"` to trigger Slack notifications, CI, or other external services
 - **Agent `resume` is deprecated**: Migrated to `SendMessage({to: agentId})` in v2.1.77 (breaking change)
 - **Delegate to subagents**: Subagent usage is free — use them for all delegatable tasks

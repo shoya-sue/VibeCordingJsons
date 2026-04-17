@@ -1,4 +1,4 @@
-# Full Pattern — All Features Enabled + ECC Integration
+# VibeCording Template — Claude Code + GitHub Copilot CLI
 
 Complete configuration for Claude Code and GitHub Copilot CLI with `everything-claude-code` plugin integration.
 
@@ -6,7 +6,7 @@ Complete configuration for Claude Code and GitHub Copilot CLI with `everything-c
 
 | Category | Contents |
 |----------|----------|
-| Claude Code settings | 3-tier permissions, 21 hooks + ECC hooks, Agent Teams, auto-memory |
+| Claude Code settings | 3-tier permissions, 26 hooks + ECC hooks, Agent Teams, auto-memory |
 | Skills (Claude) | 7 local + 136 via ECC plugin |
 | Agents (Claude) | 30 agents via ECC plugin (code-reviewer, architect, language-specific reviewers, etc.) |
 | Rules | 50 ECC rules (common + 8 languages) + subagent-delegation + team-coordination |
@@ -22,8 +22,8 @@ Complete configuration for Claude Code and GitHub Copilot CLI with `everything-c
 /plugin install everything-claude-code@everything-claude-code
 
 # 2. Install template (copies rules that plugins can't distribute)
-./install.sh full ~              # Global
-./install.sh full /path/to/proj  # Project
+./install.sh            # Global install to ~
+./install.sh /path/to/proj  # Project-specific install
 ```
 
 ## Key Features
@@ -59,7 +59,7 @@ Use Agent Teams when:
 - **Ask**: git push, npm publish, docker push, terraform apply, kubectl apply
 - **Deny**: Destructive ops, secret files, force push, hard reset
 
-### Hooks (21 Events + ECC)
+### Hooks (26 Events + ECC)
 
 All lifecycle events are logged, plus ECC enhancements:
 - **Session continuity** — Auto-resumes context from previous sessions
