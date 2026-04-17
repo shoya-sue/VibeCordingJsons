@@ -43,7 +43,7 @@ make deploy-staging   # Deploy to staging
 ## Slash Commands
 
 - `/model opusplan` — Auto-switch: Opus for planning, Sonnet for execution
-- `/effort low|medium|high|max` — Set thinking level. `/effort auto` to reset
+- `/effort low|medium|high|xhigh|max` — Set thinking level. `/effort auto` to reset
 - `/memory` — Manage auto-memory
 - `/loop 5m check deploy` — Repeat a prompt on schedule
 - `/plan <description>` — Start plan mode
