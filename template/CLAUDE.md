@@ -44,6 +44,7 @@ make deploy-staging   # Deploy to staging
 
 - `/model opusplan` — Auto-switch: Opus for planning, Sonnet for execution
 - `/effort low|medium|high|xhigh|max` — Set thinking level. `/effort auto` to reset
+- `/genshijin [丁寧|極限]` — 応答トークン80%削減（原始人モード）。`丁寧`でビジネス向け、`極限`で最大圧縮。`原始人やめて`で解除
 - `/memory` — Manage auto-memory
 - `/loop 5m check deploy` — Repeat a prompt on schedule
 - `/plan <description>` — Start plan mode
