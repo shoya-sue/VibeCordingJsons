@@ -114,7 +114,7 @@
     "CLAUDE_CODE_MAX_OUTPUT_TOKENS": "64000",
     "ECC_HOOK_PROFILE": "standard",
     "ECC_DISABLED_HOOKS": "",
-    "CLAUDE_PLUGIN_ROOT": "${HOME}/.claude/plugins/cache/everything-claude-code/everything-claude-code/1.10.0",
+    "ECC_PLUGIN_ROOT": "${HOME}/.claude/plugins/cache/everything-claude-code/everything-claude-code/1.10.0",
     "CLAUDE_CODE_SUBPROCESS_ENV_SCRUB": "1",
     "CLAUDE_CODE_NO_FLICKER": "1",
     "CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING": "1",
@@ -136,7 +136,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"session:start\" \"scripts/hooks/session-start.js\" \"minimal,standard,strict\"",
+            "command": "node \"${ECC_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"session:start\" \"scripts/hooks/session-start.js\" \"minimal,standard,strict\"",
             "timeout": 15
           }
         ]
@@ -159,7 +159,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"stop:session-end\" \"scripts/hooks/session-end.js\" \"minimal,standard,strict\"",
+            "command": "node \"${ECC_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"stop:session-end\" \"scripts/hooks/session-end.js\" \"minimal,standard,strict\"",
             "timeout": 10
           }
         ]
@@ -170,7 +170,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"pre:compact\" \"scripts/hooks/pre-compact.js\" \"standard,strict\"",
+            "command": "node \"${ECC_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"pre:compact\" \"scripts/hooks/pre-compact.js\" \"standard,strict\"",
             "timeout": 10
           }
         ]
@@ -181,7 +181,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"session:end:marker\" \"scripts/hooks/session-end-marker.js\" \"minimal,standard,strict\"",
+            "command": "node \"${ECC_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"session:end:marker\" \"scripts/hooks/session-end-marker.js\" \"minimal,standard,strict\"",
             "timeout": 10
           }
         ]
