@@ -21,7 +21,7 @@ ls ~/.claude/plugins/cache/everything-claude-code/everything-claude-code/ 2>/dev
 
 Record:
 - `LOCAL_ECC_LATEST` — highest installed version (e.g. `1.9.0`)
-- `CURRENT_ECC_IN_SETTINGS` — current value from `full/.claude/settings.json` CLAUDE_PLUGIN_ROOT
+- `CURRENT_ECC_IN_SETTINGS` — current value from `full/.claude/settings.json` ECC_PLUGIN_ROOT
 
 If `LOCAL_ECC_LATEST` is empty → ECC is not installed locally. Skip all ECC version changes entirely.
 
@@ -39,7 +39,7 @@ If `LOCAL_ECC_LATEST` is empty → ECC is not installed locally. Skip all ECC ve
    - ECC plugin releases: fetch `https://github.com/affaan-m/everything-claude-code/releases`
    - Look for: new hook events, new settings keys, new agent/skill counts, deprecated commands, model ID changes
 3. Compare findings against the current state of the repo:
-   - `full/.claude/settings.json` — hook events, effortLevel, model, CLAUDE_PLUGIN_ROOT version
+   - `full/.claude/settings.json` — hook events, effortLevel, model, ECC_PLUGIN_ROOT version
    - `full/.claude/rules/ecc/common/hooks.md` — event list
    - `full/.claude/rules/ecc/common/performance.md` — model IDs
    - `full/CLAUDE.md` and `README.md` — counts and descriptions
@@ -49,7 +49,7 @@ If `LOCAL_ECC_LATEST` is empty → ECC is not installed locally. Skip all ECC ve
    - If changelog mentions a new ECC version (e.g. `1.11.0`):
      - Check if it equals `LOCAL_ECC_LATEST`
      - **If NOT installed locally** → mark as ⚪ スキップ with reason: "ECC X.Y.Z not installed locally — install.sh auto-detects from disk, updating the template to an uninstalled version will break hooks"
-     - **If installed locally** → mark as 🔴 必須, update `CLAUDE_PLUGIN_ROOT` in `full/.claude/settings.json`
+     - **If installed locally** → mark as 🔴 必須, update `ECC_PLUGIN_ROOT` in `full/.claude/settings.json`
 
 5. Write `docs/YYYY-MM-DD-update.md` with this structure:
    ```markdown
@@ -117,16 +117,16 @@ git pull
 **Immediately validate the install output:**
 
 1. Capture the line `ECC version: X.Y.Z (auto-detected)` from the output
-2. Grep the installed settings: `grep CLAUDE_PLUGIN_ROOT ~/.claude/settings.json`
-3. Verify the path in `CLAUDE_PLUGIN_ROOT` actually exists on disk:
+2. Grep the installed settings: `grep ECC_PLUGIN_ROOT ~/.claude/settings.json`
+3. Verify the path in `ECC_PLUGIN_ROOT` actually exists on disk:
    ```bash
    ls "$(grep -o 'everything-claude-code/[^"]*' ~/.claude/settings.json | head -1 | sed 's|everything-claude-code/||')" 2>/dev/null || echo "PATH_NOT_FOUND"
    ```
-   More precisely: extract the CLAUDE_PLUGIN_ROOT value and check the directory exists.
+   More precisely: extract the ECC_PLUGIN_ROOT value and check the directory exists.
 
 **Validation gate:**
-- If `CLAUDE_PLUGIN_ROOT` path does NOT exist → **STOP**. Do not create a release. Report the exact path that is missing and what versions are locally available. Fix the settings manually before continuing.
-- If `CLAUDE_PLUGIN_ROOT` path exists → proceed.
+- If `ECC_PLUGIN_ROOT` path does NOT exist → **STOP**. Do not create a release. Report the exact path that is missing and what versions are locally available. Fix the settings manually before continuing.
+- If `ECC_PLUGIN_ROOT` path exists → proceed.
 
 ### 6. Create GitHub release
 
