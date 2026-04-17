@@ -191,6 +191,7 @@
   "teammateMode": "auto",
   "effortLevel": "high",
   "showThinkingSummaries": true,
+  "autoScrollEnabled": true,
   "disableSkillShellExecution": false,
   "sandbox": {
     "failIfUnavailable": false
