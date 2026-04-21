@@ -54,6 +54,7 @@ make deploy-staging   # Deploy to staging
 - `/proactive` — `/loop` のエイリアス（プロアクティブなループ実行）
 - `/recap` — 離席後のセッションサマリーを手動表示
 - `/tui [fullscreen]` — チラつきなし全画面レンダリングに切り替え
+- `/terminal-setup` — エディタスクロール感度を設定（fullscreen モードのスムーズスクロール用）
 - `/focus` — フォーカスビュー表示切り替え（Ctrl+O はノーマル/詳細トランスクリプト切り替えのみ）
 - `/less-permission-prompts` — トランスクリプトをスキャンしてパーミッションプロンプトを減らす allow リストを提案
 - `/ultrareview` — クラウドで並列マルチエージェント分析による包括的コードレビューを実行（引数なしで現ブランチ、`<PR#>` で特定 PR）

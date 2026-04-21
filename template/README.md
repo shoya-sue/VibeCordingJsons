@@ -7,8 +7,8 @@ Complete configuration for Claude Code and GitHub Copilot CLI with `everything-c
 | Category | Contents |
 |----------|----------|
 | Claude Code settings | 3-tier permissions, 26 hooks + ECC hooks, Agent Teams, auto-memory |
-| Skills (Claude) | 7 local + 136 via ECC plugin |
-| Agents (Claude) | 30 agents via ECC plugin (code-reviewer, architect, language-specific reviewers, etc.) |
+| Skills (Claude) | 7 local + 156 via ECC plugin |
+| Agents (Claude) | 38 agents via ECC plugin (code-reviewer, architect, language-specific reviewers, etc.) |
 | Rules | 50 ECC rules (common + 8 languages) + subagent-delegation + team-coordination |
 | MCP Servers | context7, playwright, deepwiki, excalidraw, github |
 | Copilot CLI | copilot-instructions.md, 8 skills, 4 agents |
@@ -31,8 +31,8 @@ Complete configuration for Claude Code and GitHub Copilot CLI with `everything-c
 ### ECC Integration (everything-claude-code)
 
 The plugin provides:
-- **30 agents** — language-specific reviewers (TS, Python, Go, Rust, Java, Kotlin, C++, Flutter, Swift), architect, planner, tdd-guide, security-reviewer, build resolvers, etc.
-- **136 skills** — TDD workflow, coding standards, API design, deployment patterns, deep research, and more
+- **38 agents** — language-specific reviewers (TS, Python, Go, Rust, Java, Kotlin, C++, Flutter, Swift), architect, planner, tdd-guide, security-reviewer, build resolvers, etc.
+- **156 skills** — TDD workflow, coding standards, API design, deployment patterns, deep research, and more
 - **ECC hooks** — session continuity, cost tracking, MCP health monitoring, compact suggestions, console.log detection
 - **Profile control** — `ECC_HOOK_PROFILE=standard` (minimal/standard/strict)
 
