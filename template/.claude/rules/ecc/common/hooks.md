@@ -8,6 +8,7 @@
 | `http` | JSON を URL に POST（v2.1.69+） |
 | `prompt` | Claude へのシングルターン評価（v2.1.85+） |
 | `agent` | サブエージェントを起動してツール操作（v2.1.85+） |
+| `mcp_tool` | MCP ツールを直接呼び出し（v2.1.118+） |
 
 ## All Hook Events (26 events)
 

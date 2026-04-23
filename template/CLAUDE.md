@@ -58,6 +58,8 @@ make deploy-staging   # Deploy to staging
 - `/focus` — フォーカスビュー表示切り替え（Ctrl+O はノーマル/詳細トランスクリプト切り替えのみ）
 - `/less-permission-prompts` — トランスクリプトをスキャンしてパーミッションプロンプトを減らす allow リストを提案
 - `/ultrareview` — クラウドで並列マルチエージェント分析による包括的コードレビューを実行（引数なしで現ブランチ、`<PR#>` で特定 PR）
+- `/color` — Remote Control 接続中にアクセントカラーを同期
+- `/usage` — トークン使用量とコストを表示（`/cost` + `/stats` の統合版）
 
 ## Important Notes
 
