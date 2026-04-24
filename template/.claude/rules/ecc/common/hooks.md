@@ -81,6 +81,11 @@
 }
 ```
 
+### PostToolUse `duration_ms` 入力 (v2.1.119+)
+
+PostToolUse/PostToolUseFailure フックの入力 JSON に `duration_ms`（ツール実行時間、ms）が含まれる。
+権限確認と PreToolUse フック実行時間は除外される。パフォーマンス監視系フックで利用可能。
+
 ## Auto-Accept Permissions
 
 Use with caution:
