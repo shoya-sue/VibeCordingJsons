@@ -163,7 +163,7 @@ Supported patterns:
 
 ### hooks (Event Hooks — All 26 Events)
 
-4 hook types: `command` (shell), `http` (HTTP request), `prompt` (LLM judgment), `agent` (subagent)
+5 hook types: `command` (shell), `http` (HTTP request), `prompt` (LLM judgment), `agent` (subagent), `mcp_tool` (MCP tool invocation)
 
 ```jsonc
 {
@@ -220,7 +220,7 @@ All 26 events:
 | Variable | Description | Recommended |
 |----------|-------------|-------------|
 | `MCP_TIMEOUT` | MCP timeout (ms) | `10000`-`15000` |
-| `MAX_MCP_OUTPUT_TOKENS` | MCP output token limit | `25000`-`50000` |
+| `MAX_MCP_OUTPUT_TOKENS` | MCP output token limit | `10000`-`25000` |
 | `BASH_MAX_TIMEOUT_MS` | Bash timeout (ms) | `120000`-`300000` |
 | `CLAUDE_CODE_MAX_OUTPUT_TOKENS` | Output token limit (Opus 4.7: max 64k) | `64000` |
 | `ENABLE_TOOL_SEARCH` | Enable tool search | `auto` |
