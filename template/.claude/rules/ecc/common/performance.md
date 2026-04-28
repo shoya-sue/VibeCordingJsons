@@ -57,6 +57,9 @@ effort: low   # このスキル実行時は low に固定
 
 軽量なユーティリティ系スキルに `low` を指定するとコスト削減になる。
 
+SKILL.md のコンテンツ内では `${CLAUDE_EFFORT}` 変数で現在の effort レベル（`low`/`medium`/`high`/`xhigh`）を参照可能（v2.1.120+）。
+effort に応じてスキルの動作を切り替えたい場合に使用する。
+
 ## Build Troubleshooting
 
 If build fails:
