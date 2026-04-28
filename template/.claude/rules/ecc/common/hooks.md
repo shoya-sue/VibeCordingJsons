@@ -86,6 +86,21 @@
 PostToolUse/PostToolUseFailure フックの入力 JSON に `duration_ms`（ツール実行時間、ms）が含まれる。
 権限確認と PreToolUse フック実行時間は除外される。パフォーマンス監視系フックで利用可能。
 
+### PostToolUse ツール出力置換（v2.1.121+）
+
+PostToolUse フックから `hookSpecificOutput.updatedToolOutput` を返すと、
+全ツール（Bash、Read、MCP ツール等）のツール出力を Claude に見せる内容に置換できる。
+v2.1.121 以前は MCP ツールのみ対応。
+
+```jsonc
+// PostToolUse フックから返すと Claude が見るツール出力を差し替え
+{
+  "hookSpecificOutput": {
+    "updatedToolOutput": "sanitized or augmented output here"
+  }
+}
+```
+
 ## Auto-Accept Permissions
 
 Use with caution:

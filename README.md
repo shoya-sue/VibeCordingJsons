@@ -252,6 +252,7 @@ All 26 events:
 | `enableAllProjectMcpServers` | Auto-enable `.mcp.json` servers |
 | `enabledPlugins` | Enable/disable plugins (e.g., `{"formatter@acme-tools": true}`) |
 | `effortLevel` | Default thinking depth (`"low"` / `"medium"` / `"high"` / `"xhigh"`) |
+| `alwaysLoad` (in `.mcp.json` per server) | `true` → そのサーバーの全ツールを tool-search 遅延なしで常時利用可能にする（v2.1.121+） |
 
 ## Settings Hierarchy
 
@@ -381,6 +382,7 @@ Provides 47 agents, 181 skills, 60 commands. Rules must be installed separately 
 - **Never write secrets**: Do not put `.env` or API keys in settings.json
 - **Use hooks**: Visualize work with file change notifications and command logs
 - **Avoid `--dangerously-skip-permissions`**: Major security risk
+- **Run `claude plugin prune` periodically**: Remove orphaned auto-installed plugin dependencies; `plugin uninstall --prune` cascades (v2.1.121+)
 - **Place both CLAUDE.md + AGENTS.md**: Cover both Claude Code and Copilot CLI
 - **Use project.code-workspace**: Unify editor settings, extensions, and Claude Code tasks across the team
 - **Manage auto-memory with `/memory`**: Regularly review and organize context Claude has saved
