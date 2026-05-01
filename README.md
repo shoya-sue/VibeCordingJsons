@@ -384,6 +384,7 @@ Provides 47 agents, 181 skills, 60 commands. Rules must be installed separately 
 - **Use hooks**: Visualize work with file change notifications and command logs
 - **Avoid `--dangerously-skip-permissions`**: Major security risk
 - **Run `claude plugin prune` periodically**: Remove orphaned auto-installed plugin dependencies; `plugin uninstall --prune` cascades (v2.1.121+)
+- **Run `claude project purge` to clean up**: Remove stored project data; use `--dry-run` to preview, `--interactive` to select items (v2.1.126+)
 - **Place both CLAUDE.md + AGENTS.md**: Cover both Claude Code and Copilot CLI
 - **Use project.code-workspace**: Unify editor settings, extensions, and Claude Code tasks across the team
 - **Manage auto-memory with `/memory`**: Regularly review and organize context Claude has saved
