@@ -40,6 +40,8 @@ Control extended thinking via:
 - **Verbose mode**: Ctrl+O to see thinking output
 - **Display summaries**: Set `showThinkingSummaries: true` in settings.json (v2.1.89+, display-only)
 - **No-flicker mode**: `CLAUDE_CODE_NO_FLICKER=1` — チラつきなし alt-screen レンダリング（v2.1.91+）
+- **Disable alt-screen**: `CLAUDE_CODE_DISABLE_ALTERNATE_SCREEN=1` — alt-screen を無効化して通常スクロールバックを維持（v2.1.132+）
+- **Force sync output**: `CLAUDE_CODE_FORCE_SYNC_OUTPUT=1` — Emacs eat 等で同期出力を強制有効化（v2.1.129+）
 
 For complex tasks requiring deep reasoning:
 1. Ensure extended thinking is enabled (on by default)

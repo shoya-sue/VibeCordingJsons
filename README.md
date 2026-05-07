@@ -234,6 +234,11 @@ All 26 events:
 | `MAX_THINKING_TOKENS` | Thinking token limit | Model-dependent |
 | `refreshInterval` | Status line auto-refresh interval (seconds) | `30` |
 | `ANTHROPIC_BEDROCK_SERVICE_TIER` | Bedrock サービスティア（`default` / `flex` / `priority`）（v2.1.122+） | `default` |
+| `CLAUDE_CODE_SESSION_ID` | セッション ID（Bash サブプロセスに自動設定、フック `session_id` と同値）（v2.1.132+） | (auto) |
+| `CLAUDE_CODE_DISABLE_ALTERNATE_SCREEN` | フルスクリーン alt-screen レンダラーを無効化して通常の端末スクロールバックを維持（v2.1.132+） | `1` |
+| `CLAUDE_CODE_FORCE_SYNC_OUTPUT` | 同期出力を強制有効化（Emacs `eat` 等の自動検出が効かない端末向け）（v2.1.129+） | `1` |
+| `CLAUDE_CODE_PACKAGE_MANAGER_AUTO_UPDATE` | Homebrew/WinGet インストール時にバックグラウンドで自動アップグレード（v2.1.129+） | `1` |
+| `CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY` | `/model` ピッカーでゲートウェイ `/v1/models` 探索を有効化（オプトイン）（v2.1.129+） | `1` |
 
 ### Other Settings
 
@@ -254,6 +259,7 @@ All 26 events:
 | `enabledPlugins` | Enable/disable plugins (e.g., `{"formatter@acme-tools": true}`) |
 | `effortLevel` | Default thinking depth (`"low"` / `"medium"` / `"high"` / `"xhigh"`) |
 | `alwaysLoad` (in `.mcp.json` per server) | `true` → そのサーバーの全ツールを tool-search 遅延なしで常時利用可能にする（v2.1.121+） |
+| `skillOverrides` | スキルの表示制御（`"off"`: 完全非表示 / `"user-invocable-only"`: モデルには非表示 / `"name-only"`: 説明を折り畳み）（v2.1.129+） |
 
 ## Settings Hierarchy
 
