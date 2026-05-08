@@ -101,6 +101,21 @@ v2.1.121 以前は MCP ツールのみ対応。
 }
 ```
 
+### Hook Input: `effort.level` フィールドと `$CLAUDE_EFFORT` 環境変数 (v2.1.133+)
+
+すべてのフック入力 JSON に `effort.level` フィールドが含まれる。
+`command` 型フックおよび Bash サブプロセスでは `$CLAUDE_EFFORT` 環境変数として参照可能。
+
+値: `"low"` / `"medium"` / `"high"` / `"xhigh"`
+
+```jsonc
+// command フック内で現在の effort レベルに応じて挙動を切り替える例
+{
+  "type": "command",
+  "command": "echo \"effort=$CLAUDE_EFFORT\""
+}
+```
+
 ## Auto-Accept Permissions
 
 Use with caution:

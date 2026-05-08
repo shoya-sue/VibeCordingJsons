@@ -260,6 +260,8 @@ All 26 events:
 | `effortLevel` | Default thinking depth (`"low"` / `"medium"` / `"high"` / `"xhigh"`) |
 | `alwaysLoad` (in `.mcp.json` per server) | `true` → そのサーバーの全ツールを tool-search 遅延なしで常時利用可能にする（v2.1.121+） |
 | `skillOverrides` | スキルの表示制御（`"off"`: 完全非表示 / `"user-invocable-only"`: モデルには非表示 / `"name-only"`: 説明を折り畳み）（v2.1.129+） |
+| `worktree.baseRef` | ワークツリーのブランチ起点（`"fresh"`: ベースブランチから / `"head"`: 現在の HEAD から）（v2.1.133+） |
+| `parentSettingsBehavior` | admin 設定の結合方式（`"first-wins"`: 最上位優先 / `"merge"`: 全階層をマージ）（v2.1.133+） |
 
 ## Settings Hierarchy
 
