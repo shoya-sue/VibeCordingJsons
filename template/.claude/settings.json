@@ -120,7 +120,8 @@
     "CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING": "1",
     "CLAUDE_CODE_DISABLE_1M_CONTEXT": "1",
     "CLAUDE_CODE_SUBAGENT_MODEL": "sonnet",
-    "ENABLE_PROMPT_CACHING_1H": "1"
+    "ENABLE_PROMPT_CACHING_1H": "1",
+    "OBSIDIAN_VAULT": "${HOME}/Library/Mobile Documents/iCloud~md~obsidian/Documents/Obsidian"
   },
   "worktree": {
     "sparsePaths": [

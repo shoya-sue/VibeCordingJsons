@@ -1,5 +1,14 @@
 {
   "mcpServers": {
+    "obsidian": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "obsidian-mcp",
+        "${HOME}/Library/Mobile Documents/iCloud~md~obsidian/Documents/Obsidian"
+      ],
+      "env": {}
+    },
     "context7": {
       "command": "npx",
       "args": ["-y", "@upstash/context7-mcp@latest"],

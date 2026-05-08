@@ -78,6 +78,12 @@ if [[ -f "$TARGET/.claude/settings.json" ]]; then
   rm -f "$TARGET/.claude/settings.json.bak"
 fi
 
+# Post-process .mcp.json: expand ${HOME}
+if [[ -f "$TARGET/.mcp.json" ]]; then
+  sed -i.bak "s|\${HOME}|${HOME}|g" "$TARGET/.mcp.json"
+  rm -f "$TARGET/.mcp.json.bak"
+fi
+
 # ─── Copilot CLI symlink bridge ───────────────────────────────────────────────
 # グローバルインストール時のみ: ~/.claude/ のルール・スキルを ~/.github/ にシンボリックリンク
 # Claude Code が使えない場合でも Copilot CLI が同一設定・メモリを参照できるようにする
