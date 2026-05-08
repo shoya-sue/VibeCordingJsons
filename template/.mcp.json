@@ -7,17 +7,23 @@
         "obsidian-mcp",
         "${HOME}/Library/Mobile Documents/iCloud~md~obsidian/Documents/Obsidian"
       ],
-      "env": {}
+      "env": {
+        "PATH": "${PATH}"
+      }
     },
     "context7": {
       "command": "npx",
       "args": ["-y", "@upstash/context7-mcp@latest"],
-      "env": {}
+      "env": {
+        "PATH": "${PATH}"
+      }
     },
     "playwright": {
       "command": "npx",
       "args": ["-y", "@playwright/mcp@latest"],
-      "env": {}
+      "env": {
+        "PATH": "${PATH}"
+      }
     },
     "deepwiki": {
       "url": "https://mcp.deepwiki.com/mcp"
@@ -25,12 +31,15 @@
     "excalidraw": {
       "command": "npx",
       "args": ["-y", "excalidraw-mcp"],
-      "env": {}
+      "env": {
+        "PATH": "${PATH}"
+      }
     },
     "github": {
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-github"],
       "env": {
+        "PATH": "${PATH}",
         "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PERSONAL_ACCESS_TOKEN}"
       }
     }
