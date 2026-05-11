@@ -20,4 +20,5 @@ Thumbs.db
 tmp/
 temp/
 *.tmp
+*.log
 CLAUDE.local.md
