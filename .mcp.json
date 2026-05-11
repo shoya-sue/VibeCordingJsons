@@ -1,14 +1,12 @@
 {
   "mcpServers": {
     "obsidian": {
-      "command": "npx",
+      "command": "/Users/shoya-sue/.nvm/versions/node/v24.9.0/bin/obsidian-mcp",
       "args": [
-        "-y",
-        "obsidian-mcp",
         "/Users/shoya-sue/Library/Mobile Documents/iCloud~md~obsidian/Documents/Obsidian"
       ],
       "env": {
-        "PATH": "${PATH}"
+        "PATH": "/Users/shoya-sue/.nvm/versions/node/v24.9.0/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
       }
     },
     "context7": {
@@ -20,7 +18,7 @@
     },
     "playwright": {
       "command": "npx",
-      "args": ["@playwright/mcp@latest"],
+      "args": ["-y", "@playwright/mcp@latest"],
       "env": {
         "PATH": "${PATH}"
       }

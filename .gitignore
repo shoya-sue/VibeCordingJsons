@@ -13,6 +13,9 @@ Thumbs.db
 .claude/settings.local.json
 .claude/*.local.*
 
+# Claude Code worktrees (local agent isolation, not part of repo)
+.claude/worktrees/
+
 # Temp
 tmp/
 temp/
