@@ -221,6 +221,56 @@ ZSHRC_BLOCK
   echo ""
 fi
 
+# ─── Register MCP servers in ~/.claude.json ───────────────────────────────────
+# Global install: register all servers in mcpServers (user-level, always loaded)
+# Project install: set hasTrustDialogAccepted=true + enabledMcpjsonServers
+if command -v python3 &>/dev/null && [[ -f "$HOME/.claude.json" ]] && [[ -f "$TARGET/.mcp.json" ]]; then
+  python3 - "$TARGET" "$HOME" << 'PYEOF'
+import json, sys
+
+target_dir = sys.argv[1]
+home_dir   = sys.argv[2]
+claude_json_path = f"{home_dir}/.claude.json"
+mcp_json_path    = f"{target_dir}/.mcp.json"
+
+with open(claude_json_path) as f:
+    d = json.load(f)
+
+with open(mcp_json_path) as f:
+    mcp = json.load(f)
+
+servers      = mcp.get('mcpServers', {})
+server_names = list(servers.keys())
+
+if target_dir == home_dir:
+    # Global install: populate mcpServers from .mcp.json
+    d.setdefault('mcpServers', {})
+    for name, config in servers.items():
+        if 'url' in config:
+            d['mcpServers'][name] = {'type': 'http', 'url': config['url']}
+        else:
+            d['mcpServers'][name] = {
+                'type': 'stdio',
+                'command': config['command'],
+                'args':    config.get('args', []),
+                'env':     config.get('env', {})
+            }
+    print(f"Registered {len(servers)} MCP servers in ~/.claude.json")
+else:
+    # Project install: approve trust dialog + enable .mcp.json servers
+    proj = d.setdefault('projects', {}).setdefault(target_dir, {})
+    proj['hasTrustDialogAccepted']  = True
+    proj['enabledMcpjsonServers']   = server_names
+    # Remove stale project-level mcpServers (these shadow global settings)
+    proj.pop('mcpServers', None)
+    print(f"Enabled {len(server_names)} MCP servers for project: {target_dir}")
+
+with open(claude_json_path, 'w') as f:
+    json.dump(d, f, indent=2, ensure_ascii=False)
+PYEOF
+  echo ""
+fi
+
 # Add CLAUDE.local.md and settings.local.json to .gitignore if exists
 if [[ -f "$TARGET/.gitignore" ]]; then
   for entry in "CLAUDE.local.md" ".claude/settings.local.json" ".claude/*.local.*"; do
