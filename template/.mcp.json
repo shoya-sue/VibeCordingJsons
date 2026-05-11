@@ -13,14 +13,14 @@
       "command": "npx",
       "args": ["-y", "@upstash/context7-mcp@latest"],
       "env": {
-        "PATH": "${PATH}"
+        "PATH": "NODEJS_BIN_DIR:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
       }
     },
     "playwright": {
       "command": "npx",
       "args": ["-y", "@playwright/mcp@latest"],
       "env": {
-        "PATH": "${PATH}"
+        "PATH": "NODEJS_BIN_DIR:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
       }
     },
     "deepwiki": {
@@ -30,14 +30,14 @@
       "command": "npx",
       "args": ["-y", "excalidraw-mcp"],
       "env": {
-        "PATH": "${PATH}"
+        "PATH": "NODEJS_BIN_DIR:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
       }
     },
     "github": {
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-github"],
       "env": {
-        "PATH": "${PATH}",
+        "PATH": "NODEJS_BIN_DIR:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin",
         "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PERSONAL_ACCESS_TOKEN}"
       }
     }
