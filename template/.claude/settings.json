@@ -63,6 +63,7 @@
       "Bash(gcloud *)",
       "Bash(sentry-cli *)",
       "mcp__*",
+      "mcp__obsidian__*",
       "Skill(*)"
     ],
     "ask": [
