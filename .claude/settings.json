@@ -5,7 +5,8 @@
       "Bash(claude mcp *)",
       "Bash(claude --print-config)",
       "WebSearch",
-      "mcp__*"
+      "mcp__*",
+      "mcp__obsidian__*"
     ]
   }
 }
