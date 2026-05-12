@@ -101,6 +101,31 @@ v2.1.121 以前は MCP ツールのみ対応。
 }
 ```
 
+### コマンド exec 形式 (`args: string[]`, v2.1.139+)
+
+`args` フィールドを使うとシェルを経由せず直接実行（パスにスペースがあってもクォート不要）:
+
+```jsonc
+{
+  "type": "command",
+  "args": ["node", "/path/to/script.js"],   // シェルなし直接起動
+  "timeout": 10
+}
+```
+
+### PostToolUse `continueOnBlock` (v2.1.139+)
+
+PostToolUse フックがブロック（`"continue": false`）したとき、デフォルトはターンを終了。
+`continueOnBlock: true` を設定するとブロック理由を Claude に返してターンを継続できる:
+
+```jsonc
+{
+  "matcher": "Write|Edit",
+  "continueOnBlock": true,
+  "hooks": [...]
+}
+```
+
 ### Hook Input: `effort.level` フィールドと `$CLAUDE_EFFORT` 環境変数 (v2.1.133+)
 
 すべてのフック入力 JSON に `effort.level` フィールドが含まれる。

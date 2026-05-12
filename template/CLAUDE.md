@@ -60,6 +60,7 @@ make deploy-staging   # Deploy to staging
 - `/ultrareview` — クラウドで並列マルチエージェント分析による包括的コードレビューを実行（引数なしで現ブランチ、`<PR#>` で特定 PR）。CI からは `claude ultrareview [target]` サブコマンドで非インタラクティブ実行可（`--json` で JSON 出力、終了コード 0/1）
 - `/color` — Remote Control 接続中にアクセントカラーを同期
 - `/usage` — トークン使用量とコストを表示（`/cost` + `/stats` の統合版）
+- `/goal <condition>` — 完了条件を設定、条件達成まで複数ターンで継続実行（v2.1.139+）
 
 ## Important Notes
 
