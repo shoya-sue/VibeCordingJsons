@@ -65,7 +65,8 @@ make deploy-staging   # Deploy to staging
 
 - `.env.production` is read-prohibited (deny list)
 - Agent Teams enabled (`teammateMode: auto`)
-- ECC hooks: session continuity (SessionStart/Stop/SessionEnd), --no-verify guard (PreToolUse), compact quality (PreCompact)
+- ECC hooks: session continuity (SessionStart/Stop/SessionEnd), --no-verify guard (PreToolUse), auto-format JS/TS (PostToolUse), compact quality (PreCompact)
+- Multi-repo context: `claude --add-dir ../docs --add-dir ../shared-libs` to include external directories (set `CLAUDE_CODE_ADDITIONAL_DIRECTORIES_CLAUDE_MD=1` env var to also load their CLAUDE.md)
 - Auto-memory enabled → `.claude/memory/`
 - Subagent usage does not count against billing — delegate aggressively
 - `gh` CLI for all GitHub operations, never raw `api.github.com`
