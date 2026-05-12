@@ -34,11 +34,10 @@
       }
     },
     "github": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "command": "/bin/zsh",
+      "args": ["-c", "export GITHUB_PERSONAL_ACCESS_TOKEN=$(gh auth token 2>/dev/null) && exec npx -y @modelcontextprotocol/server-github"],
       "env": {
-        "PATH": "NODEJS_BIN_DIR:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin",
-        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PERSONAL_ACCESS_TOKEN}"
+        "PATH": "NODEJS_BIN_DIR:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
       }
     }
   }
