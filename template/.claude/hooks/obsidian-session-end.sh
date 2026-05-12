@@ -19,5 +19,5 @@ if [ ! -f "$FILE" ]; then
     "$DATE" "$YEAR_MONTH" > "$FILE"
 fi
 
-printf -- "- %s %s | **%s** | branch: \`%s\`\n" \
-  "$DATE" "$TIME" "$PROJECT" "$BRANCH" >> "$FILE"
+printf -- "- %s %s | [[Claude Code/プロジェクト/shoya-sue/%s|%s]] | branch: \`%s\`\n" \
+  "$DATE" "$TIME" "$PROJECT" "$PROJECT" "$BRANCH" >> "$FILE"
