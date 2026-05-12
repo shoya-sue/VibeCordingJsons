@@ -91,12 +91,15 @@
       "Bash(find *)",
       "Bash(head *)",
       "Bash(tail *)",
+      "Bash(cat *)",
       "Bash(wc *)",
       "Bash(sort *)",
       "Bash(which *)",
       "Bash(pwd)",
       "Bash(date *)",
       "Bash(claude *)",
+      "Bash(mv *)",
+      "Bash(cp *)",
       "WebSearch(*)",
       "WebFetch(*)",
       "Skill(*)"
@@ -108,9 +111,7 @@
       "Bash(terraform apply *)",
       "Bash(kubectl apply *)",
       "Bash(curl *)",
-      "Bash(chmod +x *)",
-      "Bash(cp *)",
-      "Bash(mv *)"
+      "Bash(chmod +x *)"
     ],
     "deny": [
       "Read(**/.env*)",
