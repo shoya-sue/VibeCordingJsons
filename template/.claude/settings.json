@@ -237,6 +237,18 @@
         ]
       }
     ],
+    "PostToolUseFailure": [
+      {
+        "matcher": "mcp__obsidian__*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${HOME}/.claude/hooks/obsidian-mcp-recovery.sh",
+            "timeout": 20
+          }
+        ]
+      }
+    ],
     "Stop": [
       {
         "hooks": [
