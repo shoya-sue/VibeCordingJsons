@@ -165,6 +165,9 @@ Supported patterns:
 
 5 hook types: `command` (shell), `http` (HTTP request), `prompt` (LLM judgment), `agent` (subagent), `mcp_tool` (MCP tool invocation)
 
+`command` フックは `args: string[]` フィールドでシェルを経由しない exec 形式も使用可（v2.1.139+）。
+PostToolUse フックは `continueOnBlock: true` でブロック時もターンを継続できる（v2.1.139+）。
+
 ```jsonc
 {
   "hooks": {
@@ -239,6 +242,7 @@ All 26 events:
 | `CLAUDE_CODE_FORCE_SYNC_OUTPUT` | 同期出力を強制有効化（Emacs `eat` 等の自動検出が効かない端末向け）（v2.1.129+） | `1` |
 | `CLAUDE_CODE_PACKAGE_MANAGER_AUTO_UPDATE` | Homebrew/WinGet インストール時にバックグラウンドで自動アップグレード（v2.1.129+） | `1` |
 | `CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY` | `/model` ピッカーでゲートウェイ `/v1/models` 探索を有効化（オプトイン）（v2.1.129+） | `1` |
+| `CLAUDE_PROJECT_DIR` | MCP stdio サーバーおよびフックに自動設定されるプロジェクトルートパス（v2.1.139+） | (auto) |
 
 ### Other Settings
 

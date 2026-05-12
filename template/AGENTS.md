@@ -9,6 +9,7 @@ Copy all files from the `full/` directory to your project root or home directory
 ### Claude Code
 - 3-tier permissions (allow / ask / deny)
 - 21 event hooks + ECC hooks (session continuity, cost tracking, MCP health, compact suggestion)
+- `claude agents` — Agent view (Research Preview): all sessions in a unified list
 - 7 skills: explain-code, fix-issue, review-pr, generate-changelog, dependency-audit, create-issue, gh-workflow
 - 30 agents via `everything-claude-code` plugin (code-reviewer, security-reviewer, architect, tdd-guide, language-specific reviewers, etc.)
 - 50 rules: `ecc/common/` (10) + 8 languages × 5 (typescript, python, golang, rust, swift, java, kotlin, cpp)
