@@ -3,6 +3,7 @@ name: obsidian-synthesis
 description: Daily synthesis of Obsidian vault — reads INBOX captures, surfaces connections across notes, generates dated insight note
 user-invokable: true
 allowed-tools: ["ToolSearch", "Read", "Write", "Edit", "Bash", "mcp__obsidian__read-note", "mcp__obsidian__search-vault", "mcp__obsidian__create-note", "mcp__obsidian__edit-note", "mcp__obsidian__create-directory", "mcp__obsidian__list-available-vaults"]
+effort: high
 ---
 
 # Obsidian Daily Synthesis

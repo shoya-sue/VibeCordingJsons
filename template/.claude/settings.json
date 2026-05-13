@@ -169,7 +169,7 @@
       "Bash(dd of=/dev/*)"
     ]
   },
-  "model": "opusplan",
+  "model": "opus",
   "enableAllProjectMcpServers": true,
   "autoMemoryEnabled": true,
   "autoMemoryDirectory": ".claude/memory",
@@ -178,19 +178,16 @@
   "env": {
     "NODE_ENV": "development",
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
-    "MCP_TIMEOUT": "60000",
-    "MAX_MCP_OUTPUT_TOKENS": "10000",
-    "BASH_MAX_TIMEOUT_MS": "300000",
-    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "50",
+    "MCP_TIMEOUT": "30000",
+    "MAX_MCP_OUTPUT_TOKENS": "25000",
+    "BASH_MAX_TIMEOUT_MS": "600000",
+    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "80",
     "CLAUDE_CODE_MAX_OUTPUT_TOKENS": "64000",
     "ECC_HOOK_PROFILE": "standard",
     "ECC_DISABLED_HOOKS": "",
     "ECC_PLUGIN_ROOT": "${HOME}/.claude/plugins/cache/everything-claude-code/everything-claude-code/1.10.0",
     "CLAUDE_CODE_SUBPROCESS_ENV_SCRUB": "1",
     "CLAUDE_CODE_NO_FLICKER": "1",
-    "CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING": "1",
-    "CLAUDE_CODE_DISABLE_1M_CONTEXT": "1",
-    "CLAUDE_CODE_SUBAGENT_MODEL": "sonnet",
     "ENABLE_PROMPT_CACHING_1H": "1",
     "OBSIDIAN_VAULT": "${HOME}/Library/Mobile Documents/iCloud~md~obsidian/Documents/Obsidian"
   },
@@ -210,6 +207,22 @@
             "type": "command",
             "command": "node \"${ECC_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"session:start\" \"scripts/hooks/session-start.js\" \"minimal,standard,strict\"",
             "timeout": 15
+          },
+          {
+            "type": "command",
+            "command": "${HOME}/.claude/hooks/ensure-memory-symlink.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${HOME}/.claude/hooks/session-title.sh",
+            "timeout": 5
           }
         ]
       }
@@ -281,6 +294,28 @@
         ]
       }
     ],
+    "PostCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${HOME}/.claude/hooks/post-compact-snapshot.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${HOME}/.claude/hooks/subagent-log.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
     "SessionEnd": [
       {
         "hooks": [
@@ -294,7 +329,7 @@
     ]
   },
   "teammateMode": "auto",
-  "effortLevel": "high",
+  "effortLevel": "xhigh",
   "showThinkingSummaries": true,
   "autoScrollEnabled": true,
   "disableSkillShellExecution": false,

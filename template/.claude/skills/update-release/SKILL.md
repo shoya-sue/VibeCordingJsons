@@ -3,7 +3,7 @@ name: update-release
 description: Research latest Claude Code / ECC changes, deep-analyze impact, implement, commit on feature branch, create PR, merge, install to ~/, and cut a GitHub release
 argument-hint: "[docs/YYYY-MM-DD-update.md] [version]"
 user-invokable: true
-effort: high
+effort: xhigh
 allowed-tools: ["Read", "Write", "Edit", "Glob", "Grep", "WebSearch", "WebFetch", "Bash(git *)", "Bash(gh *)", "Bash(./install.sh *)", "Bash(ls *)", "Bash(sort *)", "Bash(tail *)", "Bash(diff *)", "Bash(find *)", "Bash(python3 *)", "Bash(grep *)"]
 ---
 

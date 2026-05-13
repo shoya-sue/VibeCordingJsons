@@ -3,6 +3,7 @@ name: sync-memory
 description: Check Copilot CLI memory sync status for this project
 user-invokable: true
 allowed-tools: ["Bash(ls *)", "Bash(echo *)", "Bash(test *)"]
+effort: low
 ---
 
 # sync-memory
