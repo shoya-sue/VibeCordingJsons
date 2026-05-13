@@ -26,6 +26,11 @@ title = prompt[:50]
 if not title:
     print("{}"); sys.exit(0)
 
-print(json.dumps({"hookSpecificOutput": {"sessionTitle": title}}))
+print(json.dumps({
+    "hookSpecificOutput": {
+        "hookEventName": "UserPromptSubmit",
+        "sessionTitle": title,
+    }
+}))
 PY
 ) 2>/dev/null || echo "{}"
