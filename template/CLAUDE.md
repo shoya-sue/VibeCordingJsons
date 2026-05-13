@@ -61,6 +61,7 @@ make deploy-staging   # Deploy to staging
 - `/color` — Remote Control 接続中にアクセントカラーを同期
 - `/usage` — トークン使用量とコストを表示（`/cost` + `/stats` の統合版）
 - `/goal <condition>` — 完了条件を設定、条件達成まで複数ターンで継続実行（v2.1.139+）
+- `/scroll-speed` — マウスホイールのスクロール速度をライブプレビューで調整（v2.1.139+）
 
 ## Important Notes
 
