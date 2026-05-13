@@ -3,6 +3,7 @@ name: dependency-audit
 description: Audit dependencies for vulnerabilities, EOL, and major updates
 user-invokable: true
 allowed-tools: ["Read", "Glob", "Grep", "Bash(npm audit *)", "Bash(npx *)", "Bash(cargo audit *)", "Bash(pip-audit *)", "Bash(go list *)", "Bash(govulncheck *)", "Bash(gh issue *)"]
+effort: medium
 ---
 
 # dependency-audit

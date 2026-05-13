@@ -84,32 +84,17 @@ if [[ -f "$TARGET/.mcp.json" ]]; then
   rm -f "$TARGET/.mcp.json.bak"
 fi
 
-# Install obsidian-mcp globally if needed, then substitute absolute path in .mcp.json
-if [[ -f "$TARGET/.mcp.json" ]] && grep -q '"obsidian-mcp"' "$TARGET/.mcp.json" 2>/dev/null; then
-  OBSIDIAN_MCP_BIN=""
-
-  if command -v obsidian-mcp &>/dev/null; then
-    OBSIDIAN_MCP_BIN=$(command -v obsidian-mcp)
-  elif command -v npm &>/dev/null; then
-    echo "Installing obsidian-mcp globally (eliminates slow npx startup)..."
-    if npm install -g obsidian-mcp 2>/dev/null; then
-      OBSIDIAN_MCP_BIN=$(command -v obsidian-mcp 2>/dev/null || true)
-    fi
+# Substitute NODEJS_BIN_DIR placeholder in .mcp.json
+if [[ -f "$TARGET/.mcp.json" ]] && grep -q 'NODEJS_BIN_DIR' "$TARGET/.mcp.json" 2>/dev/null; then
+  NODE_BIN_DIR=""
+  if command -v npm &>/dev/null; then
+    NODE_BIN_DIR=$(dirname "$(command -v npm)")
   fi
-
-  if [[ -n "$OBSIDIAN_MCP_BIN" ]]; then
-    NODE_BIN_DIR=$(dirname "$OBSIDIAN_MCP_BIN")
-    sed -i.bak \
-      -e "s|\"command\": \"obsidian-mcp\"|\"command\": \"${OBSIDIAN_MCP_BIN}\"|" \
-      -e "s|NODEJS_BIN_DIR|${NODE_BIN_DIR}|g" \
-      "$TARGET/.mcp.json"
-    rm -f "$TARGET/.mcp.json.bak"
-    echo "obsidian-mcp: ${OBSIDIAN_MCP_BIN}"
-  else
-    sed -i.bak "s|NODEJS_BIN_DIR|/opt/homebrew/bin|g" "$TARGET/.mcp.json"
-    rm -f "$TARGET/.mcp.json.bak"
-    echo "Note: obsidian-mcp not found. Run 'npm install -g obsidian-mcp' to enable Obsidian integration."
+  if [[ -z "$NODE_BIN_DIR" ]]; then
+    NODE_BIN_DIR="/opt/homebrew/bin"
   fi
+  sed -i.bak "s|NODEJS_BIN_DIR|${NODE_BIN_DIR}|g" "$TARGET/.mcp.json"
+  rm -f "$TARGET/.mcp.json.bak"
 fi
 
 # ─── Copilot CLI symlink bridge ───────────────────────────────────────────────

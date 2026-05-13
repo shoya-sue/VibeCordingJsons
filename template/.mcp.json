@@ -1,14 +1,5 @@
 {
   "mcpServers": {
-    "obsidian": {
-      "command": "obsidian-mcp",
-      "args": [
-        "${HOME}/Library/Mobile Documents/iCloud~md~obsidian/Documents/Obsidian"
-      ],
-      "env": {
-        "PATH": "NODEJS_BIN_DIR:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
-      }
-    },
     "context7": {
       "command": "npx",
       "args": ["-y", "@upstash/context7-mcp@latest"],
