@@ -32,6 +32,15 @@ if [[ -d "$TEMPLATE/.claude" ]]; then
       cp -r "$TEMPLATE/.claude/$dir" "$TARGET/.claude/"
     fi
   done
+
+  # Ensure hook scripts and statusline are executable
+  # (git may strip executable bit on some platforms; cp -r preserves mode but template-source bit can be lost)
+  if [[ -d "$TARGET/.claude/hooks" ]]; then
+    find "$TARGET/.claude/hooks" -maxdepth 1 -type f \( -name "*.sh" -o -name "*.py" -o -name "*.js" \) -exec chmod +x {} \;
+  fi
+  if [[ -f "$TARGET/.claude/statusline.sh" ]]; then
+    chmod +x "$TARGET/.claude/statusline.sh"
+  fi
 fi
 
 # Copy .github/ directory (Copilot CLI: instructions, skills, agents)
