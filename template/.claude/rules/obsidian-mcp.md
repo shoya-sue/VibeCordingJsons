@@ -10,7 +10,34 @@
 ToolSearch(query: "select:mcp__obsidian__create-note,mcp__obsidian__search-vault,mcp__obsidian__read-note,mcp__obsidian__edit-note,mcp__obsidian__list-available-vaults,mcp__obsidian__create-directory,mcp__obsidian__move-note,mcp__obsidian__delete-note,mcp__obsidian__add-tags,mcp__obsidian__remove-tags,mcp__obsidian__rename-tag")
 ```
 
-This is mandatory. Skipping ToolSearch → `InputValidationError`. Do NOT use `Write` tool to bypass this — proper MCP usage preserves Obsidian vault rules.
+This is mandatory for Tier 1. Skipping ToolSearch → `InputValidationError`.
+
+## Tiered Write Strategy (MCP-first, sanctioned fallback)
+
+MCP は実運用で不安定（スキーマ遅延、ランタイム失敗、単一 Vault 縛り）。完全停止を避けるため 3 経路を持つ。
+
+| Tier | 経路 | いつ使うか |
+|---|---|---|
+| 1 | `mcp__obsidian__*`（MCP） | **デフォルト**。対話的書き込み・検索。スキーマを ToolSearch でロードしてから呼ぶ |
+| 2 | `Write` / `Edit` ツール直接書き込み | **Tier 1 が失敗または応答待ちで詰まったときの sanctioned フォールバック**。Vault path 限定（settings.json で許可済み） |
+| 3 | Hook script `>>` append | `obsidian-session-end.sh` 等の自動化用。エージェントから直接シェルで append しない |
+
+### Tier 2 を使う条件（全てを満たすこと）
+
+1. Tier 1（MCP）を試して失敗または明確に詰まった（タイムアウト、ツール拒否、スキーマ未ロードでリトライ不可）
+2. 書き込み先が `$OBSIDIAN_VAULT/**` 内
+3. **Step 1-5（Search→Folder→Wikilink→Frontmatter→INDEX更新）は MCP 経路と同じく必須**。直接書き込みは「経路」が変わるだけで、Vault のルールは同じく守る
+4. 直接書き込み後、後追いで MCP 経由 search-vault を 1 回呼んで反映確認するのが望ましい（必須ではない）
+
+### Tier 2 で禁止される操作
+
+- 既存ノートの **replace**（全置換）— append/prepend のみ。replace が必要なら MCP 復旧を待つ
+- 大量バッチ書き込み（> 5 ノート連続）— Vault index 破損リスク。INBOX.md に列挙して MCP 経由で順次処理
+- Vault 外への書き込み（自明だが念のため）
+
+### Tier 2 を選んだら明示する
+
+エージェントはユーザーに「Tier 2（直接 Write）で書き込みます。理由: <MCP がこう失敗した>」と一行宣言してから書く。サイレント・フォールバックは禁止。
 
 ## Vault Path
 
@@ -116,9 +143,12 @@ Use these established tags (lowercase, hyphenated):
 - Content that only makes sense in this session's context
 - Raw Claude Code internal memory format (those go in `.claude/memory/`, not Obsidian)
 
-## DO NOT use `Write` tool for vault notes
+## `Write`/`Edit` 直接書き込みポリシー
 
-Using `Write` directly bypasses Obsidian's internal indexing and may corrupt vault state. Always use MCP tools.
+- **デフォルトは MCP 経由**（Tier 1）。Obsidian の内部 index が安定するため
+- Tier 2（直接 Write/Edit）は上記「Tiered Write Strategy」の条件下でのみ許可
+- 大規模置換やフォルダ移動が必要な場合は Tier 1 復旧を待つ — 直接 Write での replace は禁止
+- 詳細は `Claude Code/横断テーマ/Obsidian書き込み多重化方針.md` を参照
 
 ## When to Use Which Tool
 
