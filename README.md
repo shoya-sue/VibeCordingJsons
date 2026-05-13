@@ -227,7 +227,7 @@ All 26 events:
 | `BASH_MAX_TIMEOUT_MS` | Bash timeout (ms) | `120000`-`300000` |
 | `CLAUDE_CODE_MAX_OUTPUT_TOKENS` | Output token limit (Opus 4.7: max 64k) | `64000` |
 | `ENABLE_TOOL_SEARCH` | Enable tool search | `auto` |
-| `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE` | Auto context compaction (%) | `50` |
+| `CLAUDE_CODE_AUTO_COMPACT_WINDOW` | Autocompact 発火 token 数 (Opus 4.7 で 400K cap バグ #43989 回避) | `1000000` |
 | `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS` | Enable Agent Teams | `1` |
 | `CLAUDE_CODE_AUTO_MEMORY_PATH` | Auto-memory save path | `""` (default) |
 | `CLAUDE_CODE_SESSIONEND_HOOKS_TIMEOUT_MS` | SessionEnd hook timeout (ms) | `5000` |
