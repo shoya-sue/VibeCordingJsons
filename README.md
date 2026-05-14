@@ -243,6 +243,8 @@ All 26 events:
 | `CLAUDE_CODE_PACKAGE_MANAGER_AUTO_UPDATE` | Homebrew/WinGet インストール時にバックグラウンドで自動アップグレード（v2.1.129+） | `1` |
 | `CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY` | `/model` ピッカーでゲートウェイ `/v1/models` 探索を有効化（オプトイン）（v2.1.129+） | `1` |
 | `CLAUDE_PROJECT_DIR` | MCP stdio サーバーおよびフックに自動設定されるプロジェクトルートパス（v2.1.139+） | (auto) |
+| `CLAUDE_CODE_PLUGIN_PREFER_HTTPS` | GitHub からのプラグインソース取得を SSH ではなく HTTPS で行う（SSH ブロック環境向け）（v2.1.141+） | `1` |
+| `ANTHROPIC_WORKSPACE_ID` | Workload identity federation 用のワークスペース ID（エンタープライズ向け）（v2.1.141+） | (set if applicable) |
 
 ### Other Settings
 
