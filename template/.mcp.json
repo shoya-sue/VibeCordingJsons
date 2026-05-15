@@ -1,5 +1,16 @@
 {
   "mcpServers": {
+    "obsidian": {
+      "command": "/bin/zsh",
+      "args": ["-c", "export OBSIDIAN_API_KEY=$(/usr/bin/security find-generic-password -s 'obsidian-mcp-api-key' -w 2>/dev/null) && exec NODEJS_BIN_DIR/obsidian-mcp-server"],
+      "env": {
+        "PATH": "NODEJS_BIN_DIR:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin",
+        "OBSIDIAN_BASE_URL": "https://127.0.0.1:27124",
+        "OBSIDIAN_VERIFY_SSL": "false",
+        "MCP_TRANSPORT_TYPE": "stdio",
+        "OTEL_ENABLED": "false"
+      }
+    },
     "context7": {
       "command": "npx",
       "args": ["-y", "@upstash/context7-mcp@latest"],
