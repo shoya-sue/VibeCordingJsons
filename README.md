@@ -245,6 +245,8 @@ All 26 events:
 | `CLAUDE_PROJECT_DIR` | MCP stdio サーバーおよびフックに自動設定されるプロジェクトルートパス（v2.1.139+） | (auto) |
 | `CLAUDE_CODE_PLUGIN_PREFER_HTTPS` | GitHub からのプラグインソース取得を SSH ではなく HTTPS で行う（SSH ブロック環境向け）（v2.1.141+） | `1` |
 | `ANTHROPIC_WORKSPACE_ID` | Workload identity federation 用のワークスペース ID（エンタープライズ向け）（v2.1.141+） | (set if applicable) |
+| `CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE` | Fast mode (`/fast`) を Opus 4.6 に固定（v2.1.142+ のデフォルトは Opus 4.7） | `1` |
+| `MCP_TOOL_TIMEOUT` | MCP ツール呼び出し 1 回あたりのフェッチタイムアウト（ms）。v2.1.142 でリモート HTTP/SSE サーバーの 60s ハードキャップを回避 | `120000` |
 
 ### Other Settings
 
