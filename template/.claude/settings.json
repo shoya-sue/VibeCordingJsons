@@ -212,6 +212,11 @@
             "type": "command",
             "command": "${HOME}/.claude/hooks/ensure-memory-symlink.sh",
             "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "${HOME}/.claude/hooks/obsidian-mcp-healthcheck.sh",
+            "timeout": 10
           }
         ]
       }
