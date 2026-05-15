@@ -106,6 +106,46 @@ if [[ -f "$TARGET/.mcp.json" ]] && grep -q 'NODEJS_BIN_DIR' "$TARGET/.mcp.json" 
   rm -f "$TARGET/.mcp.json.bak"
 fi
 
+# ─── Obsidian MCP pre-flight ──────────────────────────────────────────────────
+# .mcp.json に obsidian エントリがある場合、cyanheads obsidian-mcp-server の
+# 依存を順次チェックし、未充足の項目があれば手順を案内する (fail はしない)
+if [[ -f "$TARGET/.mcp.json" ]] && grep -q '"obsidian"' "$TARGET/.mcp.json" 2>/dev/null; then
+  echo ""
+  echo "── Obsidian MCP pre-flight ────────────────────────────"
+
+  # 1. obsidian-mcp-server (cyanheads) がグローバルに入っているか
+  if command -v obsidian-mcp-server &>/dev/null; then
+    echo "  ✓ obsidian-mcp-server installed: $(command -v obsidian-mcp-server)"
+  else
+    echo "  ✗ obsidian-mcp-server is not installed."
+    echo "    → npm i -g obsidian-mcp-server"
+  fi
+
+  # 2. Obsidian Local REST API plugin (vault 側)
+  OBSIDIAN_VAULT_DEFAULT="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/Obsidian"
+  if [[ -d "$OBSIDIAN_VAULT_DEFAULT/.obsidian/plugins/obsidian-local-rest-api" ]]; then
+    echo "  ✓ Local REST API plugin found in default vault"
+  else
+    echo "  ✗ Local REST API plugin not found in $OBSIDIAN_VAULT_DEFAULT"
+    echo "    → Obsidian → Settings → Community plugins → Browse → 'Local REST API' (by coddingtonbear)"
+    echo "    → obsidian://show-plugin?id=obsidian-local-rest-api"
+  fi
+
+  # 3. macOS Keychain に API key が登録されているか
+  if [[ "$OSTYPE" == darwin* ]] && command -v security &>/dev/null; then
+    if /usr/bin/security find-generic-password -s 'obsidian-mcp-api-key' -w &>/dev/null; then
+      echo "  ✓ OBSIDIAN_API_KEY found in macOS Keychain"
+    else
+      echo "  ✗ OBSIDIAN_API_KEY not in macOS Keychain"
+      echo "    1) Local REST API plugin の設定画面で API key をコピー"
+      echo "    2) security add-generic-password -s 'obsidian-mcp-api-key' -a \"\$USER\" -w 'PASTE_KEY' -U"
+    fi
+  fi
+
+  echo "  Docs: ${HOME}/.claude/rules/obsidian-mcp.md (cyanheads + Local REST API 構成)"
+  echo "───────────────────────────────────────────────────────"
+fi
+
 # ─── Copilot CLI symlink bridge ───────────────────────────────────────────────
 # グローバルインストール時のみ: ~/.claude/ のルール・スキルを ~/.github/ にシンボリックリンク
 # Claude Code が使えない場合でも Copilot CLI が同一設定・メモリを参照できるようにする
