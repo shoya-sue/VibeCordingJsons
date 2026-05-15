@@ -17,6 +17,14 @@
 - Maximum reasoning requirements
 - Research and analysis tasks
 
+## Fast Mode
+
+`/fast` で Claude Opus を高速出力モードで利用できる（小型モデルへのダウングレードではない、品質維持のままレイテンシ低減）。
+
+- v2.1.142+ のデフォルト: **Opus 4.7**
+- v2.1.141 以前: Opus 4.6
+- Opus 4.6 にピン留めしたい場合: `CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE=1` を設定
+
 ## Context Window Management
 
 Avoid last 20% of context window for:

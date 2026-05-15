@@ -10,6 +10,8 @@
 | `agent` | サブエージェントを起動してツール操作（v2.1.85+） |
 | `mcp_tool` | MCP ツールを直接呼び出し（v2.1.118+） |
 
+> `SessionStart` / `Setup` / `SubagentStart` には `command` 型しか設定できない（`prompt` / `agent` 型を設定すると v2.1.142+ で明示的エラー）。
+
 ## All Hook Events (26 events)
 
 | イベント | タイミング | ブロッキング |
