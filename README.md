@@ -247,6 +247,9 @@ All 26 events:
 | `ANTHROPIC_WORKSPACE_ID` | Workload identity federation 用のワークスペース ID（エンタープライズ向け）（v2.1.141+） | (set if applicable) |
 | `CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE` | Fast mode (`/fast`) を Opus 4.6 に固定（v2.1.142+ のデフォルトは Opus 4.7） | `1` |
 | `MCP_TOOL_TIMEOUT` | MCP ツール呼び出し 1 回あたりのフェッチタイムアウト（ms）。v2.1.142 でリモート HTTP/SSE サーバーの 60s ハードキャップを回避 | `120000` |
+| `CLAUDE_CODE_STOP_HOOK_BLOCK_CAP` | Stop フックが連続でブロックできる回数の上限（v2.1.143+、デフォルト `8`、無限ループ防止） | `8` |
+| `CLAUDE_CODE_USE_POWERSHELL_TOOL` | Windows の PowerShell ツール有効化（v2.1.143 で Bedrock/Vertex/Foundry 利用時にデフォルト ON、`0` でオプトアウト） | `0` |
+| `CLAUDE_CODE_POWERSHELL_RESPECT_EXECUTION_POLICY` | PowerShell ツールの `-ExecutionPolicy Bypass` デフォルトを無効化し、システムの ExecutionPolicy を尊重（v2.1.143+） | `1` |
 
 ### Other Settings
 
@@ -269,6 +272,7 @@ All 26 events:
 | `alwaysLoad` (in `.mcp.json` per server) | `true` → そのサーバーの全ツールを tool-search 遅延なしで常時利用可能にする（v2.1.121+） |
 | `skillOverrides` | スキルの表示制御（`"off"`: 完全非表示 / `"user-invocable-only"`: モデルには非表示 / `"name-only"`: 説明を折り畳み）（v2.1.129+） |
 | `worktree.baseRef` | ワークツリーのブランチ起点（`"fresh"`: ベースブランチから / `"head"`: 現在の HEAD から）（v2.1.133+） |
+| `worktree.bgIsolation` | バックグラウンドセッションを worktree で分離するか（`"none"` で無効化し working copy を直接編集、v2.1.143+） |
 | `parentSettingsBehavior` | admin 設定の結合方式（`"first-wins"`: 最上位優先 / `"merge"`: 全階層をマージ）（v2.1.133+） |
 | `autoMode.hard_deny` | auto モード分類ルール — ユーザーの意図や allow 例外に関わらず無条件ブロック（v2.1.136+） |
 
