@@ -26,7 +26,7 @@
 | `Notification` | 通知発生時 | No |
 | `SubagentStart` | サブエージェント開始時 | No |
 | `SubagentStop` | サブエージェント停止時 | Yes |
-| `Stop` | 応答完了時 | Yes |
+| `Stop` | 応答完了時（8 連続ブロックで自動終了、`CLAUDE_CODE_STOP_HOOK_BLOCK_CAP` で変更、v2.1.143+） | Yes |
 | `StopFailure` | Stop フック失敗時 | No |
 | `TeammateIdle` | チームメイト待機時 | No |
 | `TaskCreated` | タスク作成時 | Yes |
