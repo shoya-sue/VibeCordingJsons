@@ -343,6 +343,8 @@ Edit `project.code-workspace` to manage Claude Code across multiple projects in 
 
 Claude Code lets you switch models mid-session with the `/model` command.
 
+> **v2.1.144+ 挙動変更**: `/model` で選んだモデルは現セッションのみ適用される。新セッションのデフォルトにしたい場合はモデルピッカーで `d` キーを押す。
+
 | Model Alias | Description | Recommended For |
 |-------------|-------------|-----------------|
 | `opus` | Opus 4.7 (highest performance) | Complex architecture design |

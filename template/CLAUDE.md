@@ -42,7 +42,7 @@ make deploy-staging   # Deploy to staging
 
 ## Slash Commands
 
-- `/model opusplan` — Auto-switch: Opus for planning, Sonnet for execution
+- `/model opusplan` — Auto-switch: Opus for planning, Sonnet for execution（v2.1.144+ で `/model` はセッション限定、ピッカーで `d` キーを押すと新セッションのデフォルトに設定）
 - `/effort low|medium|high|xhigh|max` — Set thinking level. `/effort auto` to reset
 - `/memory` — Manage auto-memory
 - `/loop 5m check deploy` — Repeat a prompt on schedule
