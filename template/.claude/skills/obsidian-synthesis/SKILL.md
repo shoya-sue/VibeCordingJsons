@@ -2,7 +2,7 @@
 name: obsidian-synthesis
 description: Daily synthesis of Obsidian vault — reads INBOX captures, surfaces connections across notes, generates dated insight note
 user-invokable: true
-allowed-tools: ["ToolSearch", "Read", "Write", "Edit", "Bash", "mcp__obsidian__read-note", "mcp__obsidian__search-vault", "mcp__obsidian__create-note", "mcp__obsidian__edit-note", "mcp__obsidian__create-directory", "mcp__obsidian__list-available-vaults"]
+allowed-tools: ["ToolSearch", "Read", "Write", "Edit", "Bash", "mcp__obsidian__obsidian_get_note", "mcp__obsidian__obsidian_search_notes", "mcp__obsidian__obsidian_write_note", "mcp__obsidian__obsidian_append_to_note", "mcp__obsidian__obsidian_patch_note", "mcp__obsidian__obsidian_replace_in_note", "mcp__obsidian__obsidian_list_notes", "mcp__obsidian__obsidian_manage_frontmatter", "mcp__obsidian__obsidian_manage_tags"]
 effort: high
 ---
 
@@ -20,48 +20,47 @@ Proactively review recent Obsidian vault activity and generate a synthesis note 
 
 ### 1. Load MCP Schemas (MANDATORY FIRST STEP)
 
-Call ToolSearch to load Obsidian MCP tool schemas:
+Call ToolSearch to load cyanheads Obsidian MCP tool schemas:
 ```
-ToolSearch(query: "select:mcp__obsidian__create-note,mcp__obsidian__search-vault,mcp__obsidian__read-note,mcp__obsidian__edit-note,mcp__obsidian__list-available-vaults,mcp__obsidian__create-directory,mcp__obsidian__move-note")
+ToolSearch(query: "select:mcp__obsidian__obsidian_get_note,mcp__obsidian__obsidian_search_notes,mcp__obsidian__obsidian_write_note,mcp__obsidian__obsidian_append_to_note,mcp__obsidian__obsidian_patch_note,mcp__obsidian__obsidian_replace_in_note,mcp__obsidian__obsidian_list_notes")
 ```
 
 ### 2. Read Context
 
 Read CLAUDE.md to load current project context:
 ```
-Read("/Users/shoya-sue/Library/Mobile Documents/iCloud~md~obsidian/Documents/Obsidian/CLAUDE.md")
+mcp__obsidian__obsidian_get_note(filePath: "CLAUDE.md")
 ```
 
 ### 3. Read INBOX
 
 Read INBOX.md for unprocessed captures:
 ```
-mcp__obsidian__read-note(vault: "Obsidian", path: "INBOX.md")
+mcp__obsidian__obsidian_get_note(filePath: "INBOX.md")
 ```
 
 ### 4. Scan Recent Activity
 
-Find notes modified in the last 48 hours:
+Find notes modified in the last 48 hours under PARA folders (exclude system folders and legacy archives):
 ```bash
-find "/Users/shoya-sue/Library/Mobile Documents/iCloud~md~obsidian/Documents/Obsidian" \
+find "$OBSIDIAN_VAULT" \
   -name "*.md" \
-  -newer "/Users/shoya-sue/Library/Mobile Documents/iCloud~md~obsidian/Documents/Obsidian/INBOX.md" \
+  -mtime -2 \
   -not -path "*/.obsidian/*" \
-  -not -path "*/アーカイブ/*" \
+  -not -path "*/.trash/*" \
+  -not -path "*/.backup/*" \
+  -not -path "*/08 - ARCHIVE/*" \
+  -not -path "*/_legacy_para/*" \
   -not -name "CLAUDE.md" \
   2>/dev/null | sort
 ```
 
-Or use timestamp-based search:
-```bash
-find "/Users/shoya-sue/Library/Mobile Documents/iCloud~md~obsidian/Documents/Obsidian" \
-  -name "*.md" \
-  -mtime -2 \
-  -not -path "*/.obsidian/*" \
-  2>/dev/null | sort
-```
+Read top 5–10 recently modified notes using `mcp__obsidian__obsidian_get_note` (filePath is relative to vault root, e.g. `20_projects/<owner>/<repo>.md`).
 
-Read top 5-10 recently modified notes using mcp__obsidian__read-note.
+For broader semantic search across PARA folders use:
+```
+mcp__obsidian__obsidian_search_notes(mode: "dataview", query: "...")
+```
 
 ### 5. Generate Synthesis
 
@@ -71,13 +70,13 @@ Analyze all gathered content and generate a synthesis with these sections:
 # Daily Synthesis — YYYY-MM-DD
 
 ## Captures to Process
-[INBOX items and suggested destinations]
+[INBOX items and suggested destinations — use PARA folder mapping from ~/.claude/rules/obsidian-mcp.md]
 
 ## Emerging Patterns
 [Themes or patterns appearing across multiple notes]
 
 ## Cross-Domain Connections
-[Links between seemingly unrelated captures/notes]
+[Links between seemingly unrelated captures/notes — use [[wikilinks]]]
 
 ## Questions Worth Exploring
 [Open questions surfaced by the synthesis]
@@ -86,31 +85,54 @@ Analyze all gathered content and generate a synthesis with these sections:
 [1-3 concrete next steps]
 ```
 
+Frontmatter for the synthesis note:
+```yaml
+---
+created: YYYY-MM-DD
+tags: [claude-code, synthesis, daily]
+---
+```
+
+Include `[[30_knowledge/claude-code/INDEX]]` and `[[HOME]]` as wikilinks so the note is graph-connected.
+
 ### 6. Write Synthesis Note
 
-Create the dated synthesis note:
+Create the dated synthesis note (PARA path: `30_knowledge/claude-code/daily-synthesis/YYYY-MM-DD.md`):
 ```
-mcp__obsidian__create-note(
-  vault: "Obsidian",
-  path: "Claude Code/Daily Synthesis/YYYY-MM-DD.md",
-  content: <generated synthesis>
+mcp__obsidian__obsidian_write_note(
+  filePath: "30_knowledge/claude-code/daily-synthesis/YYYY-MM-DD.md",
+  content: <generated synthesis with frontmatter>,
+  overwrite: false
 )
 ```
 
 ### 7. Process INBOX
 
 For each INBOX item, either:
-a. Move to appropriate folder (if clear destination)
+a. Suggest destination per `~/.claude/rules/obsidian-mcp.md` Content → Folder Mapping (20_projects/, 30_knowledge/, 40_learning/, 50_decisions/, 60_wishes/)
 b. Leave with a `[→ processed: YYYY-MM-DD]` marker
 
-Update INBOX.md:
+Update INBOX.md via surgical patch (avoid full-file rewrite):
 ```
-mcp__obsidian__edit-note(vault: "Obsidian", path: "INBOX.md", ...)
+mcp__obsidian__obsidian_patch_note(
+  filePath: "INBOX.md",
+  operation: "append",
+  targetType: "document",
+  content: "<processed marker or moved-to note>"
+)
+```
+
+For find-and-replace within INBOX:
+```
+mcp__obsidian__obsidian_replace_in_note(
+  filePath: "INBOX.md",
+  replacements: [{search: "...", replace: "..."}]
+)
 ```
 
 ## Output
 
-- Synthesis note at `Claude Code/Daily Synthesis/YYYY-MM-DD.md`
+- Synthesis note at `30_knowledge/claude-code/daily-synthesis/YYYY-MM-DD.md`
 - Updated INBOX.md with processed markers or cleared items
 - Summary of key insights presented to user
 

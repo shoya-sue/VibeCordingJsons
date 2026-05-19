@@ -12,6 +12,6 @@ MEM_DIR="$(dirname "$FILE")"
 [[ -L "$MEM_DIR" ]] && exit 0
 
 VAULT="${OBSIDIAN_VAULT:-$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/Obsidian}"
-DEST="$VAULT/Claude Code/memory"
+DEST="$VAULT/90_artifacts/claude-code/memory"
 mkdir -p "$DEST" 2>/dev/null || true
 cp "$FILE" "$DEST/$(basename "$FILE")" 2>/dev/null || true

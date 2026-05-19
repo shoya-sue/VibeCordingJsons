@@ -7,7 +7,7 @@
 set +e
 
 VAULT="${OBSIDIAN_VAULT:-$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/Obsidian}"
-OBS_BASE="$VAULT/Claude Code/memory"
+OBS_BASE="$VAULT/90_artifacts/claude-code/memory"
 USER_NAME="${USER:-$(basename "$HOME")}"
 
 CWD="${PWD:-$(pwd)}"
