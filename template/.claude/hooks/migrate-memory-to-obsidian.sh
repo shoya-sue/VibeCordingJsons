@@ -6,7 +6,7 @@ DRY_RUN=0
 [[ "$1" == "--dry-run" ]] && DRY_RUN=1
 
 VAULT="${OBSIDIAN_VAULT:-$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/Obsidian}"
-OBS_BASE="$VAULT/Claude Code/memory"
+OBS_BASE="$VAULT/90_artifacts/claude-code/memory"
 USER_NAME="${USER:-$(basename "$HOME")}"
 
 success=0

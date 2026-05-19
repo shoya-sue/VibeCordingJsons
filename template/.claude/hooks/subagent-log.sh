@@ -1,7 +1,7 @@
 #!/bin/bash
 # SubagentStop hook: append a single-line summary of the subagent's result to
-# Obsidian Claude Code/Sessions/YYYY-MM.md so the "second brain" captures
-# subagent work, not just main-session activity.
+# Obsidian 90_artifacts/claude-code/sessions/YYYY-MM.md so the "second brain"
+# captures subagent work, not just main-session activity.
 # Fails silently; never blocks Claude.
 
 set +e
@@ -11,7 +11,7 @@ DATE=$(date +%Y-%m-%d)
 TIME=$(date +%H:%M:%S)
 YEAR_MONTH=$(date +%Y-%m)
 VAULT="${OBSIDIAN_VAULT:-$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/Obsidian}"
-DIR="$VAULT/Claude Code/Sessions"
+DIR="$VAULT/90_artifacts/claude-code/sessions"
 FILE="$DIR/$YEAR_MONTH.md"
 
 mkdir -p "$DIR" 2>/dev/null || true
