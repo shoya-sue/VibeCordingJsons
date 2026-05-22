@@ -62,9 +62,24 @@ $OBSIDIAN_VAULT/
 | 1 | **Obsidian MCP** (`mcp__obsidian__obsidian_*`) | cyanheads ツール 12 個 | **デフォルト**。vault 内すべての read/write/edit。surgical edit (heading/block/frontmatter 単位) に対応 |
 | 2 | `Write` / `Edit` ツール直接 | 標準ツール | MCP healthcheck が ✗ を返す状況、または MCP がカバーしないファイル形式 (画像・大バイナリ等)。**フォールバック時は一行宣言してから** |
 | 3 | claude-obsidian プラグイン slash command (`/wiki`, `/save`, `/autoresearch`, `/canvas`) | Obsidian アプリ内 | wiki vault で wiki/index.md・concepts/・entities/ などを構造化追記するとき |
-| 4 | Hook script `>>` append | bash | `obsidian-session-end.sh` 等の自動化用。エージェントから直接シェルで append しない |
+| 4 | Hook script `>>` append | bash | `obsidian-session-end.sh` / `obsidian-auto-capture.sh` 等の自動化用。エージェントから直接シェルで append しない |
 
 **サイレント・フォールバック禁止**: ツールが失敗した場合は理由を一行宣言してから次経路へ。
+
+### Auto-capture Layer (Stop hook, 2026-05-22 追加)
+
+`obsidian-auto-capture.sh` が Stop hook で発動し、`claude --bare --model claude-haiku-4-5` でセッション transcript から **promotion 候補** を抽出して `90_artifacts/claude-code/auto-captures/YYYY-MM.md` に append する（再帰防止のため `--bare` 必須）。
+
+| 項目 | 内容 |
+|---|---|
+| トリガー | Stop hook（shoya-sue が普通にセッションを終えるだけで自動発動） |
+| 出力先 | `90_artifacts/claude-code/auto-captures/YYYY-MM.md`（Claude 専有、append-only） |
+| 抽出カテゴリ | トラブルシュート / feedback / 環境設定 / MCP変更 |
+| 書き込み禁止 | `INBOX.md` / `00_inbox/` / `50_decisions/` / `60_wishes/` / `40_learning/self-profile/` / `themes/*` / `30_knowledge/claude-code/memory/Public/*` |
+| Skip 条件 | transcript < 5KB / `claude` CLI 不在 / Haiku が "SKIP" 出力 / 90 秒タイムアウト |
+| Promotion | 手動 or `/obsidian-synthesis`（Sonnet）で auto-captures → themes/memory/decisions へ昇格 |
+
+エージェントは auto-captures/ を **直接編集しない**（hook 専有領域）。promotion 時は `/obsidian-synthesis` 経由か、手動で themes/memory に移してから auto-captures/ 内の `<!-- 未処理 -->` マーカーを更新する。
 
 ### MCP ツール選択ガイド (経路 1)
 
