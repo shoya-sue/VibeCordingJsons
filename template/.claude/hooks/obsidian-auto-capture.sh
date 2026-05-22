@@ -136,16 +136,24 @@ ${TEXT}
   fi
 
   # Replace marker with extracted content
-  TMP=$(mktemp)
-  awk -v marker="$MARKER_TAG" -v content="$RESULT" '
-    $0 == marker {
-      print content
-      print ""
-      print "<!-- 未処理 — `/obsidian-synthesis` または手動で promotion -->"
-      next
-    }
-    { print }
-  ' "$AUTO_CAPTURE_FILE" > "$TMP" && mv "$TMP" "$AUTO_CAPTURE_FILE"
+  # Use python3 (always present on macOS) to avoid BSD awk's "newline in -v" limitation
+  if command -v python3 >/dev/null 2>&1; then
+    RESULT_FILE=$(mktemp)
+    printf '%s' "$RESULT" > "$RESULT_FILE"
+    MARKER_TAG="$MARKER_TAG" RESULT_FILE="$RESULT_FILE" python3 - "$AUTO_CAPTURE_FILE" <<'PYEOF' 2>/dev/null
+import os, sys
+ac_file = sys.argv[1]
+marker = os.environ["MARKER_TAG"]
+with open(ac_file, encoding="utf-8") as f:
+    content = f.read()
+with open(os.environ["RESULT_FILE"], encoding="utf-8") as f:
+    extracted = f.read().rstrip()
+replacement = extracted + "\n\n<!-- 未処理 — `/obsidian-synthesis` または手動で promotion -->"
+with open(ac_file, "w", encoding="utf-8") as f:
+    f.write(content.replace(marker, replacement))
+PYEOF
+    rm -f "$RESULT_FILE"
+  fi
 ) &
 disown
 exit 0
