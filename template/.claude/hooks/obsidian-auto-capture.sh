@@ -4,10 +4,15 @@
 # and appends them to 90_artifacts/claude-code/auto-captures/YYYY-MM.md.
 # Promotion to themes/memory/decisions is left to humans or /obsidian-synthesis.
 #
-# Recursion-safe: invokes `claude --bare` which skips hooks/LSP/plugins/CLAUDE.md.
+# OAuth-compatible: does NOT use --bare (which would require ANTHROPIC_API_KEY).
+# Recursion-safe: sets CLAUDE_HOOK_AUTO_CAPTURE_RUNNING=1 in env. Child claude
+# processes inherit it; this hook checks the var at entry and exits early.
 # Fire-and-forget: Haiku extraction runs in background, hook returns immediately.
 
 set -uo pipefail
+
+# Recursion guard
+[ "${CLAUDE_HOOK_AUTO_CAPTURE_RUNNING:-}" = "1" ] && exit 0
 
 OBSIDIAN_VAULT="${OBSIDIAN_VAULT:-$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/Obsidian}"
 AUTO_CAPTURE_DIR="$OBSIDIAN_VAULT/90_artifacts/claude-code/auto-captures"
@@ -16,6 +21,15 @@ AUTO_CAPTURE_DIR="$OBSIDIAN_VAULT/90_artifacts/claude-code/auto-captures"
 [ -d "$OBSIDIAN_VAULT" ] || exit 0
 command -v jq >/dev/null 2>&1 || exit 0
 command -v claude >/dev/null 2>&1 || exit 0
+
+# Portable timeout (macOS lacks `timeout`)
+if command -v timeout >/dev/null 2>&1; then
+  TIMEOUT_PREFIX="timeout 90"
+elif command -v gtimeout >/dev/null 2>&1; then
+  TIMEOUT_PREFIX="gtimeout 90"
+else
+  TIMEOUT_PREFIX=""
+fi
 
 # Read Stop hook stdin
 INPUT=$(cat 2>/dev/null || echo '{}')
@@ -26,7 +40,7 @@ CWD=$(printf '%s' "$INPUT" | jq -r '.cwd // empty' 2>/dev/null || echo "")
 [ -z "$TRANSCRIPT_PATH" ] && exit 0
 [ -f "$TRANSCRIPT_PATH" ] || exit 0
 
-# Skip trivial sessions (< 5KB transcript = unlikely to contain promotion candidates)
+# Skip trivial sessions
 TRANSCRIPT_SIZE=$(wc -c < "$TRANSCRIPT_PATH" 2>/dev/null | tr -d ' ' || echo 0)
 [ "$TRANSCRIPT_SIZE" -lt 5000 ] && exit 0
 
@@ -54,9 +68,30 @@ type: artifact
 EOF
 fi
 
-# Background extraction — non-blocking, --bare skips all hooks so no recursion
+# Always append a marker entry first (provenance even if Haiku fails)
+MARKER_TAG="<!-- session ${SESSION_ID:0:8} marker, awaiting extraction -->"
+{
+  printf '\n## %s %s — session %s (%s)\n\n' "$DATE" "$TIME" "${SESSION_ID:0:8}" "$PROJECT"
+  printf -- '- **transcript**: \`%s\` (%s bytes)\n' "$TRANSCRIPT_PATH" "$TRANSCRIPT_SIZE"
+  printf '%s\n' "$MARKER_TAG"
+} >> "$AUTO_CAPTURE_FILE"
+
+# Background extraction
 (
-  PROMPT='以下の Claude Code セッション transcript (JSONL) から、次のカテゴリに該当する内容のみを抽出してください:
+  # Compress JSONL → clean text (drop tool_use/tool_result metadata, last 200 turns, cap 80KB)
+  TEXT=$(tail -200 "$TRANSCRIPT_PATH" \
+    | jq -r 'select(.type=="user" or .type=="assistant") | .message.content | if type=="string" then . else (map(select(.type=="text").text // .) | join("\n")) end' 2>/dev/null \
+    | tail -c 80000)
+
+  if [ -z "$TEXT" ]; then
+    if command -v sed >/dev/null 2>&1; then
+      sed -i.bak "s|$MARKER_TAG|<!-- SKIP — empty transcript text -->|" "$AUTO_CAPTURE_FILE" 2>/dev/null
+      rm -f "$AUTO_CAPTURE_FILE.bak" 2>/dev/null
+    fi
+    exit 0
+  fi
+
+  PROMPT="以下は Claude Code セッション transcript の抽出テキストです。次のカテゴリに該当する内容のみを抽出してください:
 
 - ## トラブルシュート: 問題→解決ペア（自明なものは除外）
 - ## feedback: ユーザーからの訂正・好み表明
@@ -70,29 +105,47 @@ fi
 - [[30_knowledge/claude-code/環境設定]]
 - [[30_knowledge/claude-code/themes/MCPサーバー全リスト]]
 
-該当なしなら "SKIP" とだけ出力。
-前置きや説明は不要、抽出内容のみ markdown で出力。'
+該当なしなら 'SKIP' とだけ出力。前置きや説明は不要、抽出内容のみ markdown で出力。
 
-  RESULT=$(timeout 90 claude \
-    --bare \
+---transcript---
+${TEXT}
+---end---"
+
+  # Call Haiku via OAuth (no --bare). --strict-mcp-config skips MCP load without needing a config file.
+  # shellcheck disable=SC2086
+  RESULT=$(CLAUDE_HOOK_AUTO_CAPTURE_RUNNING=1 \
+    $TIMEOUT_PREFIX claude \
     -p "$PROMPT" \
     --model claude-haiku-4-5 \
     --output-format text \
-    --max-budget-usd 0.10 \
+    --max-budget-usd 0.30 \
     --no-session-persistence \
-    < "$TRANSCRIPT_PATH" 2>/dev/null) || exit 0
+    --disable-slash-commands \
+    --strict-mcp-config \
+    2>/dev/null) || RESULT=""
 
-  [ -z "$RESULT" ] && exit 0
   CLEAN=$(printf '%s' "$RESULT" | tr -d '[:space:]')
-  [ "$CLEAN" = "SKIP" ] && exit 0
-  [ "$CLEAN" = "ERROR" ] && exit 0
 
-  # Append entry to monthly file
-  {
-    printf '\n## %s %s — session %s (%s)\n\n' "$DATE" "$TIME" "${SESSION_ID:0:8}" "$PROJECT"
-    printf '%s\n\n' "$RESULT"
-    printf '<!-- 未処理 — `/obsidian-synthesis` または手動で promotion -->\n\n'
-  } >> "$AUTO_CAPTURE_FILE"
+  if [ -z "$CLEAN" ] || [ "$CLEAN" = "SKIP" ]; then
+    # Replace marker with SKIP note
+    if command -v sed >/dev/null 2>&1; then
+      sed -i.bak "s|$MARKER_TAG|<!-- SKIP — Haiku found nothing noteworthy -->|" "$AUTO_CAPTURE_FILE" 2>/dev/null
+      rm -f "$AUTO_CAPTURE_FILE.bak" 2>/dev/null
+    fi
+    exit 0
+  fi
+
+  # Replace marker with extracted content
+  TMP=$(mktemp)
+  awk -v marker="$MARKER_TAG" -v content="$RESULT" '
+    $0 == marker {
+      print content
+      print ""
+      print "<!-- 未処理 — `/obsidian-synthesis` または手動で promotion -->"
+      next
+    }
+    { print }
+  ' "$AUTO_CAPTURE_FILE" > "$TMP" && mv "$TMP" "$AUTO_CAPTURE_FILE"
 ) &
 disown
 exit 0
