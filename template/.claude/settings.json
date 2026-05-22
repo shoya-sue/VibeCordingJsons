@@ -178,6 +178,7 @@
     "CLAUDE_CODE_SUBPROCESS_ENV_SCRUB": "1",
     "CLAUDE_CODE_NO_FLICKER": "1",
     "ENABLE_PROMPT_CACHING_1H": "1",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "haiku",
     "OBSIDIAN_VAULT": "${HOME}/Library/Mobile Documents/iCloud~md~obsidian/Documents/Obsidian"
   },
   "worktree": {
@@ -273,6 +274,15 @@
             "type": "command",
             "command": "${HOME}/.claude/hooks/obsidian-session-end.sh",
             "timeout": 15
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${HOME}/.claude/hooks/obsidian-auto-capture.sh",
+            "timeout": 5
           }
         ]
       }
