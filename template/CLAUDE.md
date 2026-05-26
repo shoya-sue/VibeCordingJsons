@@ -60,7 +60,7 @@ make deploy-staging   # Deploy to staging
 - `/ultrareview` — クラウドで並列マルチエージェント分析による包括的コードレビューを実行（引数なしで現ブランチ、`<PR#>` で特定 PR）。CI からは `claude ultrareview [target]` サブコマンドで非インタラクティブ実行可（`--json` で JSON 出力、終了コード 0/1）
 - `/code-review [effort] [--comment]` — 現在の diff のバグを effort レベル指定でレビュー（v2.1.146+ で `/simplify` から名称変更）。`low|medium` は high-confidence findings のみ、`high|max` で broader coverage。`--comment` で GitHub PR にインラインコメント投稿（`/ultrareview` よりも軽量、ローカルブランチでも動作）
 - `/color` — Remote Control 接続中にアクセントカラーを同期
-- `/usage` — トークン使用量とコストを表示（`/cost` + `/stats` の統合版）
+- `/usage` — トークン使用量とコストを表示（`/cost` + `/stats` の統合版）。v2.1.149+ で skills/subagents/plugins/MCP サーバー別の上限消費内訳を表示
 - `/goal <condition>` — 完了条件を設定、条件達成まで複数ターンで継続実行（v2.1.139+）
 - `/scroll-speed` — マウスホイールのスクロール速度をライブプレビューで調整（v2.1.139+）
 
@@ -70,6 +70,7 @@ make deploy-staging   # Deploy to staging
 - Agent Teams enabled (`teammateMode: auto`)
 - ECC hooks: session continuity (SessionStart/Stop/SessionEnd), --no-verify guard (PreToolUse), auto-format JS/TS (PostToolUse), compact quality (PreCompact)
 - Multi-repo context: `claude --add-dir ../docs --add-dir ../shared-libs` to include external directories (set `CLAUDE_CODE_ADDITIONAL_DIRECTORIES_CLAUDE_MD=1` env var to also load their CLAUDE.md)
+- `claude --bg` で起動した bg セッションは `claude agents` ビューで `Ctrl+T` によりピン留め可能（v2.1.147+）。ピン留めセッションはアイドル時も維持、メモリ圧迫時も非ピン留めが先に shed される
 - Auto-memory enabled → `.claude/memory/`
 - Subagent usage does not count against billing — delegate aggressively
 - `gh` CLI for all GitHub operations, never raw `api.github.com`
