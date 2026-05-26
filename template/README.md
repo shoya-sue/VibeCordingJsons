@@ -10,7 +10,7 @@ Complete configuration for Claude Code and GitHub Copilot CLI with `everything-c
 | Skills (Claude) | 7 local + 156 via ECC plugin |
 | Agents (Claude) | 38 agents via ECC plugin (code-reviewer, architect, language-specific reviewers, etc.) |
 | Rules | 50 ECC rules (common + 8 languages) + subagent-delegation + team-coordination |
-| MCP Servers | context7, playwright, deepwiki, excalidraw, github |
+| MCP Servers | obsidian, context7, playwright, deepwiki, excalidraw, github |
 | Copilot CLI | copilot-instructions.md, 8 skills, 4 agents |
 | VSCode | Workspace config with auto-start task |
 

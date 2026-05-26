@@ -14,7 +14,7 @@ Copy all files from the `full/` directory to your project root or home directory
 - 30 agents via `everything-claude-code` plugin (code-reviewer, security-reviewer, architect, tdd-guide, language-specific reviewers, etc.)
 - 50 rules: `ecc/common/` (10) + 8 languages × 5 (typescript, python, golang, rust, swift, java, kotlin, cpp)
 - 2 custom rules: subagent-delegation, team-coordination
-- 5 MCP servers: context7, playwright, deepwiki, excalidraw, github
+- 6 MCP servers: obsidian, context7, playwright, deepwiki, excalidraw, github
 - Agent Teams enabled with auto teammate mode
 - Attribution enabled (commits and PRs)
 - **Requires** `everything-claude-code` plugin
