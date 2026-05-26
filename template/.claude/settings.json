@@ -285,6 +285,15 @@
             "timeout": 5
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${HOME}/.claude/hooks/strip-memory-provenance.sh",
+            "timeout": 10
+          }
+        ]
       }
     ],
     "PreCompact": [
