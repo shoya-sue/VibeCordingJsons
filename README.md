@@ -275,6 +275,7 @@ All 26 events:
 | `worktree.bgIsolation` | バックグラウンドセッションを worktree で分離するか（`"none"` で無効化し working copy を直接編集、v2.1.143+） |
 | `parentSettingsBehavior` | admin 設定の結合方式（`"first-wins"`: 最上位優先 / `"merge"`: 全階層をマージ）（v2.1.133+） |
 | `autoMode.hard_deny` | auto モード分類ルール — ユーザーの意図や allow 例外に関わらず無条件ブロック（v2.1.136+） |
+| `allowAllClaudeAiMcps` | エンタープライズ managed 設定 — `managed-mcp.json` と並んで claude.ai クラウド MCP コネクタをロード（v2.1.149+） |
 
 ## Settings Hierarchy
 
