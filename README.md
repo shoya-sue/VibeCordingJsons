@@ -250,6 +250,7 @@ All 26 events:
 | `CLAUDE_CODE_STOP_HOOK_BLOCK_CAP` | Stop フックが連続でブロックできる回数の上限（v2.1.143+、デフォルト `8`、無限ループ防止） | `8` |
 | `CLAUDE_CODE_USE_POWERSHELL_TOOL` | Windows の PowerShell ツール有効化（v2.1.143 で Bedrock/Vertex/Foundry 利用時にデフォルト ON、`0` でオプトアウト） | `0` |
 | `CLAUDE_CODE_POWERSHELL_RESPECT_EXECUTION_POLICY` | PowerShell ツールの `-ExecutionPolicy Bypass` デフォルトを無効化し、システムの ExecutionPolicy を尊重（v2.1.143+） | `1` |
+| `OTEL_METRICS_INCLUDE_ENTRYPOINT` | OpenTelemetry metrics に `app.entrypoint`（セッション起動エントリ）属性を含める（v2.1.152+、opt-in） | `true` |
 
 ### Other Settings
 
@@ -276,6 +277,7 @@ All 26 events:
 | `parentSettingsBehavior` | admin 設定の結合方式（`"first-wins"`: 最上位優先 / `"merge"`: 全階層をマージ）（v2.1.133+） |
 | `autoMode.hard_deny` | auto モード分類ルール — ユーザーの意図や allow 例外に関わらず無条件ブロック（v2.1.136+） |
 | `allowAllClaudeAiMcps` | エンタープライズ managed 設定 — `managed-mcp.json` と並んで claude.ai クラウド MCP コネクタをロード（v2.1.149+） |
+| `pluginSuggestionMarketplaces` | エンタープライズ managed 設定 — context-aware tips でプラグイン提案する組織 marketplace の allow リスト（v2.1.152+） |
 
 ## Settings Hierarchy
 
