@@ -50,6 +50,7 @@ make deploy-staging   # Deploy to staging
 - `/compact <summary>` — Compact context with focused summary
 - `/powerup` — インタラクティブな学習レッスンを起動
 - `/reload-plugins` — プラグインスキルを再起動なしで再読み込み
+- `/reload-skills` — スキルディレクトリをセッション再起動なしで再スキャン（v2.1.152+）
 - `/team-onboarding` — チームメイト向けのランプアップガイドを生成
 - `/proactive` — `/loop` のエイリアス（プロアクティブなループ実行）
 - `/recap` — 離席後のセッションサマリーを手動表示
@@ -58,7 +59,7 @@ make deploy-staging   # Deploy to staging
 - `/focus` — フォーカスビュー表示切り替え（Ctrl+O はノーマル/詳細トランスクリプト切り替えのみ）
 - `/less-permission-prompts` — トランスクリプトをスキャンしてパーミッションプロンプトを減らす allow リストを提案
 - `/ultrareview` — クラウドで並列マルチエージェント分析による包括的コードレビューを実行（引数なしで現ブランチ、`<PR#>` で特定 PR）。CI からは `claude ultrareview [target]` サブコマンドで非インタラクティブ実行可（`--json` で JSON 出力、終了コード 0/1）
-- `/code-review [effort] [--comment]` — 現在の diff のバグを effort レベル指定でレビュー（v2.1.146+ で `/simplify` から名称変更）。`low|medium` は high-confidence findings のみ、`high|max` で broader coverage。`--comment` で GitHub PR にインラインコメント投稿（`/ultrareview` よりも軽量、ローカルブランチでも動作）
+- `/code-review [effort] [--comment] [--fix]` — 現在の diff のバグを effort レベル指定でレビュー（v2.1.146+ で `/simplify` から名称変更、v2.1.152+ で `/simplify` は `/code-review --fix` のエイリアス）。`low|medium` は high-confidence findings のみ、`high|max` で broader coverage。`--comment` で GitHub PR にインラインコメント投稿。`--fix` で findings を作業ツリーに自動適用（reuse / simplification / efficiency 改善を提案、v2.1.152+）
 - `/color` — Remote Control 接続中にアクセントカラーを同期
 - `/usage` — トークン使用量とコストを表示（`/cost` + `/stats` の統合版）。v2.1.149+ で skills/subagents/plugins/MCP サーバー別の上限消費内訳を表示
 - `/goal <condition>` — 完了条件を設定、条件達成まで複数ターンで継続実行（v2.1.139+）
@@ -67,6 +68,7 @@ make deploy-staging   # Deploy to staging
 ## Important Notes
 
 - `.env.production` is read-prohibited (deny list)
+- Auto mode は v2.1.152+ でオプトイン同意不要（以前は明示的な同意ステップが必要）
 - Agent Teams enabled (`teammateMode: auto`)
 - ECC hooks: session continuity (SessionStart/Stop/SessionEnd), --no-verify guard (PreToolUse), auto-format JS/TS (PostToolUse), compact quality (PreCompact)
 - Multi-repo context: `claude --add-dir ../docs --add-dir ../shared-libs` to include external directories (set `CLAUDE_CODE_ADDITIONAL_DIRECTORIES_CLAUDE_MD=1` env var to also load their CLAUDE.md)
