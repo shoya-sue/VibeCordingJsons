@@ -346,7 +346,7 @@ Edit `project.code-workspace` to manage Claude Code across multiple projects in 
 
 Claude Code lets you switch models mid-session with the `/model` command.
 
-> **v2.1.144+ 挙動変更**: `/model` で選んだモデルは現セッションのみ適用される。新セッションのデフォルトにしたい場合はモデルピッカーで `d` キーを押す。
+> **v2.1.153+ 挙動変更**: `/model` で選んだモデルはデフォルトで新セッションにも引き継がれる（IDE と同挙動）。現セッションのみ切り替えたい場合はモデルピッカーで `s` キーを押す。旧 keybinding `modelPicker:setAsDefault` は `modelPicker:thisSessionOnly` にリネーム（`d` アクションは `s` に置換）。
 
 | Model Alias | Description | Recommended For |
 |-------------|-------------|-----------------|
