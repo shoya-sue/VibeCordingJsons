@@ -107,31 +107,23 @@ if [[ -f "$TARGET/.mcp.json" ]] && grep -q 'NODEJS_BIN_DIR' "$TARGET/.mcp.json" 
 fi
 
 # ─── Obsidian MCP pre-flight ──────────────────────────────────────────────────
-# .mcp.json に obsidian エントリがある場合、cyanheads obsidian-mcp-server の
-# 依存を順次チェックし、未充足の項目があれば手順を案内する (fail はしない)
+# .mcp.json に obsidian エントリがある場合、Local REST API & MCP Server プラグイン
+# 内蔵 native MCP (HTTP 27123 /mcp/) の依存を順次チェックする (fail はしない)
 if [[ -f "$TARGET/.mcp.json" ]] && grep -q '"obsidian"' "$TARGET/.mcp.json" 2>/dev/null; then
   echo ""
   echo "── Obsidian MCP pre-flight ────────────────────────────"
 
-  # 1. obsidian-mcp-server (cyanheads) がグローバルに入っているか
-  if command -v obsidian-mcp-server &>/dev/null; then
-    echo "  ✓ obsidian-mcp-server installed: $(command -v obsidian-mcp-server)"
-  else
-    echo "  ✗ obsidian-mcp-server is not installed."
-    echo "    → npm i -g obsidian-mcp-server"
-  fi
-
-  # 2. Obsidian Local REST API plugin (vault 側)
+  # 1. Obsidian Local REST API & MCP Server plugin (vault 側)
   OBSIDIAN_VAULT_DEFAULT="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/Obsidian"
   if [[ -d "$OBSIDIAN_VAULT_DEFAULT/.obsidian/plugins/obsidian-local-rest-api" ]]; then
-    echo "  ✓ Local REST API plugin found in default vault"
+    echo "  ✓ Local REST API & MCP Server plugin found in default vault"
   else
-    echo "  ✗ Local REST API plugin not found in $OBSIDIAN_VAULT_DEFAULT"
+    echo "  ✗ Local REST API & MCP Server plugin not found in $OBSIDIAN_VAULT_DEFAULT"
     echo "    → Obsidian → Settings → Community plugins → Browse → 'Local REST API' (by coddingtonbear)"
     echo "    → obsidian://show-plugin?id=obsidian-local-rest-api"
   fi
 
-  # 3. macOS Keychain に API key が登録されているか
+  # 2. macOS Keychain に API key が登録されているか
   if [[ "$OSTYPE" == darwin* ]] && command -v security &>/dev/null; then
     if /usr/bin/security find-generic-password -s 'obsidian-mcp-api-key' -w &>/dev/null; then
       echo "  ✓ OBSIDIAN_API_KEY found in macOS Keychain"
@@ -142,7 +134,19 @@ if [[ -f "$TARGET/.mcp.json" ]] && grep -q '"obsidian"' "$TARGET/.mcp.json" 2>/d
     fi
   fi
 
-  echo "  Docs: ${HOME}/.claude/rules/obsidian-mcp.md (cyanheads + Local REST API 構成)"
+  # 3. native MCP endpoint が live か (401 = mounted & auth-gated, 正常)
+  if command -v curl &>/dev/null; then
+    MCP_CODE=$(/usr/bin/curl -s --max-time 3 -o /dev/null -w "%{http_code}" http://127.0.0.1:27123/mcp/ 2>/dev/null)
+    if [[ "$MCP_CODE" == "401" || "$MCP_CODE" == "200" || "$MCP_CODE" == "406" ]]; then
+      echo "  ✓ native MCP endpoint live (http://127.0.0.1:27123/mcp/ → HTTP $MCP_CODE)"
+    else
+      echo "  ✗ native MCP endpoint not reachable (HTTP ${MCP_CODE:-000})"
+      echo "    → launch Obsidian + enable MCP in 'Local REST API' settings (Non-encrypted HTTP server on :27123)"
+    fi
+  fi
+
+  echo "  Note: HTTPS 27124 は self-signed cert で Node に拒否されるため、平文 HTTP 27123 を使う"
+  echo "  Docs: ${HOME}/.claude/rules/obsidian-mcp.md (native Local REST API & MCP Server 構成)"
   echo "───────────────────────────────────────────────────────"
 fi
 
@@ -251,6 +255,29 @@ add-zsh-hook precmd _update_copilot_dirs
 ZSHRC_BLOCK
   echo "  zshrc: Added copilot-sync to $ZSHRC"
 
+  # 5. ~/.zshrc に OBSIDIAN_API_KEY export を追加 (obsidian MCP が http で
+  #    ${OBSIDIAN_API_KEY} を展開するため)。冪等: BEGIN/END ブロックを毎回置換。
+  #    Keychain にキーが無ければ空文字 (無害)。
+  if grep -q '"obsidian"' "$TARGET/.mcp.json" 2>/dev/null; then
+    if grep -q "VibeCording: obsidian-key" "$ZSHRC" 2>/dev/null; then
+      python3 -c "
+import re, sys
+with open(sys.argv[1]) as f: c = f.read()
+c = re.sub(r'\n?# VibeCording: obsidian-key BEGIN\n.*?# VibeCording: obsidian-key END\n?', '', c, flags=re.DOTALL)
+with open(sys.argv[1], 'w') as f: f.write(c)
+" "$ZSHRC"
+    fi
+    cat >> "$ZSHRC" <<'ZSHRC_OBSIDIAN'
+
+# VibeCording: obsidian-key BEGIN
+# Obsidian Local REST API & MCP Server key — Keychain から取得し ${OBSIDIAN_API_KEY} を提供
+# (~/.mcp.json の Bearer ヘッダで env 展開。平文トークンを config に置かないため)
+export OBSIDIAN_API_KEY="$(/usr/bin/security find-generic-password -s 'obsidian-mcp-api-key' -w 2>/dev/null)"
+# VibeCording: obsidian-key END
+ZSHRC_OBSIDIAN
+    echo "  zshrc: Added obsidian-key export to $ZSHRC"
+  fi
+
   echo "Copilot CLI symlink bridge complete."
   echo ""
 fi
@@ -281,7 +308,10 @@ if target_dir == home_dir:
     d.setdefault('mcpServers', {})
     for name, config in servers.items():
         if 'url' in config:
-            d['mcpServers'][name] = {'type': 'http', 'url': config['url']}
+            entry = {'type': config.get('type', 'http'), 'url': config['url']}
+            if 'headers' in config:
+                entry['headers'] = config['headers']
+            d['mcpServers'][name] = entry
         else:
             d['mcpServers'][name] = {
                 'type': 'stdio',
