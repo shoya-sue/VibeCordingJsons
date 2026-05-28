@@ -1,12 +1,15 @@
 #!/bin/bash
-# SessionStart hook: Obsidian MCP + auto-memory の稼働状態をチェックし、
+# SessionStart hook: Obsidian native MCP + auto-memory の稼働状態をチェックし、
 # 結果を additionalContext として Claude に渡す。
 #
-# チェック項目:
-#   1. obsidian-mcp-server (cyanheads) バイナリ
-#   2. OBSIDIAN_API_KEY が macOS Keychain にあるか
-#   3. Local REST API plugin が vault にインストール済か
-#   4. Obsidian アプリの HTTPS port (27124) が reachable か
+# 接続先: Local REST API & MCP Server プラグイン内蔵 native MCP
+#         (HTTP http://127.0.0.1:27123/mcp/, token は ${OBSIDIAN_API_KEY})
+#
+# チェック項目 (5):
+#   1. Local REST API & MCP Server plugin が vault にインストール済か
+#   2. OBSIDIAN_API_KEY が macOS Keychain にあるか (env 展開の source)
+#   3. ~/.zshrc が OBSIDIAN_API_KEY を export しているか (${} 展開の wiring)
+#   4. native MCP endpoint が live か (HTTP 27123 /mcp/ → 401 = mounted+auth-gated)
 #   5. auto-memory ディレクトリが project に存在するか
 #
 # 失敗してもブロックしない (exit 0)。Claude に状態を可視化するのが目的。
@@ -17,22 +20,22 @@ VAULT="${OBSIDIAN_VAULT:-$HOME/Library/Mobile Documents/iCloud~md~obsidian/Docum
 CWD="${PWD:-$(pwd)}"
 HASH="${CWD//\//-}"
 MEM_DIR="$HOME/.claude/projects/${HASH}/memory"
+MCP_URL="http://127.0.0.1:27123/mcp/"
 
 LINES=()
 OK_COUNT=0
 NG_COUNT=0
 
-# 1. obsidian-mcp-server バイナリ
-if command -v obsidian-mcp-server &>/dev/null; then
-  BIN=$(command -v obsidian-mcp-server)
-  LINES+=("- [x] obsidian-mcp-server (cyanheads): \`$BIN\`")
+# 1. Local REST API & MCP Server plugin が vault に存在
+if [[ -d "$VAULT/.obsidian/plugins/obsidian-local-rest-api" ]]; then
+  LINES+=("- [x] Local REST API & MCP Server plugin installed in vault")
   OK_COUNT=$((OK_COUNT+1))
 else
-  LINES+=("- [ ] obsidian-mcp-server **MISSING** — fix: \`npm i -g obsidian-mcp-server\`")
+  LINES+=("- [ ] Local REST API & MCP Server plugin **NOT installed** in \`$VAULT\` — fix: Obsidian → Settings → Community plugins → Browse → 'Local REST API' (coddingtonbear)")
   NG_COUNT=$((NG_COUNT+1))
 fi
 
-# 2. macOS Keychain に API key
+# 2. macOS Keychain に API key (env 展開の source)
 if [[ "$OSTYPE" == darwin* ]] && command -v security &>/dev/null; then
   if /usr/bin/security find-generic-password -s 'obsidian-mcp-api-key' -w &>/dev/null; then
     LINES+=("- [x] OBSIDIAN_API_KEY in macOS Keychain (\`obsidian-mcp-api-key\`)")
@@ -45,22 +48,23 @@ else
   LINES+=("- [ ] macOS Keychain unavailable on this OS")
 fi
 
-# 3. Local REST API plugin が vault に存在
-if [[ -d "$VAULT/.obsidian/plugins/obsidian-local-rest-api" ]]; then
-  LINES+=("- [x] Local REST API plugin installed in vault")
+# 3. ~/.zshrc が OBSIDIAN_API_KEY を export しているか (HTTP MCP の ${} 展開に必須)
+if grep -q 'export OBSIDIAN_API_KEY=' "$HOME/.zshrc" 2>/dev/null; then
+  LINES+=("- [x] ~/.zshrc exports OBSIDIAN_API_KEY (from Keychain; \`\${OBSIDIAN_API_KEY}\` expands in ~/.mcp.json)")
   OK_COUNT=$((OK_COUNT+1))
 else
-  LINES+=("- [ ] Local REST API plugin **NOT installed** in \`$VAULT\` — fix: Obsidian → Settings → Community plugins → Browse → 'Local REST API' (coddingtonbear)")
+  LINES+=("- [ ] ~/.zshrc does **NOT** export OBSIDIAN_API_KEY — HTTP MCP header \`Bearer \${OBSIDIAN_API_KEY}\` will be empty → 401. fix: add \`export OBSIDIAN_API_KEY=\"\$(/usr/bin/security find-generic-password -s 'obsidian-mcp-api-key' -w)\"\`")
   NG_COUNT=$((NG_COUNT+1))
 fi
 
-# 4. Obsidian アプリ HTTPS port reachability (= app 起動中)
+# 4. native MCP endpoint が live か (401 = mounted & auth-gated, 正常)
 if command -v curl &>/dev/null; then
-  if /usr/bin/curl -ks --max-time 2 https://127.0.0.1:27124 -o /dev/null 2>/dev/null; then
-    LINES+=("- [x] Obsidian app running (HTTPS 27124 reachable)")
+  CODE=$(/usr/bin/curl -s --max-time 3 -o /dev/null -w "%{http_code}" "$MCP_URL" 2>/dev/null)
+  if [[ "$CODE" == "401" || "$CODE" == "200" || "$CODE" == "406" ]]; then
+    LINES+=("- [x] Obsidian native MCP live (\`$MCP_URL\` → HTTP $CODE)")
     OK_COUNT=$((OK_COUNT+1))
   else
-    LINES+=("- [ ] Obsidian app **NOT reachable** at HTTPS 27124 — fix: launch Obsidian app")
+    LINES+=("- [ ] Obsidian native MCP **NOT reachable** (\`$MCP_URL\` → HTTP ${CODE:-000}) — fix: launch Obsidian + enable MCP in 'Local REST API' plugin settings (Non-encrypted HTTP server on :27123)")
     NG_COUNT=$((NG_COUNT+1))
   fi
 fi
@@ -81,7 +85,7 @@ fi
 # 結果ヘッダ
 if [[ $NG_COUNT -eq 0 ]]; then
   HEADER="## Obsidian MCP & auto-memory healthcheck ✓ ($OK_COUNT/$((OK_COUNT+NG_COUNT)) OK)"
-  USAGE="All systems go. Prefer \`mcp__obsidian__obsidian_*\` tools for vault read/write/patch over raw filesystem Write/Edit when operating on vault notes."
+  USAGE="All systems go. Prefer \`mcp__obsidian__vault_*\` tools (vault_read / vault_write / vault_patch / vault_get_document_map / search_query) for vault read/write/patch over raw filesystem Write/Edit when operating on vault notes."
 else
   HEADER="## Obsidian MCP & auto-memory healthcheck ⚠ ($NG_COUNT issue(s))"
   USAGE="Some checks failed. Until they are fixed, fall back to \`Write\`/\`Edit\` for vault paths and warn the user once before doing so. See vault note \`30_knowledge/claude-code/obsidian-mcp-cyanheads-setup.md\` for setup."

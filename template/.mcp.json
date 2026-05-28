@@ -1,26 +1,28 @@
 {
   "mcpServers": {
     "obsidian": {
-      "command": "/bin/zsh",
-      "args": ["-c", "export OBSIDIAN_API_KEY=$(/usr/bin/security find-generic-password -s 'obsidian-mcp-api-key' -w 2>/dev/null) && exec NODEJS_BIN_DIR/obsidian-mcp-server"],
-      "env": {
-        "PATH": "NODEJS_BIN_DIR:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin",
-        "OBSIDIAN_BASE_URL": "https://127.0.0.1:27124",
-        "OBSIDIAN_VERIFY_SSL": "false",
-        "MCP_TRANSPORT_TYPE": "stdio",
-        "OTEL_ENABLED": "false"
+      "type": "http",
+      "url": "http://127.0.0.1:27123/mcp/",
+      "headers": {
+        "Authorization": "Bearer ${OBSIDIAN_API_KEY}"
       }
     },
     "context7": {
       "command": "npx",
-      "args": ["-y", "@upstash/context7-mcp@latest"],
+      "args": [
+        "-y",
+        "@upstash/context7-mcp@latest"
+      ],
       "env": {
         "PATH": "NODEJS_BIN_DIR:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
       }
     },
     "playwright": {
       "command": "npx",
-      "args": ["-y", "@playwright/mcp@latest"],
+      "args": [
+        "-y",
+        "@playwright/mcp@latest"
+      ],
       "env": {
         "PATH": "NODEJS_BIN_DIR:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
       }
@@ -31,14 +33,20 @@
     },
     "excalidraw": {
       "command": "npx",
-      "args": ["-y", "excalidraw-mcp"],
+      "args": [
+        "-y",
+        "excalidraw-mcp"
+      ],
       "env": {
         "PATH": "NODEJS_BIN_DIR:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
       }
     },
     "github": {
       "command": "/bin/zsh",
-      "args": ["-c", "export GITHUB_PERSONAL_ACCESS_TOKEN=$(gh auth token 2>/dev/null) && exec npx -y @modelcontextprotocol/server-github"],
+      "args": [
+        "-c",
+        "export GITHUB_PERSONAL_ACCESS_TOKEN=$(gh auth token 2>/dev/null) && exec npx -y @modelcontextprotocol/server-github"
+      ],
       "env": {
         "PATH": "NODEJS_BIN_DIR:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
       }
