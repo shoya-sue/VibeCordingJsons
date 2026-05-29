@@ -226,9 +226,9 @@ All 27 events:
 | `MCP_TIMEOUT` | MCP timeout (ms) | `10000`-`15000` |
 | `MAX_MCP_OUTPUT_TOKENS` | MCP output token limit | `10000`-`25000` |
 | `BASH_MAX_TIMEOUT_MS` | Bash timeout (ms) | `120000`-`300000` |
-| `CLAUDE_CODE_MAX_OUTPUT_TOKENS` | Output token limit (Opus 4.8: max 64k) | `64000` |
+| `CLAUDE_CODE_MAX_OUTPUT_TOKENS` | 1 応答あたりの出力トークン上限。Opus 4.8 は最大 128k 対応だがテンプレは保守的に 64k。長文出力が多ければ `settings.local.json` で `128000` まで引き上げ可（Claude Code 側が内部 cap している場合は無効） | `64000` |
 | `ENABLE_TOOL_SEARCH` | Enable tool search | `auto` |
-| `CLAUDE_CODE_AUTO_COMPACT_WINDOW` | Autocompact 発火 token 数 (Opus 4.8 で 400K cap バグ #43989 回避) | `1000000` |
+| `CLAUDE_CODE_AUTO_COMPACT_WINDOW` | Autocompact 発火 token 数。1M context の Opus モデルで autocompact 閾値が 400K に下がる regression #43989（v2.1.92〜、**未修正 OPEN**）を回避 | `1000000` |
 | `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS` | Enable Agent Teams | `1` |
 | `CLAUDE_CODE_AUTO_MEMORY_PATH` | Auto-memory save path | `""` (default) |
 | `CLAUDE_CODE_SESSIONEND_HOOKS_TIMEOUT_MS` | SessionEnd hook timeout (ms) | `5000` |
