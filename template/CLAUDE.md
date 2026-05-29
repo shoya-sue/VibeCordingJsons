@@ -76,6 +76,6 @@ make deploy-staging   # Deploy to staging
 - Auto-memory enabled → `.claude/memory/`
 - Subagent usage does not count against billing — delegate aggressively
 - `gh` CLI for all GitHub operations, never raw `api.github.com`
-- Opus 4.7 output limit: 64k tokens (configurable via `CLAUDE_CODE_MAX_OUTPUT_TOKENS`)
+- Opus 4.8 output limit: 64k tokens (configurable via `CLAUDE_CODE_MAX_OUTPUT_TOKENS`)
 - **Requires** `everything-claude-code` plugin for agents and skills
 - Rules: `ecc/common/` (10) + language-specific rules (9 languages × 5 = 45)

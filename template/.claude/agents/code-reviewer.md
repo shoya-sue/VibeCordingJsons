@@ -8,4 +8,4 @@ This file is a user-level model override for the `everything-claude-code` plugin
 Behavior, system prompt, and tools are inherited from the plugin definition; only `model` is overridden here.
 
 **Why opus:** code review benefits substantially from deeper reasoning — subtle logic bugs, missing
-edge cases, and architecture smells are easier to spot with Opus 4.7's `xhigh` thinking budget.
+edge cases, and architecture smells are easier to spot with Opus 4.8's `xhigh` thinking budget.

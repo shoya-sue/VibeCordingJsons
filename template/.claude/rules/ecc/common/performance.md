@@ -12,7 +12,7 @@
 - Orchestrating multi-agent workflows
 - Complex coding tasks
 
-**Opus 4.7** (Deepest reasoning):
+**Opus 4.8** (Deepest reasoning, v2.1.154+ のデフォルト):
 - Complex architectural decisions
 - Maximum reasoning requirements
 - Research and analysis tasks
@@ -21,9 +21,9 @@
 
 `/fast` で Claude Opus を高速出力モードで利用できる（小型モデルへのダウングレードではない、品質維持のままレイテンシ低減）。
 
-- v2.1.142+ のデフォルト: **Opus 4.7**
-- v2.1.141 以前: Opus 4.6
-- Opus 4.6 にピン留めしたい場合: `CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE=1` を設定
+- v2.1.154+ のデフォルト: **Opus 4.8**（Fast mode は標準レートの 2x コストで約 2.5x 高速）
+- v2.1.142–153: Opus 4.7
+- `CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE` は **非推奨（2026-06-01 削除予定）**。Opus 4.8 デフォルト化に伴い廃止
 
 ## Context Window Management
 
@@ -44,7 +44,7 @@ Extended thinking is enabled by default, reserving up to 31,999 tokens for inter
 
 Control extended thinking via:
 - **Toggle**: Option+T (macOS) / Alt+T (Windows/Linux)
-- **Config**: Set `effortLevel: "low" | "medium" | "high" | "xhigh"` in settings.json (v2.1.68+, `"xhigh"` added in v2.1.111 for Opus 4.7, default `"high"`)
+- **Config**: Set `effortLevel: "low" | "medium" | "high" | "xhigh"` in settings.json (v2.1.68+, `"xhigh"` は v2.1.111 で追加、Opus 4.8 が `xhigh` を活用、default `"high"`)
 - **Verbose mode**: Ctrl+O to see thinking output
 - **Display summaries**: Set `showThinkingSummaries: true` in settings.json (v2.1.89+, display-only)
 - **No-flicker mode**: `CLAUDE_CODE_NO_FLICKER=1` — チラつきなし alt-screen レンダリング（v2.1.91+）
