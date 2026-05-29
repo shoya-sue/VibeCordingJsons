@@ -8,4 +8,4 @@ This file is a user-level model override for the `everything-claude-code` plugin
 Behavior, system prompt, and tools are inherited from the plugin definition; only `model` is overridden here.
 
 **Why opus:** security review is the highest-stakes work — false negatives ship vulnerabilities to prod.
-Opus 4.7's deepest reasoning is justified for chain-of-thought attack analysis.
+Opus 4.8's deepest reasoning is justified for chain-of-thought attack analysis.
