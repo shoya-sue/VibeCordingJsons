@@ -48,4 +48,4 @@ Bash, JSON, Markdown (no application code; configuration templates only)
 - install.sh overwrites existing files (back up project-specific settings first)
 - This repository's own `.claude/settings.json` is optimized for template development
 - Recommended model in settings.local.json is `opusplan` (auto-switch: Opus for planning, Sonnet for execution)
-- Hooks support all 26 events (including PostCompact, Elicitation, ElicitationResult, SessionEnd)
+- Hooks support all 27 events (including PostCompact, Elicitation, ElicitationResult, MessageDisplay, SessionEnd)

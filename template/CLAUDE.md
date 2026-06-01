@@ -55,7 +55,7 @@ make deploy-staging   # Deploy to staging
 - `/proactive` — `/loop` のエイリアス（プロアクティブなループ実行）
 - `/recap` — 離席後のセッションサマリーを手動表示
 - `/tui [fullscreen]` — チラつきなし全画面レンダリングに切り替え
-- `/terminal-setup` — エディタスクロール感度を設定（fullscreen モードのスムーズスクロール用）
+- `/terminal-setup` — エディタスクロール感度を設定（fullscreen モードのスムーズスクロール用）。v2.1.157+ では VS Code/Cursor/Windsurf 統合ターミナルの GPU acceleration も無効化し文字化けを防ぐ
 - `/focus` — フォーカスビュー表示切り替え（Ctrl+O はノーマル/詳細トランスクリプト切り替えのみ）
 - `/less-permission-prompts` — トランスクリプトをスキャンしてパーミッションプロンプトを減らす allow リストを提案
 - `/ultrareview` — クラウドで並列マルチエージェント分析による包括的コードレビューを実行（引数なしで現ブランチ、`<PR#>` で特定 PR）。CI からは `claude ultrareview [target]` サブコマンドで非インタラクティブ実行可（`--json` で JSON 出力、終了コード 0/1）
@@ -64,11 +64,12 @@ make deploy-staging   # Deploy to staging
 - `/usage` — トークン使用量とコストを表示（`/cost` + `/stats` の統合版）。v2.1.149+ で skills/subagents/plugins/MCP サーバー別の上限消費内訳を表示
 - `/goal <condition>` — 完了条件を設定、条件達成まで複数ターンで継続実行（v2.1.139+）
 - `/scroll-speed` — マウスホイールのスクロール速度をライブプレビューで調整（v2.1.139+）
+- `/workflows` — dynamic workflow の実行状況を表示（v2.1.154+）。プロンプトで「workflow」と依頼すると数十〜数百エージェントをバックグラウンドでオーケストレーションする dynamic workflow が起動。`/config` の「Workflow keyword trigger」でキーワード起動を無効化可
 
 ## Important Notes
 
 - `.env.production` is read-prohibited (deny list)
-- Auto mode は v2.1.152+ でオプトイン同意不要（以前は明示的な同意ステップが必要）
+- Auto mode は v2.1.152+ でオプトイン同意不要（以前は明示的な同意ステップが必要）。Bedrock/Vertex/Foundry では Opus 4.7/4.8 向けに `CLAUDE_CODE_ENABLE_AUTO_MODE=1` の opt-in が必要（v2.1.158+）
 - Agent Teams enabled (`teammateMode: auto`)
 - ECC hooks: session continuity (SessionStart/Stop/SessionEnd), --no-verify guard (PreToolUse), auto-format JS/TS (PostToolUse), compact quality (PreCompact)
 - Multi-repo context: `claude --add-dir ../docs --add-dir ../shared-libs` to include external directories (set `CLAUDE_CODE_ADDITIONAL_DIRECTORIES_CLAUDE_MD=1` env var to also load their CLAUDE.md)

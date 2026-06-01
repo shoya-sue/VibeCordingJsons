@@ -246,12 +246,14 @@ All 27 events:
 | `CLAUDE_PROJECT_DIR` | MCP stdio サーバーおよびフックに自動設定されるプロジェクトルートパス（v2.1.139+） | (auto) |
 | `CLAUDE_CODE_PLUGIN_PREFER_HTTPS` | GitHub からのプラグインソース取得を SSH ではなく HTTPS で行う（SSH ブロック環境向け）（v2.1.141+） | `1` |
 | `ANTHROPIC_WORKSPACE_ID` | Workload identity federation 用のワークスペース ID（エンタープライズ向け）（v2.1.141+） | (set if applicable) |
-| `CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE` | Fast mode (`/fast`) を Opus 4.6 に固定。**非推奨（2026-06-01 削除予定）** — Opus 4.8 デフォルト化（v2.1.154+）に伴い廃止 | （使用しない） |
+| `CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE` | Fast mode (`/fast`) を Opus 4.6 に固定。**削除済み（2026-06-01）** — Opus 4.8 デフォルト化（v2.1.154+）に伴い廃止。Opus 4.6 を Fast mode で使うには `/model claude-opus-4-6[1m]` → `/fast on` | （削除済み・使用不可） |
 | `MCP_TOOL_TIMEOUT` | MCP ツール呼び出し 1 回あたりのフェッチタイムアウト（ms）。v2.1.142 でリモート HTTP/SSE サーバーの 60s ハードキャップを回避 | `120000` |
 | `CLAUDE_CODE_STOP_HOOK_BLOCK_CAP` | Stop フックが連続でブロックできる回数の上限（v2.1.143+、デフォルト `8`、無限ループ防止） | `8` |
 | `CLAUDE_CODE_USE_POWERSHELL_TOOL` | Windows の PowerShell ツール有効化（v2.1.143 で Bedrock/Vertex/Foundry 利用時にデフォルト ON、`0` でオプトアウト） | `0` |
 | `CLAUDE_CODE_POWERSHELL_RESPECT_EXECUTION_POLICY` | PowerShell ツールの `-ExecutionPolicy Bypass` デフォルトを無効化し、システムの ExecutionPolicy を尊重（v2.1.143+） | `1` |
 | `OTEL_METRICS_INCLUDE_ENTRYPOINT` | OpenTelemetry metrics に `app.entrypoint`（セッション起動エントリ）属性を含める（v2.1.152+、opt-in） | `true` |
+| `OTEL_LOG_TOOL_DETAILS` | `tool_decision` telemetry イベントに `tool_parameters`（bash コマンド・MCP/skill 名）を含める（v2.1.157+、opt-in） | `1` |
+| `CLAUDE_CODE_ENABLE_AUTO_MODE` | Bedrock / Vertex / Foundry で auto mode（Opus 4.7・4.8）を有効化する opt-in（v2.1.158+）。標準の Anthropic API 利用時は不要 | `1`（該当ゲートウェイ利用時のみ） |
 
 ### Other Settings
 
@@ -279,6 +281,7 @@ All 27 events:
 | `autoMode.hard_deny` | auto モード分類ルール — ユーザーの意図や allow 例外に関わらず無条件ブロック（v2.1.136+） |
 | `allowAllClaudeAiMcps` | エンタープライズ managed 設定 — `managed-mcp.json` と並んで claude.ai クラウド MCP コネクタをロード（v2.1.149+） |
 | `pluginSuggestionMarketplaces` | エンタープライズ managed 設定 — context-aware tips でプラグイン提案する組織 marketplace の allow リスト（v2.1.152+） |
+| `agent` | dispatched session（`claude agents` から起動）で使うデフォルトエージェント。`settings.json` の値が honored される（v2.1.157+）。CLI からは `--agent <name>` で override |
 
 ## Settings Hierarchy
 
@@ -412,6 +415,7 @@ Provides 47 agents, 181 skills, 60 commands. Rules must be installed separately 
 - **Avoid `--dangerously-skip-permissions`**: Major security risk
 - **Run `claude plugin prune` periodically**: Remove orphaned auto-installed plugin dependencies; `plugin uninstall --prune` cascades (v2.1.121+)
 - **Run `claude project purge` to clean up**: Remove stored project data; use `--dry-run` to preview, `--interactive` to select items (v2.1.126+)
+- **Scaffold local plugins with `claude plugin init <name>`**: Places them in `.claude/skills`, which now auto-load without a marketplace (v2.1.157+)
 - **Place both CLAUDE.md + AGENTS.md**: Cover both Claude Code and Copilot CLI
 - **Use project.code-workspace**: Unify editor settings, extensions, and Claude Code tasks across the team
 - **Manage auto-memory with `/memory`**: Regularly review and organize context Claude has saved
