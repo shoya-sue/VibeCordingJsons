@@ -23,7 +23,7 @@
 
 - v2.1.154+ のデフォルト: **Opus 4.8**（Fast mode は標準レートの 2x コストで約 2.5x 高速）
 - v2.1.142–153: Opus 4.7
-- `CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE` は **非推奨（2026-06-01 削除予定）**。Opus 4.8 デフォルト化に伴い廃止
+- `CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE` は **削除済み（2026-06-01）**。Opus 4.8 デフォルト化に伴い廃止。Opus 4.6 を Fast mode で使うには `/model claude-opus-4-6[1m]` → `/fast on`
 
 ## Context Window Management
 
