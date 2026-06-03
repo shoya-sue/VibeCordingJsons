@@ -254,6 +254,7 @@ All 27 events:
 | `OTEL_METRICS_INCLUDE_ENTRYPOINT` | OpenTelemetry metrics に `app.entrypoint`（セッション起動エントリ）属性を含める（v2.1.152+、opt-in） | `true` |
 | `OTEL_LOG_TOOL_DETAILS` | `tool_decision` telemetry イベントに `tool_parameters`（bash コマンド・MCP/skill 名）を含める（v2.1.157+、opt-in） | `1` |
 | `CLAUDE_CODE_ENABLE_AUTO_MODE` | Bedrock / Vertex / Foundry で auto mode（Opus 4.7・4.8）を有効化する opt-in（v2.1.158+）。標準の Anthropic API 利用時は不要 | `1`（該当ゲートウェイ利用時のみ） |
+| `OTEL_RESOURCE_ATTRIBUTES` | OpenTelemetry メトリクスのデータポイントにカスタムラベル（team・repo 等の任意ディメンション）を付与し、利用メトリクスをスライス可能にする（v2.1.161+） | `team=infra,repo=app` |
 
 ### Other Settings
 
