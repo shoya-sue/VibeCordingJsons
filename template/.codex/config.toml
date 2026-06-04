@@ -1,13 +1,39 @@
 # Codex CLI / IDE extension configuration.
 # Installed globally as ~/.codex/config.toml by ./install.sh.
 
+# Mirror the high-capability Claude Code default with Codex-native settings.
+model = "gpt-5.5"
+model_reasoning_effort = "xhigh"
+model_reasoning_summary = "auto"
+
+[features]
+memories = true
+
+[memories]
+generate_memories = true
+use_memories = true
+disable_on_external_context = false
+
+[shell_environment_policy]
+inherit = "core"
+
+[shell_environment_policy.set]
+NODE_ENV = "development"
+MCP_TIMEOUT = "30000"
+MAX_MCP_OUTPUT_TOKENS = "25000"
+BASH_MAX_TIMEOUT_MS = "600000"
+OBSIDIAN_VAULT = "${HOME}/Library/Mobile Documents/iCloud~md~obsidian/Documents/Obsidian"
+
 [mcp_servers.obsidian]
 url = "http://127.0.0.1:27123/mcp/"
 bearer_token_env_var = "OBSIDIAN_API_KEY"
+tool_timeout_sec = 60
 
 [mcp_servers.context7]
 command = "npx"
 args = ["-y", "@upstash/context7-mcp@latest"]
+startup_timeout_sec = 30
+tool_timeout_sec = 60
 
 [mcp_servers.context7.env]
 PATH = "NODEJS_BIN_DIR:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
@@ -15,16 +41,21 @@ PATH = "NODEJS_BIN_DIR:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
 [mcp_servers.playwright]
 command = "npx"
 args = ["-y", "@playwright/mcp@latest"]
+startup_timeout_sec = 30
+tool_timeout_sec = 60
 
 [mcp_servers.playwright.env]
 PATH = "NODEJS_BIN_DIR:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
 
 [mcp_servers.deepwiki]
 url = "https://mcp.deepwiki.com/mcp"
+tool_timeout_sec = 60
 
 [mcp_servers.excalidraw]
 command = "npx"
 args = ["-y", "excalidraw-mcp"]
+startup_timeout_sec = 30
+tool_timeout_sec = 60
 
 [mcp_servers.excalidraw.env]
 PATH = "NODEJS_BIN_DIR:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
@@ -33,6 +64,8 @@ PATH = "NODEJS_BIN_DIR:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
 command = "npx"
 args = ["-y", "@modelcontextprotocol/server-github"]
 env_vars = ["GITHUB_PERSONAL_ACCESS_TOKEN"]
+startup_timeout_sec = 30
+tool_timeout_sec = 60
 
 [mcp_servers.github.env]
 PATH = "NODEJS_BIN_DIR:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
