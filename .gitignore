@@ -12,6 +12,7 @@ Thumbs.db
 # Local settings (personal overrides, not committed)
 .claude/settings.local.json
 .claude/*.local.*
+/.codex/
 
 # Claude Code worktrees (local agent isolation, not part of repo)
 .claude/worktrees/

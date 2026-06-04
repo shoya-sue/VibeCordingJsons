@@ -56,6 +56,22 @@ if [[ -d "$TEMPLATE/.github" ]]; then
   done
 fi
 
+# Copy .codex/ directory (Codex CLI / IDE extension config)
+if [[ -d "$TEMPLATE/.codex" ]]; then
+  mkdir -p "$TARGET/.codex"
+  cp -r "$TEMPLATE/.codex/"* "$TARGET/.codex/" 2>/dev/null || true
+
+  # Copy hidden files in .codex/ if present
+  for f in "$TEMPLATE/.codex/".*; do
+    [[ -f "$f" ]] && cp "$f" "$TARGET/.codex/"
+  done
+
+  # Ensure Codex hook scripts are executable
+  if [[ -d "$TARGET/.codex/hooks" ]]; then
+    find "$TARGET/.codex/hooks" -maxdepth 1 -type f \( -name "*.sh" -o -name "*.py" -o -name "*.js" \) -exec chmod +x {} \;
+  fi
+fi
+
 # Copy root-level files
 for file in .mcp.json CLAUDE.md CLAUDE.local.md AGENTS.md; do
   if [[ -f "$TEMPLATE/$file" ]]; then
@@ -93,8 +109,21 @@ if [[ -f "$TARGET/.mcp.json" ]]; then
   rm -f "$TARGET/.mcp.json.bak"
 fi
 
-# Substitute NODEJS_BIN_DIR placeholder in .mcp.json
-if [[ -f "$TARGET/.mcp.json" ]] && grep -q 'NODEJS_BIN_DIR' "$TARGET/.mcp.json" 2>/dev/null; then
+# Post-process Codex config.toml: expand ${HOME}
+if [[ -f "$TARGET/.codex/config.toml" ]]; then
+  sed -i.bak "s|\${HOME}|${HOME}|g" "$TARGET/.codex/config.toml"
+  rm -f "$TARGET/.codex/config.toml.bak"
+fi
+
+# Post-process Codex hooks.json: expand placeholders to the install target.
+if [[ -f "$TARGET/.codex/hooks.json" ]]; then
+  sed -i.bak "s|\${HOME}|${HOME}|g" "$TARGET/.codex/hooks.json"
+  sed -i.bak "s|CODEX_HOOKS_DIR|${TARGET}/.codex/hooks|g" "$TARGET/.codex/hooks.json"
+  rm -f "$TARGET/.codex/hooks.json.bak"
+fi
+
+# Substitute NODEJS_BIN_DIR placeholder in MCP configs
+if { [[ -f "$TARGET/.mcp.json" ]] && grep -q 'NODEJS_BIN_DIR' "$TARGET/.mcp.json" 2>/dev/null; } || { [[ -f "$TARGET/.codex/config.toml" ]] && grep -q 'NODEJS_BIN_DIR' "$TARGET/.codex/config.toml" 2>/dev/null; }; then
   NODE_BIN_DIR=""
   if command -v npm &>/dev/null; then
     NODE_BIN_DIR=$(dirname "$(command -v npm)")
@@ -102,14 +131,20 @@ if [[ -f "$TARGET/.mcp.json" ]] && grep -q 'NODEJS_BIN_DIR' "$TARGET/.mcp.json" 
   if [[ -z "$NODE_BIN_DIR" ]]; then
     NODE_BIN_DIR="/opt/homebrew/bin"
   fi
-  sed -i.bak "s|NODEJS_BIN_DIR|${NODE_BIN_DIR}|g" "$TARGET/.mcp.json"
-  rm -f "$TARGET/.mcp.json.bak"
+  if [[ -f "$TARGET/.mcp.json" ]]; then
+    sed -i.bak "s|NODEJS_BIN_DIR|${NODE_BIN_DIR}|g" "$TARGET/.mcp.json"
+    rm -f "$TARGET/.mcp.json.bak"
+  fi
+  if [[ -f "$TARGET/.codex/config.toml" ]]; then
+    sed -i.bak "s|NODEJS_BIN_DIR|${NODE_BIN_DIR}|g" "$TARGET/.codex/config.toml"
+    rm -f "$TARGET/.codex/config.toml.bak"
+  fi
 fi
 
 # ─── Obsidian MCP pre-flight ──────────────────────────────────────────────────
 # .mcp.json に obsidian エントリがある場合、Local REST API & MCP Server プラグイン
 # 内蔵 native MCP (HTTP 27123 /mcp/) の依存を順次チェックする (fail はしない)
-if [[ -f "$TARGET/.mcp.json" ]] && grep -q '"obsidian"' "$TARGET/.mcp.json" 2>/dev/null; then
+if { [[ -f "$TARGET/.mcp.json" ]] && grep -q '"obsidian"' "$TARGET/.mcp.json" 2>/dev/null; } || { [[ -f "$TARGET/.codex/config.toml" ]] && grep -q 'mcp_servers\.obsidian' "$TARGET/.codex/config.toml" 2>/dev/null; }; then
   echo ""
   echo "── Obsidian MCP pre-flight ────────────────────────────"
 
@@ -136,7 +171,7 @@ if [[ -f "$TARGET/.mcp.json" ]] && grep -q '"obsidian"' "$TARGET/.mcp.json" 2>/d
 
   # 3. native MCP endpoint が live か (401 = mounted & auth-gated, 正常)
   if command -v curl &>/dev/null; then
-    MCP_CODE=$(/usr/bin/curl -s --max-time 3 -o /dev/null -w "%{http_code}" http://127.0.0.1:27123/mcp/ 2>/dev/null)
+    MCP_CODE=$(/usr/bin/curl -s --max-time 3 -o /dev/null -w "%{http_code}" http://127.0.0.1:27123/mcp/ 2>/dev/null || true)
     if [[ "$MCP_CODE" == "401" || "$MCP_CODE" == "200" || "$MCP_CODE" == "406" ]]; then
       echo "  ✓ native MCP endpoint live (http://127.0.0.1:27123/mcp/ → HTTP $MCP_CODE)"
     else
@@ -258,7 +293,7 @@ ZSHRC_BLOCK
   # 5. ~/.zshrc に OBSIDIAN_API_KEY export を追加 (obsidian MCP が http で
   #    ${OBSIDIAN_API_KEY} を展開するため)。冪等: BEGIN/END ブロックを毎回置換。
   #    Keychain にキーが無ければ空文字 (無害)。
-  if grep -q '"obsidian"' "$TARGET/.mcp.json" 2>/dev/null; then
+  if { [[ -f "$TARGET/.mcp.json" ]] && grep -q '"obsidian"' "$TARGET/.mcp.json" 2>/dev/null; } || { [[ -f "$TARGET/.codex/config.toml" ]] && grep -q 'mcp_servers\.obsidian' "$TARGET/.codex/config.toml" 2>/dev/null; }; then
     if grep -q "VibeCording: obsidian-key" "$ZSHRC" 2>/dev/null; then
       python3 -c "
 import re, sys
@@ -350,6 +385,7 @@ echo ""
 # List installed files
 find "$TARGET/.claude" -type f 2>/dev/null | sed "s|$TARGET/||" | sort
 find "$TARGET/.github" -type f 2>/dev/null | sed "s|$TARGET/||" | sort
+find "$TARGET/.codex" -type f 2>/dev/null | sed "s|$TARGET/||" | sort
 [[ -f "$TARGET/.mcp.json" ]] && echo ".mcp.json"
 [[ -f "$TARGET/CLAUDE.md" ]] && echo "CLAUDE.md"
 [[ -f "$TARGET/CLAUDE.local.md" ]] && echo "CLAUDE.local.md"
@@ -360,7 +396,7 @@ echo ""
 if [[ "$TARGET" == "$HOME" ]]; then
   echo "Done! Global install complete."
   echo "All projects will use these settings automatically."
-  echo "Edit ~/.claude/settings.json and ~/CLAUDE.md to customize."
+  echo "Edit ~/.claude/settings.json, ~/.codex/config.toml, and ~/CLAUDE.md to customize."
 else
-  echo "Done! Edit CLAUDE.md, settings.json, and project.code-workspace to match your project."
+  echo "Done! Edit CLAUDE.md, .claude/settings.json, .codex/config.toml, and project.code-workspace to match your project."
 fi

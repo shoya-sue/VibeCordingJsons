@@ -1,6 +1,6 @@
-# VibeCording Template — Claude Code + GitHub Copilot CLI
+# VibeCording Template — Claude Code + Codex + GitHub Copilot CLI
 
-Complete configuration for Claude Code and GitHub Copilot CLI with `everything-claude-code` plugin integration.
+Complete configuration for Claude Code, Codex, and GitHub Copilot CLI with `everything-claude-code` plugin integration.
 
 ## What's Included
 
@@ -11,6 +11,7 @@ Complete configuration for Claude Code and GitHub Copilot CLI with `everything-c
 | Agents (Claude) | 38 agents via ECC plugin (code-reviewer, architect, language-specific reviewers, etc.) |
 | Rules | 50 ECC rules (common + 8 languages) + subagent-delegation + team-coordination |
 | MCP Servers | obsidian, context7, playwright, deepwiki, excalidraw, github |
+| Codex | `.codex/config.toml` with matching MCP servers + Codex-only fail-open hooks |
 | Copilot CLI | copilot-instructions.md, 8 skills, 4 agents |
 | VSCode | Workspace config with auto-start task |
 

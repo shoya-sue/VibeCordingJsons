@@ -1,7 +1,7 @@
 # VibeCording Settings
 
-Best practice templates for Claude Code and GitHub Copilot CLI.
-Provides `settings.json` / `.mcp.json` / `CLAUDE.md` / `AGENTS.md` / Skills / Agents / Rules / VSCode workspace configurations as a complete set.
+Best practice templates for Claude Code, Codex, and GitHub Copilot CLI.
+Provides `settings.json` / `.codex/config.toml` / `.mcp.json` / `CLAUDE.md` / `AGENTS.md` / Skills / Agents / Rules / VSCode workspace configurations as a complete set.
 
 ## Table of Contents
 
@@ -33,7 +33,7 @@ cd VibeCordingJsons
 ./install.sh
 ```
 
-This places the configuration in `~/.claude/settings.json`, and every project where you run `claude` will use those settings.
+This places the configuration in `~/.claude/settings.json` and `~/.codex/config.toml`, and every project where you run `claude` or `codex` will use those settings.
 If you need project-specific settings later, add `.claude/settings.json` in that project (array settings are merged, single-value settings are overridden).
 
 ### Project Install
@@ -69,6 +69,7 @@ List of instruction files automatically loaded by each AI tool:
 | `.github/copilot-instructions.md` | — | Yes | — | Copilot project instructions |
 | `~/.copilot/copilot-instructions.md` | — | Yes | — | Copilot user-level instructions |
 | `~/.claude/CLAUDE.md` | Yes | — | — | Claude Code global instructions |
+| `.codex/config.toml` / `~/.codex/config.toml` | — | — | — | Codex CLI / IDE extension settings and MCP servers |
 
 **Recommended**: Place both `CLAUDE.md` (Claude Code specific) and `AGENTS.md` (universal) at your project root.
 Setting `~/.copilot/copilot-instructions.md` applies to all projects.
@@ -120,6 +121,10 @@ Setting `~/.copilot/copilot-instructions.md` applies to all projects.
 │   │       ├── github-workflow.agent.md
 │   │       ├── code-explorer.agent.md
 │   │       └── test-runner.agent.md
+│   ├── .codex/
+│   │   ├── config.toml
+│   │   ├── hooks.json
+│   │   └── hooks/
 │   ├── .mcp.json
 │   ├── AGENTS.md
 │   ├── CLAUDE.md
@@ -128,6 +133,7 @@ Setting `~/.copilot/copilot-instructions.md` applies to all projects.
 │   └── README.md
 ├── install.sh
 ├── .claude/settings.json
+├── .codex/config.toml
 ├── .mcp.json
 ├── AGENTS.md
 ├── CLAUDE.md

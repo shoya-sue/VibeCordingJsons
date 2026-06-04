@@ -1,0 +1,29 @@
+{
+  "hooks": {
+    "PostCompact": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "CODEX_HOOKS_DIR/post-compact-snapshot.sh",
+            "timeout": 10,
+            "statusMessage": "Recording Codex compaction"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "CODEX_HOOKS_DIR/obsidian-session-end.sh",
+            "timeout": 10,
+            "statusMessage": "Recording Codex session"
+          }
+        ]
+      }
+    ]
+  }
+}
