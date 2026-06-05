@@ -244,7 +244,7 @@ All 27 events:
 | `MAX_THINKING_TOKENS` | Thinking token limit | Model-dependent |
 | `refreshInterval` | Status line auto-refresh interval (seconds) | `30` |
 | `ANTHROPIC_BEDROCK_SERVICE_TIER` | Bedrock サービスティア（`default` / `flex` / `priority`）（v2.1.122+） | `default` |
-| `CLAUDE_CODE_SESSION_ID` | セッション ID（Bash サブプロセスに自動設定、フック `session_id` と同値）（v2.1.132+）。v2.1.154+ で MCP stdio サーバーにも `CLAUDE_CODE_SESSION_ID` と `CLAUDECODE=1` が渡る | (auto) |
+| `CLAUDE_CODE_SESSION_ID` | セッション ID（Bash サブプロセスに自動設定、フック `session_id` と同値）（v2.1.132+）。v2.1.154+ で MCP stdio サーバーにも `CLAUDE_CODE_SESSION_ID` と `CLAUDECODE=1` が渡る。v2.1.163+ で `--resume` 時も stdio MCP サーバーに渡る | (auto) |
 | `CLAUDE_CODE_DISABLE_ALTERNATE_SCREEN` | フルスクリーン alt-screen レンダラーを無効化して通常の端末スクロールバックを維持（v2.1.132+） | `1` |
 | `CLAUDE_CODE_FORCE_SYNC_OUTPUT` | 同期出力を強制有効化（Emacs `eat` 等の自動検出が効かない端末向け）（v2.1.129+） | `1` |
 | `CLAUDE_CODE_PACKAGE_MANAGER_AUTO_UPDATE` | Homebrew/WinGet インストール時にバックグラウンドで自動アップグレード（v2.1.129+） | `1` |
@@ -289,6 +289,7 @@ All 27 events:
 | `allowAllClaudeAiMcps` | エンタープライズ managed 設定 — `managed-mcp.json` と並んで claude.ai クラウド MCP コネクタをロード（v2.1.149+） |
 | `pluginSuggestionMarketplaces` | エンタープライズ managed 設定 — context-aware tips でプラグイン提案する組織 marketplace の allow リスト（v2.1.152+） |
 | `agent` | dispatched session（`claude agents` から起動）で使うデフォルトエージェント。`settings.json` の値が honored される（v2.1.157+）。CLI からは `--agent <name>` で override |
+| `requiredMinimumVersion` / `requiredMaximumVersion` | managed settings — 組織内で利用可能な Claude Code バージョンの下限/上限を強制（v2.1.163+） |
 
 ## Settings Hierarchy
 
@@ -386,6 +387,8 @@ Control model thinking depth with the `/effort` command:
 | `auto` | — | Reset to default |
 
 Including "ultrathink" in your message enables high effort for the next turn only.
+
+> **v2.1.162+ 挙動変更**: `/effort` で選んだレベルはデフォルトで新セッションにも引き継がれる（`/model` の v2.1.153+ 永続化と同挙動）。
 
 ### Subagent Cost Optimization
 
