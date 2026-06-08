@@ -206,6 +206,22 @@ Stop / SubagentStop フックの入力 JSON に以下 2 フィールドが含ま
 }
 ```
 
+### Stop / SubagentStop フック出力: `additionalContext` フィールド (v2.1.163+)
+
+Stop / SubagentStop フックから `hookSpecificOutput.additionalContext` を返すと、
+エラーラベルなしで Claude に追加コンテキスト（フィードバック）を渡せる。
+従来の block（`decision: "block"` + reason）はエラー扱いの表示になるのに対し、
+こちらは非エラーで文脈注入のみを行う。
+
+```jsonc
+// Stop フックから返すと非エラーで Claude にフィードバックを渡せる
+{
+  "hookSpecificOutput": {
+    "additionalContext": "未コミットの変更が 3 ファイル残っています"
+  }
+}
+```
+
 ## Auto-Accept Permissions
 
 Use with caution:

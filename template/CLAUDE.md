@@ -43,13 +43,14 @@ make deploy-staging   # Deploy to staging
 ## Slash Commands
 
 - `/model opusplan` — Auto-switch: Opus for planning, Sonnet for execution（v2.1.153+ で `/model` の選択はデフォルトで新セッションにも適用される。現セッションのみ切り替えたい場合はピッカーで `s` キー。旧 keybinding `modelPicker:setAsDefault` は `modelPicker:thisSessionOnly` にリネーム）
-- `/effort low|medium|high|xhigh|max` — Set thinking level. `/effort auto` to reset
+- `/effort low|medium|high|xhigh|max` — Set thinking level. `/effort auto` to reset（v2.1.162+ で選択したレベルはデフォルトで新セッションにも引き継がれる）
 - `/memory` — Manage auto-memory
 - `/loop 5m check deploy` — Repeat a prompt on schedule
 - `/plan <description>` — Start plan mode
 - `/compact <summary>` — Compact context with focused summary
 - `/powerup` — インタラクティブな学習レッスンを起動
 - `/reload-plugins` — プラグインスキルを再起動なしで再読み込み
+- `/plugin list [--enabled|--disabled]` — インストール済みプラグインの一覧をフィルタ表示（v2.1.163+）
 - `/reload-skills` — スキルディレクトリをセッション再起動なしで再スキャン（v2.1.152+）
 - `/team-onboarding` — チームメイト向けのランプアップガイドを生成
 - `/proactive` — `/loop` のエイリアス（プロアクティブなループ実行）
