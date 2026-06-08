@@ -27,16 +27,32 @@
 
 ## Context Window Management
 
-Avoid last 20% of context window for:
-- Large-scale refactoring
-- Feature implementation spanning multiple files
-- Debugging complex interactions
+> **方針 (Anthropic 公式: "effective context engineering")**: コンテキストは「最大化」ではなく **"find the smallest set of high-signal tokens that maximize the desired outcome"**。文脈は積むほど **context rot / lost-in-the-middle**（中盤の注意希薄化）で recall・指示追従が落ちる。**能動的に小さく保つ**のがベストプラクティス。
 
-Lower context sensitivity tasks:
-- Single-file edits
-- Independent utility creation
-- Documentation updates
-- Simple bug fixes
+### 能動ハイジーン（推奨ワークフロー）
+
+| タイミング | アクション |
+|---|---|
+| 5〜10 プロンプト毎 | `/context` で利用率を監視（目安: ~40% から劣化が出始め、60% 超で要注意。※経験則） |
+| 区切り / 利用率が上がってきたら | `/compact <焦点>` — 自動の lossy 要約より、残す内容を自分で制御（ゴール忠実度が高い） |
+| タスクが変わったら | `/clear` でリセット（kitchen-sink セッションを避ける） |
+| 長期タスク | `/goal <条件>`（Opus 4.8 は明示ゴールで再アンカーが効く） |
+| 重い探索 | **subagent に委任**（ファイル読み込みで本体コンテキストを汚さない） |
+| 恒久状態 | CLAUDE.md / `.claude/memory/` / Obsidian に外部化 |
+
+### 自動圧縮の閾値設定
+
+- `CLAUDE_CODE_AUTO_COMPACT_WINDOW` は自動圧縮の発火ウィンドウ（`/context` の分母）を上書きする env var。
+- **デフォルトでは設定しない**（CC ネイティブの閾値に任せる）。実ウィンドウより大きい値を入れると、実上限の前に自動圧縮が発火せず「圧縮されない」状態になる。
+- `=1000000` は **1M context モード（`/model ...[1m]`）利用者**が upstream バグ [#43989](https://github.com/anthropics/claude-code/issues/43989)（1M モードで閾値が 400K に誤縮小、OPEN/未修正）を回避する **opt-in workaround**。標準 200K ウィンドウの利用者は設定不要（むしろ有害）。自分のウィンドウは `/context` の分母で確認する。
+
+### effort と context のトレードオフ
+
+- Opus 4.8 は **`high` を既定にして eval でスイープ**（`xhigh`/`max` はコーディング/エージェント用途で検討）。effort を上げるほど thinking + tool call が増え、200K ウィンドウでは context rot 帯に早く到達する点に留意。
+
+### 低コンテキスト感度タスク（窓を気にせず可）
+
+- Single-file edits / Independent utility creation / Documentation updates / Simple bug fixes
 
 ## Extended Thinking + Plan Mode
 

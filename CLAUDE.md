@@ -50,3 +50,4 @@ Bash, JSON, Markdown (no application code; configuration templates only)
 - This repository's own `.claude/settings.json` is optimized for template development
 - Recommended model in settings.local.json is `opusplan` (auto-switch: Opus for planning, Sonnet for execution)
 - Hooks support all 27 events (including PostCompact, Elicitation, ElicitationResult, MessageDisplay, SessionEnd)
+- Context management: no `CLAUDE_CODE_AUTO_COMPACT_WINDOW` override by default — it's a 1M-context opt-in workaround for [#43989](https://github.com/anthropics/claude-code/issues/43989); standard 200K users rely on native auto-compaction + active hygiene (`/context`, `/compact`, `/clear`, `/goal`, subagent delegation). See `template/.claude/rules/ecc/common/performance.md`
