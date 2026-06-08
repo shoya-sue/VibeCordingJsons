@@ -97,6 +97,9 @@ MARKER_TAG="<!-- session ${SESSION_ID:0:8} marker, awaiting extraction -->"
 - ## feedback: ユーザーからの訂正・好み表明
 - ## 環境設定: settings/config 変更
 - ## MCP変更: MCP server install/remove/change
+- ## 設計判断: アーキテクチャ/技術選定の判断と理由（ADR 化すべきもの）
+- ## 実装マイルストーン: 機能完成・リリース・重要実装の節目（リポジトリ/PR を明記）
+- ## 学び: 再発見にコストがかかる非自明な知見・テクニック
 
 各項目は 1-2 文サマリ + 昇格先候補 wikilink を付ける。
 昇格先候補は以下から選ぶ:
@@ -104,7 +107,11 @@ MARKER_TAG="<!-- session ${SESSION_ID:0:8} marker, awaiting extraction -->"
 - [[30_knowledge/claude-code/themes/feedback集約]]
 - [[30_knowledge/claude-code/環境設定]]
 - [[30_knowledge/claude-code/themes/MCPサーバー全リスト]]
+- [[50_decisions/index]]
+- [[20_projects/index]]
+- [[40_learning/index]]
 
+抽出基準: 「将来の自分や他者が再発見にコストを払う情報」を優先。単なる作業ログ・git log で追える内容・その場限りのデバッグ出力は除外。
 該当なしなら 'SKIP' とだけ出力。前置きや説明は不要、抽出内容のみ markdown で出力。
 
 ---transcript---

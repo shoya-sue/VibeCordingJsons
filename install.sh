@@ -26,8 +26,8 @@ if [[ -d "$TEMPLATE/.claude" ]]; then
     [[ -f "$f" ]] && cp "$f" "$TARGET/.claude/"
   done
 
-  # Copy subdirectories (skills, agents, rules)
-  for dir in skills agents rules; do
+  # Copy subdirectories (skills, agents, rules, scheduled-tasks)
+  for dir in skills agents rules scheduled-tasks; do
     if [[ -d "$TEMPLATE/.claude/$dir" ]]; then
       cp -r "$TEMPLATE/.claude/$dir" "$TARGET/.claude/"
     fi

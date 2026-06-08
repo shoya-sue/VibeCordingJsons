@@ -88,7 +88,7 @@ if [[ $NG_COUNT -eq 0 ]]; then
   USAGE="All systems go. Prefer \`mcp__obsidian__vault_*\` tools (vault_read / vault_write / vault_patch / vault_get_document_map / search_query) for vault read/write/patch over raw filesystem Write/Edit when operating on vault notes."
 else
   HEADER="## Obsidian MCP & auto-memory healthcheck ⚠ ($NG_COUNT issue(s))"
-  USAGE="Some checks failed. Until they are fixed, fall back to \`Write\`/\`Edit\` for vault paths and warn the user once before doing so. See vault note \`30_knowledge/claude-code/obsidian-mcp-cyanheads-setup.md\` for setup."
+  USAGE="Some checks failed. Until they are fixed, fall back to \`Write\`/\`Edit\` for vault paths and warn the user once before doing so. See \`~/.claude/rules/obsidian-mcp.md\` for the native Local REST API & MCP Server setup."
 fi
 
 # 改行で結合
