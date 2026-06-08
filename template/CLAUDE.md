@@ -74,6 +74,7 @@ make deploy-staging   # Deploy to staging
 - Auto mode は v2.1.152+ でオプトイン同意不要（以前は明示的な同意ステップが必要）。Bedrock/Vertex/Foundry では Opus 4.7/4.8 向けに `CLAUDE_CODE_ENABLE_AUTO_MODE=1` の opt-in が必要（v2.1.158+）
 - Agent Teams enabled (`teammateMode: auto`)
 - ECC hooks: session continuity (SessionStart/Stop/SessionEnd), --no-verify guard (PreToolUse), auto-format JS/TS (PostToolUse), compact quality (PreCompact)
+- Context hygiene: `CLAUDE_CODE_AUTO_COMPACT_WINDOW` is NOT set by default (1M-context opt-in workaround for [#43989](https://github.com/anthropics/claude-code/issues/43989) only). Standard 200K window → manage context actively: `/context`, `/compact <focus>`, `/clear`, `/goal`, subagent delegation; keep high-signal tokens small. See `.claude/rules/ecc/common/performance.md`
 - Multi-repo context: `claude --add-dir ../docs --add-dir ../shared-libs` to include external directories (set `CLAUDE_CODE_ADDITIONAL_DIRECTORIES_CLAUDE_MD=1` env var to also load their CLAUDE.md)
 - `claude --bg` で起動した bg セッションは `claude agents` ビューで `Ctrl+T` によりピン留め可能（v2.1.147+）。ピン留めセッションはアイドル時も維持、メモリ圧迫時も非ピン留めが先に shed される
 - Auto-memory enabled → `.claude/memory/`
