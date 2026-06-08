@@ -59,16 +59,17 @@ $OBSIDIAN_VAULT/
 
 ### Auto-capture Layer (Stop hook, 2026-05-22 追加)
 
-`obsidian-auto-capture.sh` が Stop hook で発動し、`claude --bare --model claude-haiku-4-5` でセッション transcript から **promotion 候補** を抽出して `90_artifacts/claude-code/auto-captures/YYYY-MM.md` に append する（再帰防止のため `--bare` 必須）。
+`obsidian-auto-capture.sh` が Stop hook で発動し、`claude --model claude-haiku-4-5`（OAuth ログイン利用、`--bare` は**使わない**）でセッション transcript から **promotion 候補** を抽出して `90_artifacts/claude-code/auto-captures/YYYY-MM.md` に append する。fire-and-forget（バックグラウンド抽出、hook は即 return）。
 
 | 項目 | 内容 |
 |---|---|
 | トリガー | Stop hook（shoya-sue が普通にセッションを終えるだけで自動発動） |
 | 出力先 | `90_artifacts/claude-code/auto-captures/YYYY-MM.md`（Claude 専有、append-only） |
-| 抽出カテゴリ | トラブルシュート / feedback / 環境設定 / MCP変更 |
+| 抽出カテゴリ | トラブルシュート / feedback / 環境設定 / MCP変更 / 設計判断(ADR) / 実装マイルストーン / 学び |
+| 再帰防止 | 環境変数 `CLAUDE_HOOK_AUTO_CAPTURE_RUNNING=1` ガード（子 `claude` プロセスが継承し、hook 冒頭で検知して early-exit）。`--bare` は OAuth を無効化し `ANTHROPIC_API_KEY` を要求するため使わない |
 | 書き込み禁止 | `INBOX.md` / `00_inbox/` / `50_decisions/` / `60_wishes/` / `40_learning/self-profile/` / `themes/*` / `30_knowledge/claude-code/memory/Public/*` |
-| Skip 条件 | transcript < 5KB / `claude` CLI 不在 / Haiku が "SKIP" 出力 / 90 秒タイムアウト |
-| Promotion | 手動 or `/obsidian-synthesis`（Sonnet）で auto-captures → themes/memory/decisions へ昇格 |
+| Skip 条件 | transcript < 5KB / `jq`・`claude` CLI 不在 / Haiku が "SKIP" 出力 / 90 秒タイムアウト |
+| Promotion | 手動 or `/obsidian-synthesis`（Sonnet）or `obsidian-promotion` scheduled task で auto-captures → themes/memory/decisions/projects/learning へ昇格。昇格後は `<!-- 未処理 -->` を `<!-- promoted: YYYY-MM-DD → <dest> -->` に置換 |
 
 エージェントは auto-captures/ を **直接編集しない**（hook 専有領域）。promotion 時は `/obsidian-synthesis` 経由か、手動で themes/memory に移してから auto-captures/ 内の `<!-- 未処理 -->` マーカーを更新する。
 
