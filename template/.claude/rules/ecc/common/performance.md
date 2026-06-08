@@ -45,6 +45,7 @@ Extended thinking is enabled by default, reserving up to 31,999 tokens for inter
 Control extended thinking via:
 - **Toggle**: Option+T (macOS) / Alt+T (Windows/Linux)
 - **Config**: Set `effortLevel: "low" | "medium" | "high" | "xhigh"` in settings.json (v2.1.68+, `"xhigh"` は v2.1.111 で追加、Opus 4.8 が `xhigh` を活用、default `"high"`)
+- **Disable thinking**: `MAX_THINKING_TOKENS=0` / CLI `--thinking disabled` / モデル別 thinking トグル — デフォルトで thinking するモデルでも thinking を完全に無効化（v2.1.166+）
 - **Verbose mode**: Ctrl+O to see thinking output
 - **Display summaries**: Set `showThinkingSummaries: true` in settings.json (v2.1.89+, display-only)
 - **No-flicker mode**: `CLAUDE_CODE_NO_FLICKER=1` — チラつきなし alt-screen レンダリング（v2.1.91+）

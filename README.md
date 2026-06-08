@@ -167,6 +167,8 @@ Supported patterns:
 | `Skill(pattern)` | Skill execution | `Skill(explain-code:*)` |
 | `MCPSearch` | MCP search | `MCPSearch` |
 
+> **allow / deny の glob ルール（v2.1.166+ で検証強化）**: `allow` の tool-name 位置で glob を使えるのは `mcp__<server>__*` のようにリテラルプレフィックスでスコープを限定した後のみ。`mcp__*` のようなスコープ無しワイルドカードは**無効**で、起動時に警告付きでスキップされる（実効パーミッションには影響しない）。`deny` / `ask` はどの位置でも glob 可で、`deny` の tool-name 位置に `"*"` を置くと全ツールを拒否できる。
+
 ### hooks (Event Hooks — All 27 Events)
 
 5 hook types: `command` (shell), `http` (HTTP request), `prompt` (LLM judgment), `agent` (subagent), `mcp_tool` (MCP tool invocation)
@@ -241,7 +243,7 @@ All 27 events:
 | `CLAUDE_CODE_DISABLE_CRON` | Disable `/loop` scheduled execution | `1` |
 | `CLAUDE_CODE_SIMPLE` | Minimal mode (Skills/Memory/Hooks/MCP disabled) | `1` |
 | `CLAUDE_CODE_DISABLE_GIT_INSTRUCTIONS` | Disable built-in git instructions | `1` |
-| `MAX_THINKING_TOKENS` | Thinking token limit | Model-dependent |
+| `MAX_THINKING_TOKENS` | Thinking token limit（v2.1.166+ で `0` を指定するとデフォルト thinking モデルでも thinking を無効化。同等に CLI `--thinking disabled` / モデル別 thinking トグルでも無効化可） | Model-dependent |
 | `refreshInterval` | Status line auto-refresh interval (seconds) | `30` |
 | `ANTHROPIC_BEDROCK_SERVICE_TIER` | Bedrock サービスティア（`default` / `flex` / `priority`）（v2.1.122+） | `default` |
 | `CLAUDE_CODE_SESSION_ID` | セッション ID（Bash サブプロセスに自動設定、フック `session_id` と同値）（v2.1.132+）。v2.1.154+ で MCP stdio サーバーにも `CLAUDE_CODE_SESSION_ID` と `CLAUDECODE=1` が渡る。v2.1.163+ で `--resume` 時も stdio MCP サーバーに渡る | (auto) |
@@ -290,6 +292,7 @@ All 27 events:
 | `pluginSuggestionMarketplaces` | エンタープライズ managed 設定 — context-aware tips でプラグイン提案する組織 marketplace の allow リスト（v2.1.152+） |
 | `agent` | dispatched session（`claude agents` から起動）で使うデフォルトエージェント。`settings.json` の値が honored される（v2.1.157+）。CLI からは `--agent <name>` で override |
 | `requiredMinimumVersion` / `requiredMaximumVersion` | managed settings — 組織内で利用可能な Claude Code バージョンの下限/上限を強制（v2.1.163+） |
+| `fallbackModel` | プライマリモデルが過負荷／エラー時に順次フォールバックするモデル（最大 3 つを順番に試行）。CLI `--fallback-model` フラグは v2.1.166+ でインタラクティブセッションにも適用（従来は `-p`/print のみ） |
 
 ## Settings Hierarchy
 
