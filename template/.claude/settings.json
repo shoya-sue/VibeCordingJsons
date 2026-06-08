@@ -64,7 +64,6 @@
       "Bash(aws s3 cp *)",
       "Bash(gcloud *)",
       "Bash(sentry-cli *)",
-      "mcp__*",
       "mcp__obsidian__*",
       "mcp__github__*",
       "mcp__context7__*",
