@@ -29,6 +29,7 @@ Bash, JSON, Markdown (no application code; configuration templates only)
 - SKILL.md frontmatter uses `user-invokable` (not `user-invocable`)
 - SKILL.md supports `allowed-tools` to restrict tools (e.g., `allowed-tools: ["Read", "Glob", "Grep"]`)
 - SKILL.md can use `${CLAUDE_SKILL_DIR}` to reference the skill's own directory
+- SKILL.md command bodies escape literal `$` before digits as `\$` (v2.1.163+)
 - `.mcp.json` API keys use `${ENV_VAR}` format
 - Template comments use `<!-- -->` format
 - Both CLAUDE.md and AGENTS.md are placed at project root and in template/
