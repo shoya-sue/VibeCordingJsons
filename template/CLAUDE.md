@@ -55,6 +55,7 @@ make deploy-staging   # Deploy to staging
 - `/team-onboarding` — チームメイト向けのランプアップガイドを生成
 - `/proactive` — `/loop` のエイリアス（プロアクティブなループ実行）
 - `/recap` — 離席後のセッションサマリーを手動表示
+- `/cd <path>` — セッションの作業ディレクトリを変更（プロンプトキャッシュをセッション途中で壊さずに移動、v2.1.169+）
 - `/tui [fullscreen]` — チラつきなし全画面レンダリングに切り替え
 - `/terminal-setup` — エディタスクロール感度を設定（fullscreen モードのスムーズスクロール用）。v2.1.157+ では VS Code/Cursor/Windsurf 統合ターミナルの GPU acceleration も無効化し文字化けを防ぐ
 - `/focus` — フォーカスビュー表示切り替え（Ctrl+O はノーマル/詳細トランスクリプト切り替えのみ）
@@ -72,6 +73,8 @@ make deploy-staging   # Deploy to staging
 - `.env.production` is read-prohibited (deny list)
 - v2.1.160+ ではシェル起動ファイル（`.zshenv` / `.zlogin` / `.bash_login` / `~/.config/git/`）への書き込み、および `acceptEdits` モードでのビルドツール設定ファイル（`.npmrc` / `.yarnrc*` / `bunfig.toml` / `.bazelrc` / `.pre-commit-config.yaml` / `.devcontainer/` 等、コード実行を許す設定）書き込み前に確認プロンプトが入る（ビルトイン安全策、settings.json 設定不要）
 - Auto mode は v2.1.152+ でオプトイン同意不要（以前は明示的な同意ステップが必要）。Bedrock/Vertex/Foundry では Opus 4.7/4.8 向けに `CLAUDE_CODE_ENABLE_AUTO_MODE=1` の opt-in が必要（v2.1.158+）
+- Safe mode（トラブルシュート用、v2.1.169+）: `--safe-mode` フラグまたは `CLAUDE_CODE_SAFE_MODE=1` で CLAUDE.md / plugins / skills / hooks / MCP サーバーをすべて無効化して起動。設定起因の不具合切り分けに使う
+- Bundled skills 抑制（v2.1.169+）: `disableBundledSkills: true`（settings.json）または `CLAUDE_CODE_DISABLE_BUNDLED_SKILLS=1` で組み込み skills / workflows / built-in slash command をモデルから隠す
 - Agent Teams enabled (`teammateMode: auto`)
 - ECC hooks: session continuity (SessionStart/Stop/SessionEnd), --no-verify guard (PreToolUse), auto-format JS/TS (PostToolUse), compact quality (PreCompact)
 - Context hygiene: `CLAUDE_CODE_AUTO_COMPACT_WINDOW` is NOT set by default (1M-context opt-in workaround for [#43989](https://github.com/anthropics/claude-code/issues/43989) only). Standard 200K window → manage context actively: `/context`, `/compact <focus>`, `/clear`, `/goal`, subagent delegation; keep high-signal tokens small. See `.claude/rules/ecc/common/performance.md`
