@@ -6,10 +6,10 @@ Complete configuration for Claude Code, Codex, and GitHub Copilot CLI with `ever
 
 | Category | Contents |
 |----------|----------|
-| Claude Code settings | 3-tier permissions, 26 hooks + ECC hooks, Agent Teams, auto-memory |
-| Skills (Claude) | 7 local + 156 via ECC plugin |
-| Agents (Claude) | 38 agents via ECC plugin (code-reviewer, architect, language-specific reviewers, etc.) |
-| Rules | 50 ECC rules (common + 8 languages) + subagent-delegation + team-coordination |
+| Claude Code settings | 3-tier permissions, 10 configured event hooks (of 27) + ECC hooks, Agent Teams, auto-memory |
+| Skills (Claude) | 10 local + 156 via ECC plugin (ECC 1.10.0) |
+| Agents (Claude) | 38 agents via ECC plugin (ECC 1.10.0; code-reviewer, architect, language-specific reviewers, etc.) |
+| Rules | 55 ECC rules (common 10 + 9 languages × 5) + 3 custom (subagent-delegation, team-coordination, obsidian-mcp) |
 | MCP Servers | obsidian, context7, playwright, deepwiki, excalidraw, github |
 | Codex | `.codex/config.toml` with high-effort model defaults, memories, matching MCP servers, and Codex-only fail-open hooks |
 | Copilot CLI | copilot-instructions.md, 8 skills, 4 agents |
@@ -32,8 +32,8 @@ Complete configuration for Claude Code, Codex, and GitHub Copilot CLI with `ever
 ### ECC Integration (everything-claude-code)
 
 The plugin provides:
-- **38 agents** — language-specific reviewers (TS, Python, Go, Rust, Java, Kotlin, C++, Flutter, Swift), architect, planner, tdd-guide, security-reviewer, build resolvers, etc.
-- **156 skills** — TDD workflow, coding standards, API design, deployment patterns, deep research, and more
+- **38 agents** (ECC 1.10.0) — language-specific reviewers (TS, Python, Go, Rust, Java, Kotlin, C++, Flutter, Swift), architect, planner, tdd-guide, security-reviewer, build resolvers, etc.
+- **156 skills** (ECC 1.10.0) — TDD workflow, coding standards, API design, deployment patterns, deep research, and more
 - **ECC hooks** — session continuity, cost tracking, MCP health monitoring, compact suggestions, console.log detection
 - **Profile control** — `ECC_HOOK_PROFILE=standard` (minimal/standard/strict)
 
@@ -60,7 +60,7 @@ Use Agent Teams when:
 - **Ask**: git push, npm publish, docker push, terraform apply, kubectl apply
 - **Deny**: Destructive ops, secret files, force push, hard reset
 
-### Hooks (26 Events + ECC)
+### Hooks (10 configured of 27 events + ECC)
 
 All lifecycle events are logged, plus ECC enhancements:
 - **Session continuity** — Auto-resumes context from previous sessions
