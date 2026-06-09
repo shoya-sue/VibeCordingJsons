@@ -236,12 +236,14 @@ All 27 events:
 | `BASH_MAX_TIMEOUT_MS` | Bash timeout (ms) | `120000`-`300000` |
 | `CLAUDE_CODE_MAX_OUTPUT_TOKENS` | 1 応答あたりの出力トークン上限。Opus 4.8 は最大 128k 対応だがテンプレは保守的に 64k。長文出力が多ければ `settings.local.json` で `128000` まで引き上げ可（Claude Code 側が内部 cap している場合は無効） | `64000` |
 | `ENABLE_TOOL_SEARCH` | Enable tool search | `auto` |
-| `CLAUDE_CODE_AUTO_COMPACT_WINDOW` | Autocompact 発火 token 数。1M context の Opus モデルで autocompact 閾値が 400K に下がる regression #43989（v2.1.92〜、**未修正 OPEN**）を回避 | `1000000` |
+| `CLAUDE_CODE_AUTO_COMPACT_WINDOW` | Autocompact 発火 token 数の上書き。**標準 200K ウィンドウでは設定しない**（native auto-compaction に委ね、`/context`・`/compact`・`/clear` で能動ハイジーン）。`1000000` は **1M context モード（`/model ...[1m]`）利用者専用の opt-in workaround**（1M モードで閾値が 400K に誤縮小する regression [#43989](https://github.com/anthropics/claude-code/issues/43989)、**未修正 OPEN** を回避）。標準窓で大きい値を入れると実上限前に発火せず逆効果 | 未設定（1M モードのみ `1000000`） |
 | `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS` | Enable Agent Teams | `1` |
 | `CLAUDE_CODE_AUTO_MEMORY_PATH` | Auto-memory save path | `""` (default) |
 | `CLAUDE_CODE_SESSIONEND_HOOKS_TIMEOUT_MS` | SessionEnd hook timeout (ms) | `5000` |
 | `CLAUDE_CODE_DISABLE_CRON` | Disable `/loop` scheduled execution | `1` |
 | `CLAUDE_CODE_SIMPLE` | Minimal mode (Skills/Memory/Hooks/MCP disabled) | `1` |
+| `CLAUDE_CODE_SAFE_MODE` | 全カスタマイズ（CLAUDE.md/plugins/skills/hooks/MCP）を無効化して起動＝トラブルシュート用（CLI `--safe-mode` 同等、v2.1.169+） | `1` |
+| `CLAUDE_CODE_DISABLE_BUNDLED_SKILLS` | 組み込み skills/workflows/built-in slash command をモデルから隠す（settings.json `disableBundledSkills: true` 同等、v2.1.169+） | `1` |
 | `CLAUDE_CODE_DISABLE_GIT_INSTRUCTIONS` | Disable built-in git instructions | `1` |
 | `MAX_THINKING_TOKENS` | Thinking token limit（v2.1.166+ で `0` を指定するとデフォルト thinking モデルでも thinking を無効化。同等に CLI `--thinking disabled` / モデル別 thinking トグルでも無効化可） | Model-dependent |
 | `refreshInterval` | Status line auto-refresh interval (seconds) | `30` |
