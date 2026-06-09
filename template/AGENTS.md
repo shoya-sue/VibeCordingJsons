@@ -43,8 +43,9 @@ All skills enforce subagent delegation for cost optimization:
 ### GitHub Operations
 
 - All GitHub API operations use `gh` CLI exclusively
-- Never use `curl` to api.github.com
-- `gh api` is the last resort fallback
+- Never use `curl`/`wget` to api.github.com (in Claude Code these hit the `curl *` ask rule and prompt; `gh *` is allowlisted)
+- `gh api repos/<owner>/<repo>/...` is the fallback when no `gh` subcommand fits
+- Fetch non-GitHub web pages with the harness web-fetch tool, not `curl`
 
 ## Plugin Setup
 

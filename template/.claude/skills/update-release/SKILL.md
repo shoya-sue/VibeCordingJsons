@@ -45,11 +45,13 @@ If `LOCAL_ECC_LATEST` is empty → ECC is not installed locally. Skip all ECC ve
 
 #### 0-a. Research (cast wide)
 
+> **Tooling (avoids permission prompts):** Use the `WebFetch` tool for doc/HTML pages and the `gh` CLI (`gh api`, `gh release view`, `gh search`) for GitHub data. **Never `curl`/`wget` to api.github.com or any URL** — `Bash(curl *)` is on the `ask` list and forces a manual prompt every time, while `WebFetch(*)` and `Bash(gh *)` are allowlisted and run silently. When delegating this research to a subagent, repeat this directive in the subagent prompt (subagents otherwise default to `curl`).
+
 Fetch from ALL of the following sources:
 
-1. **Claude Code changelog** — search `"Claude Code changelog site:docs.anthropic.com"` and fetch the page. Capture every entry newer than `CURRENT_RELEASE`.
-2. **ECC plugin releases** — fetch `https://github.com/affaan-m/everything-claude-code/releases`. Record latest version and release notes.
-3. **Claude Code GitHub releases** — fetch `https://github.com/anthropics/claude-code/releases` if accessible, for any items not in the docs changelog.
+1. **Claude Code changelog** — `WebFetch` `https://docs.anthropic.com/en/docs/claude-code/changelog` (or `https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md`). Capture every entry newer than `CURRENT_RELEASE`.
+2. **ECC plugin releases** — `gh release list -R affaan-m/everything-claude-code` then `gh release view <tag> -R affaan-m/everything-claude-code`. Record latest version and release notes.
+3. **Claude Code GitHub releases** — `gh release list -R anthropics/claude-code` / `gh api repos/anthropics/claude-code/releases` for any items not in the docs changelog.
 
 For each changelog entry, collect ALL of:
 - New/changed settings keys and their types/defaults
