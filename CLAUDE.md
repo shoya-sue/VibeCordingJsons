@@ -12,7 +12,7 @@ Bash, JSON, Markdown (no application code; configuration templates only)
 .
 ├── template/          # Single template (all features)
 │   ├── .claude/       # settings.json + skills + agents + rules
-│   ├── .github/       # copilot-instructions.md + 8 skills + 4 agents
+│   ├── .github/       # copilot-instructions.md + 2 skill packages + 4 agents
 │   ├── .mcp.json
 │   ├── AGENTS.md
 │   ├── CLAUDE.md
@@ -40,6 +40,7 @@ Bash, JSON, Markdown (no application code; configuration templates only)
 ./install.sh           # Global install to ~ (default)
 ./install.sh ~         # Global install to home directory
 ./install.sh /path     # Install to specified project directory
+bash scripts/check-counts.sh   # Verify documented counts match the filesystem (run before release)
 ```
 
 ## Important Notes

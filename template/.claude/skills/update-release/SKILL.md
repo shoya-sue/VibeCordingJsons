@@ -194,6 +194,8 @@ Apply each 🔴 and 🟡 item. For each:
 3. Confirm syntactic correctness (valid JSON for settings files; well-formed Markdown for docs)
 4. Apply companion file changes identified in Lens 2 in the same pass
 
+After editing, if any change touched counts (skills/rules/languages/hooks/MCP servers/agents) or install commands, run `bash scripts/check-counts.sh` — it asserts documented counts match the filesystem and that stale tier/`install.sh full` strings have not reappeared. Fix any drift it reports before committing.
+
 ---
 
 ### 3. Determine next version

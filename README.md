@@ -81,17 +81,19 @@ Setting `~/.copilot/copilot-instructions.md` applies to all projects.
 ├── template/
 │   ├── .claude/
 │   │   ├── settings.json
-│   │   ├── settings.local.json
-│   │   ├── skills/
+│   │   ├── skills/             # 10 local skills
 │   │   │   ├── explain-code/SKILL.md
 │   │   │   ├── fix-issue/SKILL.md
 │   │   │   ├── review-pr/SKILL.md
 │   │   │   ├── generate-changelog/SKILL.md
 │   │   │   ├── dependency-audit/SKILL.md
 │   │   │   ├── create-issue/SKILL.md
-│   │   │   └── gh-workflow/SKILL.md
+│   │   │   ├── gh-workflow/SKILL.md
+│   │   │   ├── obsidian-synthesis/SKILL.md
+│   │   │   ├── sync-memory/SKILL.md
+│   │   │   └── update-release/SKILL.md
 │   │   └── rules/
-│   │       ├── ecc/             # 50 rules from everything-claude-code
+│   │       ├── ecc/             # 55 rules from everything-claude-code
 │   │       │   ├── common/      # 10 cross-language rules
 │   │       │   ├── typescript/  # 5 TS/JS rules
 │   │       │   ├── python/      # 5 Python rules
@@ -100,22 +102,18 @@ Setting `~/.copilot/copilot-instructions.md` applies to all projects.
 │   │       │   ├── swift/       # 5 Swift rules
 │   │       │   ├── java/        # 5 Java rules
 │   │       │   ├── kotlin/      # 5 Kotlin rules
-│   │       │   └── cpp/         # 5 C++ rules
+│   │       │   ├── cpp/         # 5 C++ rules
+│   │       │   └── php/         # 5 PHP rules
 │   │       ├── subagent-delegation.md
-│   │       └── team-coordination.md
+│   │       ├── team-coordination.md
+│   │       └── obsidian-mcp.md
 │   ├── .github/
 │   │   ├── copilot-instructions.md
 │   │   ├── instructions/
 │   │   │   └── example.instructions.md   # path-targeted instructions (applyTo glob)
-│   │   ├── skills/
-│   │   │   ├── explain-code/SKILL.md
+│   │   ├── skills/             # 2 SKILL.md packages (8 skills documented in copilot-instructions.md)
 │   │   │   ├── code-reviewer/SKILL.md
-│   │   │   ├── fix-issue/SKILL.md
-│   │   │   ├── review-pr/SKILL.md
-│   │   │   ├── test-runner/SKILL.md
-│   │   │   ├── create-issue/SKILL.md
-│   │   │   ├── generate-changelog/SKILL.md
-│   │   │   └── dependency-audit/SKILL.md
+│   │   │   └── test-runner/SKILL.md
 │   │   └── agents/
 │   │       ├── code-reviewer.agent.md
 │   │       ├── github-workflow.agent.md
@@ -128,7 +126,6 @@ Setting `~/.copilot/copilot-instructions.md` applies to all projects.
 │   ├── .mcp.json
 │   ├── AGENTS.md
 │   ├── CLAUDE.md
-│   ├── CLAUDE.local.md
 │   ├── project.code-workspace
 │   └── README.md
 ├── install.sh
@@ -415,7 +412,7 @@ The template integrates the [everything-claude-code](https://github.com/affaan-m
 /plugin install everything-claude-code@everything-claude-code
 ```
 
-Provides 47 agents, 181 skills, 60 commands. Rules must be installed separately via `install.sh` (plugins cannot auto-distribute rules).
+Provides 38 agents, 156 skills, 72 commands (ECC 1.10.0; plugin-provided counts are version-specific). Rules must be installed separately via `install.sh` (plugins cannot auto-distribute rules).
 
 ## Best Practices
 
