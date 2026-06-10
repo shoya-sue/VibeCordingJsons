@@ -57,6 +57,9 @@ STALE=(
   "8 languages × 5" "50 rules" "50 ECC"
   "47 agents" "30 agents" "181 skills" "60 commands"
   "26 hooks" "27 event hooks"
+  # ECC 1.10.0 counts — stale since the 2.0.0 (ecc) migration (now 64/261/84)
+  "38 agents" "156 skills" "72 commands"
+  "everything-claude-code@everything-claude-code"
 )
 for s in "${STALE[@]}"; do
   hits=$(grep -rlnF "$s" $LIVE 2>/dev/null || true)

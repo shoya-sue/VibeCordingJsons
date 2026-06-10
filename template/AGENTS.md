@@ -11,13 +11,13 @@ Copy all files from the `template/` directory to your project root or home direc
 - 10 configured event hooks (of 27 supported by Claude Code) + ECC hooks (session continuity, cost tracking, MCP health, compact suggestion)
 - `claude agents` — Agent view (Research Preview): all sessions in a unified list (configure dispatched sessions with `--add-dir` / `--settings` / `--mcp-config` / `--plugin-dir` / `--permission-mode` / `--model` / `--effort` / `--agent` / `--dangerously-skip-permissions` / `--allow-dangerously-skip-permissions`, v2.1.142–143; `--agent` overrides the `agent` settings key honored since v2.1.157)
 - 10 skills: explain-code, fix-issue, review-pr, generate-changelog, dependency-audit, create-issue, gh-workflow, obsidian-synthesis, sync-memory, update-release
-- 38 agents via `everything-claude-code` plugin (ECC 1.10.0; plugin-provided — code-reviewer, security-reviewer, architect, tdd-guide, language-specific reviewers, etc.)
+- 64 agents via `ecc` plugin (ECC 2.0.0, from the `everything-claude-code` marketplace; plugin-provided — code-reviewer, security-reviewer, architect, tdd-guide, language-specific reviewers, etc.; addressed as `ecc:<agent>`)
 - 55 rules: `ecc/common/` (10) + 9 languages × 5 (typescript, python, golang, rust, swift, java, kotlin, cpp, php)
 - 3 custom rules: subagent-delegation, team-coordination, obsidian-mcp
 - 6 MCP servers: obsidian, context7, playwright, deepwiki, excalidraw, github
 - Agent Teams enabled with auto teammate mode
 - Attribution enabled (commits and PRs)
-- **Requires** `everything-claude-code` plugin
+- **Requires** the `ecc` plugin (from the `everything-claude-code` marketplace)
 
 ### Copilot CLI
 - copilot-instructions.md with full agent/skill/fleet configuration
@@ -50,9 +50,9 @@ All skills enforce subagent delegation for cost optimization:
 ## Plugin Setup
 
 ```bash
-# 1. Install plugin
+# 1. Install plugin (renamed everything-claude-code → ecc in 2.0.0)
 /plugin marketplace add affaan-m/everything-claude-code
-/plugin install everything-claude-code@everything-claude-code
+/plugin install ecc@everything-claude-code
 
 # 2. Install rules (plugins cannot auto-distribute rules)
 ./install.sh ~              # Global (recommended for personal use)

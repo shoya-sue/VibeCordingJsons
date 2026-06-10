@@ -172,7 +172,7 @@
     "CLAUDE_CODE_MAX_OUTPUT_TOKENS": "64000",
     "ECC_HOOK_PROFILE": "standard",
     "ECC_DISABLED_HOOKS": "",
-    "ECC_PLUGIN_ROOT": "${HOME}/.claude/plugins/cache/everything-claude-code/everything-claude-code/1.10.0",
+    "ECC_PLUGIN_ROOT": "${HOME}/.claude/plugins/cache/everything-claude-code/ecc/2.0.0",
     "CLAUDE_CODE_SUBPROCESS_ENV_SCRUB": "1",
     "CLAUDE_CODE_NO_FLICKER": "1",
     "ENABLE_PROMPT_CACHING_1H": "1",

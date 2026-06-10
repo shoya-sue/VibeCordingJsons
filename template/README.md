@@ -1,14 +1,14 @@
 # VibeCording Template — Claude Code + Codex + GitHub Copilot CLI
 
-Complete configuration for Claude Code, Codex, and GitHub Copilot CLI with `everything-claude-code` plugin integration.
+Complete configuration for Claude Code, Codex, and GitHub Copilot CLI with `ecc` plugin integration (from the `everything-claude-code` marketplace).
 
 ## What's Included
 
 | Category | Contents |
 |----------|----------|
 | Claude Code settings | 3-tier permissions, 10 configured event hooks (of 27) + ECC hooks, Agent Teams, auto-memory |
-| Skills (Claude) | 10 local + 156 via ECC plugin (ECC 1.10.0) |
-| Agents (Claude) | 38 agents via ECC plugin (ECC 1.10.0; code-reviewer, architect, language-specific reviewers, etc.) |
+| Skills (Claude) | 10 local + 261 via ECC plugin (ECC 2.0.0) |
+| Agents (Claude) | 64 agents via ECC plugin (ECC 2.0.0; code-reviewer, architect, language-specific reviewers, etc.) |
 | Rules | 55 ECC rules (common 10 + 9 languages × 5) + 3 custom (subagent-delegation, team-coordination, obsidian-mcp) |
 | MCP Servers | obsidian, context7, playwright, deepwiki, excalidraw, github |
 | Codex | `.codex/config.toml` with high-effort model defaults, memories, matching MCP servers, and Codex-only fail-open hooks |
@@ -18,9 +18,9 @@ Complete configuration for Claude Code, Codex, and GitHub Copilot CLI with `ever
 ## Quick Start
 
 ```bash
-# 1. Install ECC plugin
+# 1. Install ECC plugin (plugin renamed everything-claude-code → ecc in 2.0.0)
 /plugin marketplace add affaan-m/everything-claude-code
-/plugin install everything-claude-code@everything-claude-code
+/plugin install ecc@everything-claude-code
 
 # 2. Install template (copies rules that plugins can't distribute)
 ./install.sh            # Global install to ~
@@ -32,18 +32,18 @@ Complete configuration for Claude Code, Codex, and GitHub Copilot CLI with `ever
 ### ECC Integration (everything-claude-code)
 
 The plugin provides:
-- **38 agents** (ECC 1.10.0) — language-specific reviewers (TS, Python, Go, Rust, Java, Kotlin, C++, Flutter, Swift), architect, planner, tdd-guide, security-reviewer, build resolvers, etc.
-- **156 skills** (ECC 1.10.0) — TDD workflow, coding standards, API design, deployment patterns, deep research, and more
+- **64 agents** (ECC 2.0.0) — language-specific reviewers (TS, Python, Go, Rust, Java, Kotlin, C++, Flutter, Swift), architect, planner, tdd-guide, security-reviewer, build resolvers, etc.
+- **261 skills** (ECC 2.0.0) — TDD workflow, coding standards, API design, deployment patterns, deep research, and more
 - **ECC hooks** — session continuity, cost tracking, MCP health monitoring, compact suggestions, console.log detection
 - **Profile control** — `ECC_HOOK_PROFILE=standard` (minimal/standard/strict)
 
 ### Subagent Cost Optimization
 
 Subagent usage does not count against billing quotas:
-- Code review → `everything-claude-code:code-reviewer` (sonnet)
-- Security review → `everything-claude-code:security-reviewer` (sonnet)
-- Architecture → `everything-claude-code:architect` (opus)
-- Language reviews → `everything-claude-code:{lang}-reviewer` (sonnet)
+- Code review → `ecc:code-reviewer` (sonnet)
+- Security review → `ecc:security-reviewer` (sonnet)
+- Architecture → `ecc:architect` (opus)
+- Language reviews → `ecc:{lang}-reviewer` (sonnet)
 - Tests → test-runner (built-in, sonnet)
 - Exploration → Explore agent (haiku)
 
