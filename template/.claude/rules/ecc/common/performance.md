@@ -17,6 +17,10 @@
 - Maximum reasoning requirements
 - Research and analysis tasks
 
+**Fable 5** (Mythos-class frontier, v2.1.170+, model id `claude-fable-5`):
+- 最大能力が要る分析・研究タスク向けの**オプトイン**（テンプレ既定は引き続き Opus 4.8）
+- `/model claude-fable-5` で選択。**Fast mode 対象外**（`/fast` は Opus 4.8/4.7/4.6 のみ）
+
 ## Fast Mode
 
 `/fast` で Claude Opus を高速出力モードで利用できる（小型モデルへのダウングレードではない、品質維持のままレイテンシ低減）。

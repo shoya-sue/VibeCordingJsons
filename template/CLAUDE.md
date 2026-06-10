@@ -84,5 +84,6 @@ make deploy-staging   # Deploy to staging
 - Subagent usage does not count against billing — delegate aggressively
 - `gh` CLI for all GitHub operations, never raw `api.github.com`
 - Output limit: template sets `CLAUDE_CODE_MAX_OUTPUT_TOKENS=64k` (Opus 4.8 supports up to 128k; raise in `settings.local.json` if you generate long outputs)
+- Claude Fable 5（Mythos-class frontier model）は v2.1.170+ で利用可（model id `claude-fable-5`、`/model claude-fable-5`）。テンプレ既定は引き続き Opus 4.8 — Fable 5 は最大能力が要る分析/研究向けのオプトインで Fast mode 対象外
 - **Requires** `everything-claude-code` plugin for agents and skills
 - Rules: `ecc/common/` (10) + language-specific rules (9 languages × 5 = 45)

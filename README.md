@@ -367,6 +367,7 @@ Claude Code lets you switch models mid-session with the `/model` command.
 | `opus` | Opus 4.8 (highest performance, default) | Complex architecture design |
 | `sonnet` | Sonnet 4.6 (balanced) | Everyday development |
 | `haiku` | Haiku 4.5 (fast, low cost) | Simple questions, code review |
+| `fable` | Fable 5 (Mythos-class frontier, v2.1.170+, `claude-fable-5`) | Frontier-grade analysis / research (opt-in, not fast-mode eligible) |
 | **`opusplan`** | **Opus for planning → Sonnet for execution (auto-switch)** | **Cost-optimized (recommended)** |
 
 **`/model opusplan` workflow**:
