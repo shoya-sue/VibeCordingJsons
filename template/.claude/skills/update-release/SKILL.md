@@ -16,7 +16,9 @@ Arguments: `$ARGUMENTS`
 Before doing anything else, capture the current local state. This is ground truth — never assume from changelog alone.
 
 ```bash
-# ECC versions locally installed
+# ECC versions locally installed (ECC 2.0.0 renamed the plugin everything-claude-code → ecc;
+# scan both the new `ecc` dir and the legacy `everything-claude-code` dir)
+ls ~/.claude/plugins/cache/everything-claude-code/ecc/ 2>/dev/null | sort -V
 ls ~/.claude/plugins/cache/everything-claude-code/everything-claude-code/ 2>/dev/null | sort -V
 
 # Current template ECC version
@@ -27,7 +29,7 @@ gh release list --limit 1
 ```
 
 Record:
-- `LOCAL_ECC_LATEST` — highest installed version (e.g. `1.10.0`)
+- `LOCAL_ECC_LATEST` — highest installed version (e.g. `2.0.0`)
 - `CURRENT_ECC_IN_SETTINGS` — current ECC_PLUGIN_ROOT value in `template/.claude/settings.json`
 - `CURRENT_RELEASE` — latest GitHub release tag (e.g. `v0.28.0`)
 

@@ -397,10 +397,10 @@ Including "ultrathink" in your message enables high effort for the next turn onl
 
 Subagent usage does not count against billing quotas. Delegate aggressively:
 - Read-only tasks → Explore agent (haiku)
-- Code review → `everything-claude-code:code-reviewer` (sonnet)
-- Security review → `everything-claude-code:security-reviewer` (sonnet)
-- Architecture → `everything-claude-code:architect` (opus)
-- Language reviews → `everything-claude-code:{lang}-reviewer` (sonnet)
+- Code review → `ecc:code-reviewer` (sonnet)
+- Security review → `ecc:security-reviewer` (sonnet)
+- Architecture → `ecc:architect` (opus)
+- Language reviews → `ecc:{lang}-reviewer` (sonnet)
 - Tests → test-runner (built-in, sonnet)
 - GitHub ops → always via `gh` CLI
 
@@ -410,10 +410,12 @@ The template integrates the [everything-claude-code](https://github.com/affaan-m
 
 ```bash
 /plugin marketplace add affaan-m/everything-claude-code
-/plugin install everything-claude-code@everything-claude-code
+/plugin install ecc@everything-claude-code
 ```
 
-Provides 38 agents, 156 skills, 72 commands (ECC 1.10.0; plugin-provided counts are version-specific). Rules must be installed separately via `install.sh` (plugins cannot auto-distribute rules).
+> ECC 2.0.0 renamed the plugin `everything-claude-code` → `ecc` (the marketplace/repo name stays `everything-claude-code`). Agents are addressed as `ecc:<agent>`.
+
+Provides 64 agents, 261 skills, 84 commands (ECC 2.0.0; plugin-provided counts are version-specific). Rules must be installed separately via `install.sh` (plugins cannot auto-distribute rules).
 
 ## Best Practices
 

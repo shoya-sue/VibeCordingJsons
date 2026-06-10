@@ -89,14 +89,16 @@ if [[ -f "$TARGET/.claude/settings.json" ]]; then
   # Expand ${HOME} literal to actual home directory
   sed -i.bak "s|\${HOME}|${HOME}|g" "$TARGET/.claude/settings.json"
 
-  # Auto-detect installed ECC version and substitute
-  ECC_CACHE="$HOME/.claude/plugins/cache/everything-claude-code/everything-claude-code"
+  # Auto-detect installed ECC version and substitute.
+  # ECC 2.0.0 renamed the plugin everything-claude-code -> ecc, so the cache
+  # dir is .../marketplace(everything-claude-code)/plugin(ecc)/<version>.
+  ECC_CACHE="$HOME/.claude/plugins/cache/everything-claude-code/ecc"
   if [[ -d "$ECC_CACHE" ]]; then
     ECC_LATEST=$(ls -1 "$ECC_CACHE" 2>/dev/null | sort -V | tail -1)
     if [[ -n "$ECC_LATEST" ]]; then
-      # Replace any hardcoded ECC version in the path with the detected version
-      # Match version followed by either "/" (mid-path) or '"' (end of value)
-      sed -i.bak -E "s|/everything-claude-code/[0-9]+\.[0-9]+\.[0-9]+([/\"])|/everything-claude-code/${ECC_LATEST}\1|g" "$TARGET/.claude/settings.json"
+      # Replace any hardcoded ECC version in the path with the detected version.
+      # Match version followed by either "/" (mid-path) or '"' (end of value).
+      sed -i.bak -E "s|/everything-claude-code/ecc/[0-9]+\.[0-9]+\.[0-9]+([/\"])|/everything-claude-code/ecc/${ECC_LATEST}\1|g" "$TARGET/.claude/settings.json"
       echo "ECC version: ${ECC_LATEST} (auto-detected)"
     fi
   fi

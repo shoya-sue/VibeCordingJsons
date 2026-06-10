@@ -1,30 +1,30 @@
 ---
-description: Subagent delegation rules for cost optimization — uses everything-claude-code agents
+description: Subagent delegation rules for cost optimization — uses ecc agents
 ---
 
 # Subagent Delegation Rules
 
 Subagent usage does not count against billing quotas. Always delegate work to subagents when possible.
-Agents are provided by the `everything-claude-code` plugin — no custom agent files needed.
+Agents are provided by the `ecc` plugin — no custom agent files needed.
 
 ## Delegation Matrix
 
 | Task Type | Agent Type | Model |
 |-----------|-----------|-------|
 | Codebase exploration | Explore | haiku |
-| Code review | everything-claude-code:code-reviewer | sonnet |
-| Security review | everything-claude-code:security-reviewer | sonnet |
+| Code review | ecc:code-reviewer | sonnet |
+| Security review | ecc:security-reviewer | sonnet |
 | Test execution / fixing | test-runner (built-in) | sonnet |
 | Heavy implementation | general-purpose | sonnet |
-| Architecture planning | everything-claude-code:architect | opus |
-| Documentation updates | everything-claude-code:doc-updater | haiku |
-| Python review | everything-claude-code:python-reviewer | sonnet |
-| TypeScript review | everything-claude-code:typescript-reviewer | sonnet |
-| Go review | everything-claude-code:go-reviewer | sonnet |
-| Rust review | everything-claude-code:rust-reviewer | sonnet |
-| Java review | everything-claude-code:java-reviewer | sonnet |
-| Kotlin review | everything-claude-code:kotlin-reviewer | sonnet |
-| C++ review | everything-claude-code:cpp-reviewer | sonnet |
+| Architecture planning | ecc:architect | opus |
+| Documentation updates | ecc:doc-updater | haiku |
+| Python review | ecc:python-reviewer | sonnet |
+| TypeScript review | ecc:typescript-reviewer | sonnet |
+| Go review | ecc:go-reviewer | sonnet |
+| Rust review | ecc:rust-reviewer | sonnet |
+| Java review | ecc:java-reviewer | sonnet |
+| Kotlin review | ecc:kotlin-reviewer | sonnet |
+| C++ review | ecc:cpp-reviewer | sonnet |
 
 ## GitHub Operations
 
