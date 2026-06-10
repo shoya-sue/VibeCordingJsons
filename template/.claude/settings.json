@@ -158,6 +158,11 @@
     ]
   },
   "model": "opus",
+  "language": "japanese",
+  "voice": {
+    "enabled": true,
+    "mode": "tap"
+  },
   "enableAllProjectMcpServers": true,
   "autoMemoryEnabled": true,
   "autoMemoryDirectory": ".claude/memory",

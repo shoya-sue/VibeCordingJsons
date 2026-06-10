@@ -10,7 +10,8 @@ Copy all files from the `template/` directory to your project root or home direc
 - 3-tier permissions (allow / ask / deny)
 - 10 configured event hooks (of 27 supported by Claude Code) + ECC hooks (session continuity, cost tracking, MCP health, compact suggestion)
 - `claude agents` — Agent view (Research Preview): all sessions in a unified list (configure dispatched sessions with `--add-dir` / `--settings` / `--mcp-config` / `--plugin-dir` / `--permission-mode` / `--model` / `--effort` / `--agent` / `--dangerously-skip-permissions` / `--allow-dangerously-skip-permissions`, v2.1.142–143; `--agent` overrides the `agent` settings key honored since v2.1.157)
-- 10 skills: explain-code, fix-issue, review-pr, generate-changelog, dependency-audit, create-issue, gh-workflow, obsidian-synthesis, sync-memory, update-release
+- 11 skills: explain-code, fix-issue, review-pr, generate-changelog, dependency-audit, create-issue, gh-workflow, obsidian-synthesis, sync-memory, update-release, voice-input
+- Voice input: native `/voice` dictation enabled and set to Japanese (`voice`/`language` in settings.json). The `voice-input` skill cleans up rough Japanese dictation, and `.claude/skills/voice-input/scripts/voice-dictate.sh` provides a fully-local offline whisper.cpp path (harness-agnostic — also usable from Copilot CLI / any terminal). Native `/voice` itself is Claude Code only. See `.claude/skills/voice-input/SETUP.md`
 - 64 agents via `ecc` plugin (ECC 2.0.0, from the `everything-claude-code` marketplace; plugin-provided — code-reviewer, security-reviewer, architect, tdd-guide, language-specific reviewers, etc.; addressed as `ecc:<agent>`)
 - 55 rules: `ecc/common/` (10) + 9 languages × 5 (typescript, python, golang, rust, swift, java, kotlin, cpp, php)
 - 3 custom rules: subagent-delegation, team-coordination, obsidian-mcp

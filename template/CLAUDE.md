@@ -44,6 +44,7 @@ make deploy-staging   # Deploy to staging
 
 - `/model opusplan` — Auto-switch: Opus for planning, Sonnet for execution（v2.1.153+ で `/model` の選択はデフォルトで新セッションにも適用される。現セッションのみ切り替えたい場合はピッカーで `s` キー。旧 keybinding `modelPicker:setAsDefault` は `modelPicker:thisSessionOnly` にリネーム）
 - `/effort low|medium|high|xhigh|max` — Set thinking level. `/effort auto` to reset（v2.1.162+ で選択したレベルはデフォルトで新セッションにも引き継がれる）
+- `/voice [hold|tap|off]` — ターミナルで音声ディクテーション（v2.1.69+、tap モード v2.1.116+）。テンプレは `settings.json` で有効化＋日本語化済み（`voice.mode: tap` / `language: japanese`）。Space タップで録音開始→再タップで送信。文字起こしは無料（トークン非消費）。音声は Anthropic に送信（クラウド処理）・要 Claude.ai ログイン・SSH/Web 不可。乱れた日本語の整形やローカル offline 経路（whisper.cpp）は `voice-input` スキル → `.claude/skills/voice-input/SETUP.md`
 - `/memory` — Manage auto-memory
 - `/loop 5m check deploy` — Repeat a prompt on schedule
 - `/plan <description>` — Start plan mode
@@ -80,6 +81,7 @@ make deploy-staging   # Deploy to staging
 - Context hygiene: `CLAUDE_CODE_AUTO_COMPACT_WINDOW` is NOT set by default (1M-context opt-in workaround for [#43989](https://github.com/anthropics/claude-code/issues/43989) only). Standard 200K window → manage context actively: `/context`, `/compact <focus>`, `/clear`, `/goal`, subagent delegation; keep high-signal tokens small. See `.claude/rules/ecc/common/performance.md`
 - Multi-repo context: `claude --add-dir ../docs --add-dir ../shared-libs` to include external directories (set `CLAUDE_CODE_ADDITIONAL_DIRECTORIES_CLAUDE_MD=1` env var to also load their CLAUDE.md)
 - `claude --bg` で起動した bg セッションは `claude agents` ビューで `Ctrl+T` によりピン留め可能（v2.1.147+）。ピン留めセッションはアイドル時も維持、メモリ圧迫時も非ピン留めが先に shed される
+- Voice input（日本語）: ネイティブ `/voice` を `settings.json` で有効化（`voice.enabled: true` / `mode: tap`）＋ `language: japanese` で日本語ディクテーション最適化。`language` は応答言語も日本語化する。無効化は `/voice off` または `voice.enabled: false`。整形/オフライン経路は `voice-input` スキル（`.claude/skills/voice-input/`、ローカル whisper.cpp スクリプト同梱）。macOS は初回マイク許可が必要
 - Auto-memory enabled → `.claude/memory/`
 - Subagent usage does not count against billing — delegate aggressively
 - `gh` CLI for all GitHub operations, never raw `api.github.com`
