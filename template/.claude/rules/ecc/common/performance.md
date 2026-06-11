@@ -49,6 +49,7 @@
 - `CLAUDE_CODE_AUTO_COMPACT_WINDOW` は自動圧縮の発火ウィンドウ（`/context` の分母）を上書きする env var。
 - **デフォルトでは設定しない**（CC ネイティブの閾値に任せる）。実ウィンドウより大きい値を入れると、実上限の前に自動圧縮が発火せず「圧縮されない」状態になる。
 - `=1000000` は **1M context モード（`/model ...[1m]`）利用者**が upstream バグ [#43989](https://github.com/anthropics/claude-code/issues/43989)（1M モードで閾値が 400K に誤縮小、OPEN/未修正）を回避する **opt-in workaround**。標準 200K ウィンドウの利用者は設定不要（むしろ有害）。自分のウィンドウは `/context` の分母で確認する。
+- v2.1.172+: 1M context セッションが標準上限を超えると **ネイティブ auto-compaction** が発動する安全網が入った。ただし #43989（1M モードで閾値が 400K に誤縮小）自体は **未修正 OPEN** のため、1M 利用者の上記ワークアラウンドは引き続き有効。
 
 ### effort と context のトレードオフ
 
