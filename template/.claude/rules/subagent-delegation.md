@@ -7,6 +7,8 @@ description: Subagent delegation rules for cost optimization — uses ecc agents
 Subagent usage does not count against billing quotas. Always delegate work to subagents when possible.
 Agents are provided by the `ecc` plugin — no custom agent files needed.
 
+> サブエージェントは最大 5 階層までネストして起動できる（v2.1.172+）。深い委任ツリーを設計するときの上限として把握しておく。
+
 ## Delegation Matrix
 
 | Task Type | Agent Type | Model |
