@@ -20,6 +20,7 @@
 **Fable 5** (Mythos-class frontier, v2.1.170+, model id `claude-fable-5`):
 - 最大能力が要る分析・研究タスク向けの**オプトイン**（テンプレ既定は引き続き Opus 4.8）
 - `/model claude-fable-5` で選択。**Fast mode 対象外**（`/fast` は Opus 4.8/4.7/4.6 のみ）
+- **1M コンテキスト標準内蔵**のため `[1m]` サフィックス不要（v2.1.173+ で付与しても自動除去される）
 
 ## Fast Mode
 
