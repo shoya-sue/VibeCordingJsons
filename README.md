@@ -263,6 +263,10 @@ All 27 events:
 | `OTEL_LOG_TOOL_DETAILS` | `tool_decision` telemetry イベントに `tool_parameters`（bash コマンド・MCP/skill 名）を含める（v2.1.157+、opt-in） | `1` |
 | `CLAUDE_CODE_ENABLE_AUTO_MODE` | Bedrock / Vertex / Foundry で auto mode（Opus 4.7・4.8）を有効化する opt-in（v2.1.158+）。標準の Anthropic API 利用時は不要 | `1`（該当ゲートウェイ利用時のみ） |
 | `OTEL_RESOURCE_ATTRIBUTES` | OpenTelemetry メトリクスのデータポイントにカスタムラベル（team・repo 等の任意ディメンション）を付与し、利用メトリクスをスライス可能にする（v2.1.161+） | `team=infra,repo=app` |
+| `ENABLE_PROMPT_CACHING_1H` | 1 時間 TTL の prompt caching を有効化（標準 5 分 TTL の延長）。API Key / Bedrock / Vertex / Foundry 全対応で `ENABLE_PROMPT_CACHING_1H_BEDROCK` の上位互換（v2.1.108+）。テンプレ既定で有効 | `1` |
+| `CLAUDE_CODE_SUBAGENT_MODEL` | サブエージェント（Task / Explore 等）のデフォルトモデル。テンプレは軽量委任のため `haiku`（v2.1.141+） | `haiku` |
+| `CLAUDE_CODE_SUBPROCESS_ENV_SCRUB` | フック / ツールが起動するサブプロセスへ渡す環境変数から機密（API キー等）をスクラブする | `1` |
+| `CLAUDE_CODE_NO_FLICKER` | チラつきなし alt-screen レンダリング（v2.1.91+） | `1` |
 
 ### Other Settings
 
@@ -270,9 +274,10 @@ All 27 events:
 |---------|-------------|
 | `$schema` | Enable IDE auto-completion |
 | `model` | Default model |
-| `language` | Response language (e.g., `"japanese"`) |
+| `language` | Response language (e.g., `"japanese"`)。v2.1.176+ では session title もこの言語で自動生成され、`language` で特定言語にピン留めできる |
 | `autoMemoryEnabled` | Enable/disable auto-memory (default: `true`) |
 | `autoScrollEnabled` | Auto-scroll in fullscreen mode (default: `true`) |
+| `wheelScrollAccelerationEnabled` | fullscreen モードのマウスホイールスクロール加速を無効化（`false`）（v2.1.174+） |
 | `attribution` | Commit/PR signature text |
 | `teammateMode` | Agent Teams display mode (`auto` / `in-process` / `tmux`) |
 | `autoMemoryDirectory` | Auto-memory save directory |
@@ -293,6 +298,8 @@ All 27 events:
 | `agent` | dispatched session（`claude agents` から起動）で使うデフォルトエージェント。`settings.json` の値が honored される（v2.1.157+）。CLI からは `--agent <name>` で override |
 | `requiredMinimumVersion` / `requiredMaximumVersion` | managed settings — 組織内で利用可能な Claude Code バージョンの下限/上限を強制（v2.1.163+） |
 | `fallbackModel` | プライマリモデルが過負荷／エラー時に順次フォールバックするモデル（最大 3 つを順番に試行）。CLI `--fallback-model` フラグは v2.1.166+ でインタラクティブセッションにも適用（従来は `-p`/print のみ） |
+| `enforceAvailableModels` | managed settings — 有効時、`availableModels` allowlist が Default モデルも制約し（disallow に解決される Default は最初の allowed モデルにフォールバック）、user/project 設定で managed の `availableModels` を広げられなくなる（v2.1.175+） |
+| `footerLinksRegexes` | フッター行に regex マッチの link badge を表示する設定（user または managed settings）（v2.1.176+） |
 
 ## Settings Hierarchy
 

@@ -56,6 +56,8 @@
 }
 ```
 
+`if` は Read/Edit/Write のパスパターンも使える（`Edit(src/**)` / `Read(~/.ssh/**)` / `Read(.env)` など）。v2.1.176+ でこれらの documented パターンが正しくマッチするよう修正された。
+
 ### Input Modification (`returnPolicy`, v2.1.85+)
 
 ```jsonc
