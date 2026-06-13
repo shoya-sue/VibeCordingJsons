@@ -270,9 +270,10 @@ All 27 events:
 |---------|-------------|
 | `$schema` | Enable IDE auto-completion |
 | `model` | Default model |
-| `language` | Response language (e.g., `"japanese"`) |
+| `language` | Response language (e.g., `"japanese"`)。v2.1.176+ では session title もこの言語で自動生成され、`language` で特定言語にピン留めできる |
 | `autoMemoryEnabled` | Enable/disable auto-memory (default: `true`) |
 | `autoScrollEnabled` | Auto-scroll in fullscreen mode (default: `true`) |
+| `wheelScrollAccelerationEnabled` | fullscreen モードのマウスホイールスクロール加速を無効化（`false`）（v2.1.174+） |
 | `attribution` | Commit/PR signature text |
 | `teammateMode` | Agent Teams display mode (`auto` / `in-process` / `tmux`) |
 | `autoMemoryDirectory` | Auto-memory save directory |
@@ -293,6 +294,8 @@ All 27 events:
 | `agent` | dispatched session（`claude agents` から起動）で使うデフォルトエージェント。`settings.json` の値が honored される（v2.1.157+）。CLI からは `--agent <name>` で override |
 | `requiredMinimumVersion` / `requiredMaximumVersion` | managed settings — 組織内で利用可能な Claude Code バージョンの下限/上限を強制（v2.1.163+） |
 | `fallbackModel` | プライマリモデルが過負荷／エラー時に順次フォールバックするモデル（最大 3 つを順番に試行）。CLI `--fallback-model` フラグは v2.1.166+ でインタラクティブセッションにも適用（従来は `-p`/print のみ） |
+| `enforceAvailableModels` | managed settings — 有効時、`availableModels` allowlist が Default モデルも制約し（disallow に解決される Default は最初の allowed モデルにフォールバック）、user/project 設定で managed の `availableModels` を広げられなくなる（v2.1.175+） |
+| `footerLinksRegexes` | フッター行に regex マッチの link badge を表示する設定（user または managed settings）（v2.1.176+） |
 
 ## Settings Hierarchy
 

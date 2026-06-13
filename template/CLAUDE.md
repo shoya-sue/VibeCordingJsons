@@ -66,7 +66,7 @@ make deploy-staging   # Deploy to staging
 - `/color` — Remote Control 接続中にアクセントカラーを同期
 - `/usage` — トークン使用量とコストを表示（`/cost` + `/stats` の統合版）。v2.1.149+ で skills/subagents/plugins/MCP サーバー別の上限消費内訳を表示
 - `/goal <condition>` — 完了条件を設定、条件達成まで複数ターンで継続実行（v2.1.139+）
-- `/scroll-speed` — マウスホイールのスクロール速度をライブプレビューで調整（v2.1.139+）
+- `/scroll-speed` — マウスホイールのスクロール速度をライブプレビューで調整（v2.1.139+）。settings.json の `wheelScrollAccelerationEnabled: false` で fullscreen モードのホイールスクロール加速を無効化できる（v2.1.174+）
 - `/workflows` — dynamic workflow の実行状況を表示（v2.1.154+）。プロンプトに `ultracode` キーワードを含めると数十〜数百エージェントをバックグラウンドでオーケストレーションする dynamic workflow が起動（v2.1.160 で起動キーワードが `workflow` から `ultracode` に変更。「workflow」という語ではもう起動しない）。`/config` の「Workflow keyword trigger」でキーワード起動を無効化可
 
 ## Important Notes
@@ -81,7 +81,7 @@ make deploy-staging   # Deploy to staging
 - Context hygiene: `CLAUDE_CODE_AUTO_COMPACT_WINDOW` is NOT set by default (1M-context opt-in workaround for [#43989](https://github.com/anthropics/claude-code/issues/43989) only). Standard 200K window → manage context actively: `/context`, `/compact <focus>`, `/clear`, `/goal`, subagent delegation; keep high-signal tokens small. See `.claude/rules/ecc/common/performance.md`
 - Multi-repo context: `claude --add-dir ../docs --add-dir ../shared-libs` to include external directories (set `CLAUDE_CODE_ADDITIONAL_DIRECTORIES_CLAUDE_MD=1` env var to also load their CLAUDE.md)
 - `claude --bg` で起動した bg セッションは `claude agents` ビューで `Ctrl+T` によりピン留め可能（v2.1.147+）。ピン留めセッションはアイドル時も維持、メモリ圧迫時も非ピン留めが先に shed される
-- Voice input（日本語）: ネイティブ `/voice` を `settings.json` で有効化（`voice.enabled: true` / `mode: tap`）＋ `language: japanese` で日本語ディクテーション最適化。`language` は応答言語も日本語化する。無効化は `/voice off` または `voice.enabled: false`。整形/オフライン経路は `voice-input` スキル（`.claude/skills/voice-input/`、ローカル whisper.cpp スクリプト同梱）。macOS は初回マイク許可が必要
+- Voice input（日本語）: ネイティブ `/voice` を `settings.json` で有効化（`voice.enabled: true` / `mode: tap`）＋ `language: japanese` で日本語ディクテーション最適化。`language` は応答言語も日本語化する。無効化は `/voice off` または `voice.enabled: false`。整形/オフライン経路は `voice-input` スキル（`.claude/skills/voice-input/`、ローカル whisper.cpp スクリプト同梱）。macOS は初回マイク許可が必要。v2.1.176+ では session title も `language` の言語で自動生成される（`language: japanese` なら日本語タイトル）
 - Auto-memory enabled → `.claude/memory/`
 - Subagent usage does not count against billing — delegate aggressively
 - `gh` CLI for all GitHub operations, never raw `api.github.com`
