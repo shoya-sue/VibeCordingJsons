@@ -263,6 +263,10 @@ All 27 events:
 | `OTEL_LOG_TOOL_DETAILS` | `tool_decision` telemetry イベントに `tool_parameters`（bash コマンド・MCP/skill 名）を含める（v2.1.157+、opt-in） | `1` |
 | `CLAUDE_CODE_ENABLE_AUTO_MODE` | Bedrock / Vertex / Foundry で auto mode（Opus 4.7・4.8）を有効化する opt-in（v2.1.158+）。標準の Anthropic API 利用時は不要 | `1`（該当ゲートウェイ利用時のみ） |
 | `OTEL_RESOURCE_ATTRIBUTES` | OpenTelemetry メトリクスのデータポイントにカスタムラベル（team・repo 等の任意ディメンション）を付与し、利用メトリクスをスライス可能にする（v2.1.161+） | `team=infra,repo=app` |
+| `ENABLE_PROMPT_CACHING_1H` | 1 時間 TTL の prompt caching を有効化（標準 5 分 TTL の延長）。API Key / Bedrock / Vertex / Foundry 全対応で `ENABLE_PROMPT_CACHING_1H_BEDROCK` の上位互換（v2.1.108+）。テンプレ既定で有効 | `1` |
+| `CLAUDE_CODE_SUBAGENT_MODEL` | サブエージェント（Task / Explore 等）のデフォルトモデル。テンプレは軽量委任のため `haiku`（v2.1.141+） | `haiku` |
+| `CLAUDE_CODE_SUBPROCESS_ENV_SCRUB` | フック / ツールが起動するサブプロセスへ渡す環境変数から機密（API キー等）をスクラブする | `1` |
+| `CLAUDE_CODE_NO_FLICKER` | チラつきなし alt-screen レンダリング（v2.1.91+） | `1` |
 
 ### Other Settings
 
