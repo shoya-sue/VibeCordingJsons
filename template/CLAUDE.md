@@ -67,13 +67,13 @@ make deploy-staging   # Deploy to staging
 - `/usage` — トークン使用量とコストを表示（`/cost` + `/stats` の統合版）。v2.1.149+ で skills/subagents/plugins/MCP サーバー別の上限消費内訳を表示
 - `/goal <condition>` — 完了条件を設定、条件達成まで複数ターンで継続実行（v2.1.139+）
 - `/scroll-speed` — マウスホイールのスクロール速度をライブプレビューで調整（v2.1.139+）。settings.json の `wheelScrollAccelerationEnabled: false` で fullscreen モードのホイールスクロール加速を無効化できる（v2.1.174+）
-- `/workflows` — dynamic workflow の実行状況を表示（v2.1.154+）。プロンプトに `ultracode` キーワードを含めると数十〜数百エージェントをバックグラウンドでオーケストレーションする dynamic workflow が起動（v2.1.160 で起動キーワードが `workflow` から `ultracode` に変更。「workflow」という語ではもう起動しない）。`/config` の「Workflow keyword trigger」でキーワード起動を無効化可
+- `/workflows` — dynamic workflow の実行状況を表示（v2.1.154+）。プロンプトに `ultracode` キーワードを含めると数十〜数百エージェントをバックグラウンドでオーケストレーションする dynamic workflow が起動（v2.1.160 で起動キーワードが `workflow` から `ultracode` に変更）。v2.1.178+ では `ultracode` に加え "run a workflow" / "workflow:" のような明示句でも起動するようになった（purple shimmer でハイライト。ただし「workflow」という語の単なる言及では起動しない）。`/config` の「Workflow keyword trigger」でキーワード起動を無効化可
 
 ## Important Notes
 
 - `.env.production` is read-prohibited (deny list)
 - v2.1.160+ ではシェル起動ファイル（`.zshenv` / `.zlogin` / `.bash_login` / `~/.config/git/`）への書き込み、および `acceptEdits` モードでのビルドツール設定ファイル（`.npmrc` / `.yarnrc*` / `bunfig.toml` / `.bazelrc` / `.pre-commit-config.yaml` / `.devcontainer/` 等、コード実行を許す設定）書き込み前に確認プロンプトが入る（ビルトイン安全策、settings.json 設定不要）
-- Auto mode は v2.1.152+ でオプトイン同意不要（以前は明示的な同意ステップが必要）。Bedrock/Vertex/Foundry では Opus 4.7/4.8 向けに `CLAUDE_CODE_ENABLE_AUTO_MODE=1` の opt-in が必要（v2.1.158+）
+- Auto mode は v2.1.152+ でオプトイン同意不要（以前は明示的な同意ステップが必要）。Bedrock/Vertex/Foundry では Opus 4.7/4.8 向けに `CLAUDE_CODE_ENABLE_AUTO_MODE=1` の opt-in が必要（v2.1.158+）。v2.1.178+ では subagent の起動も実行前に分類器が評価し、サブエージェント経由でブロック対象アクションが要求される穴を塞ぐ
 - Safe mode（トラブルシュート用、v2.1.169+）: `--safe-mode` フラグまたは `CLAUDE_CODE_SAFE_MODE=1` で CLAUDE.md / plugins / skills / hooks / MCP サーバーをすべて無効化して起動。設定起因の不具合切り分けに使う
 - Bundled skills 抑制（v2.1.169+）: `disableBundledSkills: true`（settings.json）または `CLAUDE_CODE_DISABLE_BUNDLED_SKILLS=1` で組み込み skills / workflows / built-in slash command をモデルから隠す
 - Agent Teams enabled (`teammateMode: auto`)
