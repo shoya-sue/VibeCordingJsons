@@ -163,9 +163,12 @@ Supported patterns:
 | `Bash(pattern)` | Shell command | `Bash(git *)` |
 | `mcp__server__tool` | MCP tool | `mcp__context7__*` |
 | `Skill(pattern)` | Skill execution | `Skill(explain-code:*)` |
+| `Tool(param:value)` | Tool input parameter match | `Agent(model:opus)` |
 | `MCPSearch` | MCP search | `MCPSearch` |
 
 > **allow / deny の glob ルール（v2.1.166+ で検証強化）**: `allow` の tool-name 位置で glob を使えるのは `mcp__<server>__*` のようにリテラルプレフィックスでスコープを限定した後のみ。`mcp__*` のようなスコープ無しワイルドカードは**無効**で、起動時に警告付きでスキップされる（実効パーミッションには影響しない）。`deny` / `ask` はどの位置でも glob 可で、`deny` の tool-name 位置に `"*"` を置くと全ツールを拒否できる。
+
+> **`Tool(param:value)` パラメータマッチ（v2.1.178+）**: ツール名に続けて `(param:value)` を書くと、そのツールの入力パラメータ値にマッチするルールを作れる（`value` 位置で `*` ワイルドカード可）。例: `Agent(model:opus)` を `deny` に置くと Opus を指定したサブエージェント起動をブロックできる。
 
 ### hooks (Event Hooks — All 27 Events)
 
