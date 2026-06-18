@@ -64,6 +64,7 @@ make deploy-staging   # Deploy to staging
 - `/ultrareview` — クラウドで並列マルチエージェント分析による包括的コードレビューを実行（引数なしで現ブランチ、`<PR#>` で特定 PR）。CI からは `claude ultrareview [target]` サブコマンドで非インタラクティブ実行可（`--json` で JSON 出力、終了コード 0/1）
 - `/code-review [effort] [--comment] [--fix]` — 現在の diff のバグを effort レベル指定でレビュー（v2.1.146+ で `/simplify` から名称変更、v2.1.152+ で `/simplify` は `/code-review --fix` のエイリアス）。`low|medium` は high-confidence findings のみ、`high|max` で broader coverage。`--comment` で GitHub PR にインラインコメント投稿。`--fix` で findings を作業ツリーに自動適用（reuse / simplification / efficiency 改善を提案、v2.1.152+）
 - `/color` — Remote Control 接続中にアクセントカラーを同期
+- `/config [key=value]` — 設定を編集。`/config key=value` 構文でプロンプトから任意の設定キーを直接変更できる（v2.1.181+。例: `/config effortLevel=high`）。引数なしでインタラクティブ設定ピッカーを開く
 - `/usage` — トークン使用量とコストを表示（`/cost` + `/stats` の統合版）。v2.1.149+ で skills/subagents/plugins/MCP サーバー別の上限消費内訳を表示
 - `/goal <condition>` — 完了条件を設定、条件達成まで複数ターンで継続実行（v2.1.139+）
 - `/scroll-speed` — マウスホイールのスクロール速度をライブプレビューで調整（v2.1.139+）。settings.json の `wheelScrollAccelerationEnabled: false` で fullscreen モードのホイールスクロール加速を無効化できる（v2.1.174+）
