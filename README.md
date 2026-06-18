@@ -270,6 +270,7 @@ All 27 events:
 | `CLAUDE_CODE_SUBAGENT_MODEL` | サブエージェント（Task / Explore 等）のデフォルトモデル。テンプレは軽量委任のため `haiku`（v2.1.141+） | `haiku` |
 | `CLAUDE_CODE_SUBPROCESS_ENV_SCRUB` | フック / ツールが起動するサブプロセスへ渡す環境変数から機密（API キー等）をスクラブする | `1` |
 | `CLAUDE_CODE_NO_FLICKER` | チラつきなし alt-screen レンダリング（v2.1.91+） | `1` |
+| `CLAUDE_CLIENT_PRESENCE_FILE` | クライアント presence ファイルを指定してモバイル（Claude アプリ）への通知を抑制する（v2.1.181+） | （用途に応じパス） |
 
 ### Other Settings
 
@@ -303,6 +304,7 @@ All 27 events:
 | `fallbackModel` | プライマリモデルが過負荷／エラー時に順次フォールバックするモデル（最大 3 つを順番に試行）。CLI `--fallback-model` フラグは v2.1.166+ でインタラクティブセッションにも適用（従来は `-p`/print のみ） |
 | `enforceAvailableModels` | managed settings — 有効時、`availableModels` allowlist が Default モデルも制約し（disallow に解決される Default は最初の allowed モデルにフォールバック）、user/project 設定で managed の `availableModels` を広げられなくなる（v2.1.175+） |
 | `footerLinksRegexes` | フッター行に regex マッチの link badge を表示する設定（user または managed settings）（v2.1.176+） |
+| `sandbox.allowAppleEvents` | macOS の sandboxed command が Apple Events（`osascript` 等で他アプリを制御）を送れるようにする opt-in（v2.1.181+。テンプレは未設定＝無効） |
 
 ## Settings Hierarchy
 
