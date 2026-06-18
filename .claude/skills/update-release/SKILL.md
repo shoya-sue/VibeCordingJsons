@@ -1,23 +1,34 @@
 ---
 name: update-release
-description: Research latest Claude Code / ECC changes, deep-analyze impact, implement, commit on feature branch, create PR, merge, install to ~/, and cut a GitHub release
+description: VibeCordingJsons 専用のリリース運用 skill。Claude Code / ECC の最新変更を調査し、更新が必要かを判定 → 必要なら実装 → feature branch で commit/PR/merge → install.sh で検証 → GitHub release を発行し、context・memory・Obsidian の 3 面へ反映する。プロジェクトローカル（このリポジトリでのみ利用可、グローバル/テンプレ配布しない）。
 argument-hint: "[docs/YYYY-MM-DD-update.md] [version]"
 user-invokable: true
 effort: xhigh
-allowed-tools: ["Read", "Write", "Edit", "Glob", "Grep", "WebSearch", "WebFetch", "Bash(git *)", "Bash(gh *)", "Bash(./install.sh *)", "Bash(ls *)", "Bash(sort *)", "Bash(tail *)", "Bash(diff *)", "Bash(find *)", "Bash(python3 *)", "Bash(grep *)"]
+allowed-tools: ["Read", "Write", "Edit", "Glob", "Grep", "WebSearch", "WebFetch", "Bash(git *)", "Bash(gh *)", "Bash(./install.sh *)", "Bash(bash *)", "Bash(ls *)", "Bash(sort *)", "Bash(tail *)", "Bash(diff *)", "Bash(find *)", "Bash(python3 *)", "Bash(grep *)", "mcp__obsidian__vault_read", "mcp__obsidian__vault_append", "mcp__obsidian__vault_patch", "mcp__obsidian__vault_get_document_map", "mcp__obsidian__search_simple"]
 ---
 
 # update-release
 
 Arguments: `$ARGUMENTS`
 
-## Pre-flight: Environment Snapshot
+> **このスキルはプロジェクトローカル**です（`VibeCordingJsons/.claude/skills/update-release/`）。VibeCordingJsons リポジトリのメンテ専用で、グローバル `~/.claude/skills/` にもテンプレート `template/.claude/skills/` にも置きません（end-user プロジェクトには無関係なため）。リポジトリ root で作業しているときだけ `/update-release` が利用できます。
 
-Before doing anything else, capture the current local state. This is ground truth — never assume from changelog alone.
+> **このスキルの核心原則 — 1 リリース = 3 面の同時更新**
+> どのリリースも、変更を必ず次の **3 つの面**へ伝播させて初めて完了です。どれか 1 つでも欠けたら未完了とみなします:
+>
+> | 面 | 実体 | 更新方法 |
+> |----|------|----------|
+> | **context** | リポジトリの「生きた指示」= `template/CLAUDE.md` / `template/AGENTS.md` / `README.md`（必要なら root `CLAUDE.md` / `AGENTS.md`） | Step 2 の実装で編集 |
+> | **memory** | `~/.claude/projects/-Users-shoya-sue-Public-shoya-sue-VibeCordingJsons/memory/project_vibecording.md`（このディレクトリは **symlink → Obsidian `90_artifacts/claude-code/memory/VibeCordingJsons/`** なので vault に自動ミラーされる） | Step 8 |
+> | **obsidian** | project note `20_projects/shoya-sue/VibeCordingJsons.md`（手動運用ノート。memory ミラーとは別物） | Step 9 |
+
+## Pre-flight: 状態把握 → 更新要否判定
+
+最初に必ずローカルの現状を取得する。これが ground truth で、changelog だけで判断しない。
 
 ```bash
-# ECC versions locally installed (ECC 2.0.0 renamed the plugin everything-claude-code → ecc;
-# scan both the new `ecc` dir and the legacy `everything-claude-code` dir)
+# ECC versions locally installed (ECC 2.0.0 で plugin が everything-claude-code → ecc にリネーム。
+# 新 `ecc` ディレクトリと legacy `everything-claude-code` ディレクトリの両方を見る)
 ls ~/.claude/plugins/cache/everything-claude-code/ecc/ 2>/dev/null | sort -V
 ls ~/.claude/plugins/cache/everything-claude-code/everything-claude-code/ 2>/dev/null | sort -V
 
@@ -26,14 +37,24 @@ grep "ECC_PLUGIN_ROOT" template/.claude/settings.json | head -1
 
 # Latest release tag
 gh release list --limit 1
+
+# Latest Claude Code version (changelog の最新エントリ)
+gh release list -R anthropics/claude-code --limit 1
 ```
 
-Record:
-- `LOCAL_ECC_LATEST` — highest installed version (e.g. `2.0.0`)
-- `CURRENT_ECC_IN_SETTINGS` — current ECC_PLUGIN_ROOT value in `template/.claude/settings.json`
-- `CURRENT_RELEASE` — latest GitHub release tag (e.g. `v0.28.0`)
+記録する:
+- `LOCAL_ECC_LATEST` — ローカルにインストール済みの最高 ECC バージョン（例 `2.0.0`）
+- `CURRENT_ECC_IN_SETTINGS` — `template/.claude/settings.json` の現在の `ECC_PLUGIN_ROOT` 値
+- `CURRENT_RELEASE` — 最新 GitHub release タグ（例 `v0.62.0`）
+- `LATEST_CC` — 最新 Claude Code バージョン
 
-If `LOCAL_ECC_LATEST` is empty → ECC is not installed locally. Skip all ECC version changes entirely.
+`LOCAL_ECC_LATEST` が空 → ECC がローカル未インストール。ECC バージョン変更は一切スキップ。
+
+### 更新要否の判定
+
+- `CURRENT_RELEASE` が既にカバーしている Claude Code バージョンと `LATEST_CC` を比較する。
+- 新しいエントリが**ある** → 通常フロー（Step 0 以降）へ。
+- 新しいエントリが**ない**（既に最新をカバー済み） → それでも **0変更カバレッジ記録リリースを出す**（バージョン追跡の連続性維持のため。Step 0.5 で「適用ゼロ」を 4 レンズで検証し、doc-only リリースとして記録する）。**勝手に early-exit しない。**
 
 ---
 
@@ -53,7 +74,7 @@ Fetch from ALL of the following sources:
 
 1. **Claude Code changelog** — `WebFetch` `https://docs.anthropic.com/en/docs/claude-code/changelog` (or `https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md`). Capture every entry newer than `CURRENT_RELEASE`.
 2. **ECC plugin releases** — `gh release list -R affaan-m/everything-claude-code` then `gh release view <tag> -R affaan-m/everything-claude-code`. Record latest version and release notes.
-3. **Claude Code GitHub releases** — `gh release list -R anthropics/claude-code` / `gh api repos/anthropics/claude-code/releases` for any items not in the docs changelog.
+3. **Claude Code GitHub releases** — `gh release list -R anthropics/claude-code` / `gh api repos/anthropics/claude-code/releases` for any items not in the docs changelog. 欠番バージョン（例: 2.1.180）は `gh release view vX.Y.Z` が `release not found` を返すので確認しておく。
 
 For each changelog entry, collect ALL of:
 - New/changed settings keys and their types/defaults
@@ -101,6 +122,7 @@ If changelog mentions a new ECC version:
 - Local ECC installed: <LOCAL_ECC_LATEST>
 - Template ECC version: <CURRENT_ECC_IN_SETTINGS>
 - Current release: <CURRENT_RELEASE>
+- Latest Claude Code: <LATEST_CC>
 
 ## 品質分析サマリー
 <output from step 0.5 — condensed>
@@ -188,7 +210,7 @@ For each 🔴/🟡 item, run a no-op check with Grep before editing:
 
 ---
 
-### 2. Implement changes
+### 2. Implement changes（= context 面の更新）
 
 Apply each 🔴 and 🟡 item. For each:
 1. Read the target file
@@ -228,7 +250,9 @@ Output the PR URL and ask the user to review.
 
 ### 5. Merge (BLOCKING — wait for user confirmation)
 
-After the user confirms the PR looks good:
+Default は user の確認待ち。ただし user が同一ターンで明示的に「go / merge / proceed」と承認している場合はそのまま進めてよい。
+
+After confirmation:
 
 ```bash
 gh pr merge --merge --delete-branch
@@ -274,13 +298,13 @@ gh release create <version> \
 
 Release notes format:
 - H2: theme of the release
-- Sections per change area (Updated / New / Fixed / Skipped)
+- Sections per change area (Added / Updated / Fixed / Skipped / Unchanged)
 - Table for counts/comparisons where applicable
 - `**Full Changelog**` link at the bottom
 
 ---
 
-### 8. Update project memory
+### 8. Update memory（= memory 面の更新）
 
 Update the project memory at:
 `~/.claude/projects/-Users-shoya-sue-Public-shoya-sue-VibeCordingJsons/memory/project_vibecording.md`
@@ -291,9 +315,31 @@ Update:
 - Local environment state section: reflect new ECC version and installed settings version
 - Remove any stale open-PR entries
 
+Also update `MEMORY.md`'s one-line pointer for this project if its hook/summary changed.
+
+> このディレクトリは Obsidian `90_artifacts/claude-code/memory/VibeCordingJsons/` への **symlink** なので、ここへの書き込みは vault に自動ミラーされる。手動 Obsidian write は不要。
+
 ---
 
-### 9. Final report
+### 9. Update Obsidian project note（= obsidian 面の更新）
+
+memory ミラー（Step 8）とは別に、**手動運用の project note** を更新する:
+`20_projects/shoya-sue/VibeCordingJsons.md`（`$OBSIDIAN_VAULT` 配下）
+
+手順（`obsidian-mcp.md` の Writing Protocol に従う）:
+1. SessionStart healthcheck の `## Obsidian MCP & auto-memory healthcheck` が `✓ (5/5 OK)` であることを確認。`⚠`/`✗` があれば 1 行宣言して `Read`/`Edit` フォールバック。
+2. `mcp__obsidian__vault_get_document_map` で project note の構造を把握し、リリース履歴セクションを特定。
+3. `mcp__obsidian__vault_patch`（operation=prepend/append, targetType=heading）で新リリースエントリを追記:
+   - バージョン・日付・1 行サマリー（カバーした Claude Code バージョン / 適用件数 / ECC 状態）
+   - 0変更カバレッジ記録リリースの場合はその旨を明記
+4. frontmatter の `updated` 等の日付フィールドがあれば今日の日付に `vault_patch`（targetType=frontmatter）。
+5. 既存の `[[wikilink]]`（例 `[[30_knowledge/claude-code/INDEX]]`）が孤立しないよう、追記内容にも必要なら link を含める。
+
+> Obsidian MCP が使えない環境（healthcheck ✗）では、理由を 1 行宣言してから `Read`/`Edit` で `$OBSIDIAN_VAULT/20_projects/shoya-sue/VibeCordingJsons.md` を直接編集する（サイレント・フォールバック禁止）。
+
+---
+
+### 10. Final report
 
 Output a summary table:
 
@@ -307,4 +353,6 @@ Output a summary table:
 | Merge | ✓ merged |
 | Install validation | ECC path ✓ or ✗ |
 | Release | URL |
-| Memory updated | ✓ |
+| context updated | ✓ (files) |
+| memory updated | ✓ |
+| obsidian updated | ✓ (project note) |

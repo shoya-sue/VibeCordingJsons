@@ -81,7 +81,7 @@ Setting `~/.copilot/copilot-instructions.md` applies to all projects.
 ├── template/
 │   ├── .claude/
 │   │   ├── settings.json
-│   │   ├── skills/             # 11 local skills
+│   │   ├── skills/             # 10 local skills
 │   │   │   ├── explain-code/SKILL.md
 │   │   │   ├── fix-issue/SKILL.md
 │   │   │   ├── review-pr/SKILL.md
@@ -91,7 +91,6 @@ Setting `~/.copilot/copilot-instructions.md` applies to all projects.
 │   │   │   ├── gh-workflow/SKILL.md
 │   │   │   ├── obsidian-synthesis/SKILL.md
 │   │   │   ├── sync-memory/SKILL.md
-│   │   │   ├── update-release/SKILL.md
 │   │   │   └── voice-input/SKILL.md   # 日本語音声入力の整形 + /voice & ローカル whisper セットアップ
 │   │   └── rules/
 │   │       ├── ecc/             # 55 rules from everything-claude-code
