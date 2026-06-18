@@ -7,7 +7,7 @@ Complete configuration for Claude Code, Codex, and GitHub Copilot CLI with `ecc`
 | Category | Contents |
 |----------|----------|
 | Claude Code settings | 3-tier permissions, 10 configured event hooks (of 27) + ECC hooks, Agent Teams, auto-memory |
-| Skills (Claude) | 11 local + 261 via ECC plugin (ECC 2.0.0) |
+| Skills (Claude) | 10 local + 261 via ECC plugin (ECC 2.0.0) |
 | Agents (Claude) | 64 agents via ECC plugin (ECC 2.0.0; code-reviewer, architect, language-specific reviewers, etc.) |
 | Rules | 55 ECC rules (common 10 + 9 languages × 5) + 3 custom (subagent-delegation, team-coordination, obsidian-mcp) |
 | MCP Servers | obsidian, context7, playwright, deepwiki, excalidraw, github |

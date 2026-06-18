@@ -37,7 +37,7 @@ printf '  MCP servers         : %s\n' "$MCP"
 echo
 
 # ---- expected (update when the template intentionally grows) ----
-EXP_SKILLS=11; EXP_LANGS=9; EXP_ECC=55; EXP_CUSTOM=3
+EXP_SKILLS=10; EXP_LANGS=9; EXP_ECC=55; EXP_CUSTOM=3
 EXP_COP_SKILLS=2; EXP_COP_AGENTS=4; EXP_HOOKS=10; EXP_MCP=6
 chk() { if [ "$2" != "$3" ]; then echo "DRIFT: $1 = $2 (expected $3 — update docs + EXP_* in this script)"; fail=1; fi; }
 chk skills "$SKILLS" "$EXP_SKILLS"
