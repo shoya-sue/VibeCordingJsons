@@ -64,7 +64,7 @@ make deploy-staging   # Deploy to staging
 - `/ultrareview` — クラウドで並列マルチエージェント分析による包括的コードレビューを実行（引数なしで現ブランチ、`<PR#>` で特定 PR）。CI からは `claude ultrareview [target]` サブコマンドで非インタラクティブ実行可（`--json` で JSON 出力、終了コード 0/1）
 - `/code-review [effort] [--comment] [--fix]` — 現在の diff のバグを effort レベル指定でレビュー（v2.1.146+ で `/simplify` から名称変更、v2.1.152+ で `/simplify` は `/code-review --fix` のエイリアス）。`low|medium` は high-confidence findings のみ、`high|max` で broader coverage。`--comment` で GitHub PR にインラインコメント投稿。`--fix` で findings を作業ツリーに自動適用（reuse / simplification / efficiency 改善を提案、v2.1.152+）
 - `/color` — Remote Control 接続中にアクセントカラーを同期
-- `/config [key=value]` — 設定を編集。`/config key=value` 構文でプロンプトから任意の設定キーを直接変更できる（v2.1.181+。例: `/config effortLevel=high`）。引数なしでインタラクティブ設定ピッカーを開く
+- `/config [key=value]` — 設定を編集。`/config key=value` 構文でプロンプトから任意の設定キーを直接変更できる（v2.1.181+。例: `/config effortLevel=high`）。`/config --help` で指定可能な shorthand キー一覧を表示（v2.1.183+）。引数なしでインタラクティブ設定ピッカーを開く（v2.1.183+ では Enter/Space の両方で選択中の設定を変更、Esc は revert ではなく保存して閉じる）
 - `/usage` — トークン使用量とコストを表示（`/cost` + `/stats` の統合版）。v2.1.149+ で skills/subagents/plugins/MCP サーバー別の上限消費内訳を表示
 - `/goal <condition>` — 完了条件を設定、条件達成まで複数ターンで継続実行（v2.1.139+）
 - `/scroll-speed` — マウスホイールのスクロール速度をライブプレビューで調整（v2.1.139+）。settings.json の `wheelScrollAccelerationEnabled: false` で fullscreen モードのホイールスクロール加速を無効化できる（v2.1.174+）
@@ -74,7 +74,7 @@ make deploy-staging   # Deploy to staging
 
 - `.env.production` is read-prohibited (deny list)
 - v2.1.160+ ではシェル起動ファイル（`.zshenv` / `.zlogin` / `.bash_login` / `~/.config/git/`）への書き込み、および `acceptEdits` モードでのビルドツール設定ファイル（`.npmrc` / `.yarnrc*` / `bunfig.toml` / `.bazelrc` / `.pre-commit-config.yaml` / `.devcontainer/` 等、コード実行を許す設定）書き込み前に確認プロンプトが入る（ビルトイン安全策、settings.json 設定不要）
-- Auto mode は v2.1.152+ でオプトイン同意不要（以前は明示的な同意ステップが必要）。Bedrock/Vertex/Foundry では Opus 4.7/4.8 向けに `CLAUDE_CODE_ENABLE_AUTO_MODE=1` の opt-in が必要（v2.1.158+）。v2.1.178+ では subagent の起動も実行前に分類器が評価し、サブエージェント経由でブロック対象アクションが要求される穴を塞ぐ
+- Auto mode は v2.1.152+ でオプトイン同意不要（以前は明示的な同意ステップが必要）。Bedrock/Vertex/Foundry では Opus 4.7/4.8 向けに `CLAUDE_CODE_ENABLE_AUTO_MODE=1` の opt-in が必要（v2.1.158+）。v2.1.178+ では subagent の起動も実行前に分類器が評価し、サブエージェント経由でブロック対象アクションが要求される穴を塞ぐ。v2.1.183+ では破壊的 git コマンド（`git reset --hard` / `git checkout -- .` / `git clean -fd` / `git stash drop`）をユーザーが破棄を依頼していない限りブロックし、`git commit --amend` は当該セッションでエージェントが作成したコミット以外をブロック、`terraform destroy`/`pulumi destroy`/`cdk destroy` は対象スタックを明示しない限りブロックする（CC ビルトイン安全網。settings.json の deny/ask や AGENTS.md Denied Operations とは別レイヤー）
 - Safe mode（トラブルシュート用、v2.1.169+）: `--safe-mode` フラグまたは `CLAUDE_CODE_SAFE_MODE=1` で CLAUDE.md / plugins / skills / hooks / MCP サーバーをすべて無効化して起動。設定起因の不具合切り分けに使う
 - Bundled skills 抑制（v2.1.169+）: `disableBundledSkills: true`（settings.json）または `CLAUDE_CODE_DISABLE_BUNDLED_SKILLS=1` で組み込み skills / workflows / built-in slash command をモデルから隠す
 - Agent Teams enabled (`teammateMode: auto`)

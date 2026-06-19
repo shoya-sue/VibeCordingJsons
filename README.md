@@ -281,7 +281,7 @@ All 27 events:
 | `autoMemoryEnabled` | Enable/disable auto-memory (default: `true`) |
 | `autoScrollEnabled` | Auto-scroll in fullscreen mode (default: `true`) |
 | `wheelScrollAccelerationEnabled` | fullscreen モードのマウスホイールスクロール加速を無効化（`false`）（v2.1.174+） |
-| `attribution` | Commit/PR signature text |
+| `attribution` | Commit/PR signature text（web/Remote Control では `attribution.sessionUrl: false` で claude.ai セッションリンクを省略可、v2.1.183+） |
 | `teammateMode` | Agent Teams display mode (`auto` / `in-process` / `tmux`) |
 | `autoMemoryDirectory` | Auto-memory save directory |
 | `modelOverrides` | Map model picker entries to different model IDs |
