@@ -167,7 +167,7 @@ Supported patterns:
 
 > **allow / deny の glob ルール（v2.1.166+ で検証強化）**: `allow` の tool-name 位置で glob を使えるのは `mcp__<server>__*` のようにリテラルプレフィックスでスコープを限定した後のみ。`mcp__*` のようなスコープ無しワイルドカードは**無効**で、起動時に警告付きでスキップされる（実効パーミッションには影響しない）。`deny` / `ask` はどの位置でも glob 可で、`deny` の tool-name 位置に `"*"` を置くと全ツールを拒否できる。
 
-> **`Tool(param:value)` パラメータマッチ（v2.1.178+）**: ツール名に続けて `(param:value)` を書くと、そのツールの入力パラメータ値にマッチするルールを作れる（`value` 位置で `*` ワイルドカード可）。例: `Agent(model:opus)` を `deny` に置くと Opus を指定したサブエージェント起動をブロックできる。
+> **`Tool(param:value)` パラメータマッチ（v2.1.178+）**: ツール名に続けて `(param:value)` を書くと、そのツールの入力パラメータ値にマッチするルールを作れる（`value` 位置で `*` ワイルドカード可）。例: `Agent(model:opus)` を `deny` に置くと Opus を指定したサブエージェント起動をブロックできる。v2.1.186+ では `Agent(<type>)` の deny ルールおよび `Agent(x,y)` の allowed-types 制限が、名前付きサブエージェント起動（`subagent_type` 指定）に対しても確実に実効化されるよう修正された。
 
 ### hooks (Event Hooks — All 27 Events)
 
@@ -270,6 +270,7 @@ All 27 events:
 | `CLAUDE_CODE_SUBPROCESS_ENV_SCRUB` | フック / ツールが起動するサブプロセスへ渡す環境変数から機密（API キー等）をスクラブする | `1` |
 | `CLAUDE_CODE_NO_FLICKER` | チラつきなし alt-screen レンダリング（v2.1.91+） | `1` |
 | `CLAUDE_CLIENT_PRESENCE_FILE` | クライアント presence ファイルを指定してモバイル（Claude アプリ）への通知を抑制する（v2.1.181+） | （用途に応じパス） |
+| `CLAUDE_CODE_RETRY_WATCHDOG` | unattended（CI / headless）セッション向けのリトライ監視。v2.1.186+ で `CLAUDE_CODE_MAX_RETRIES` は **15 が上限**にキャップされたため、無人運用で粘り強くリトライしたい場合はこちらを使う | `1` |
 
 ### Other Settings
 
@@ -282,7 +283,7 @@ All 27 events:
 | `autoScrollEnabled` | Auto-scroll in fullscreen mode (default: `true`) |
 | `wheelScrollAccelerationEnabled` | fullscreen モードのマウスホイールスクロール加速を無効化（`false`）（v2.1.174+） |
 | `attribution` | Commit/PR signature text（web/Remote Control では `attribution.sessionUrl: false` で claude.ai セッションリンクを省略可、v2.1.183+） |
-| `teammateMode` | Agent Teams display mode (`auto` / `in-process` / `tmux`) |
+| `teammateMode` | Agent Teams display mode (`auto` / `in-process` / `tmux` / `iterm2`)。`iterm2` は v2.1.186+（`it2` CLI 必須、auto で未検出時は警告） |
 | `autoMemoryDirectory` | Auto-memory save directory |
 | `modelOverrides` | Map model picker entries to different model IDs |
 | `includeGitInstructions` | Enable/disable built-in git commit/PR instructions |
@@ -304,6 +305,7 @@ All 27 events:
 | `enforceAvailableModels` | managed settings — 有効時、`availableModels` allowlist が Default モデルも制約し（disallow に解決される Default は最初の allowed モデルにフォールバック）、user/project 設定で managed の `availableModels` を広げられなくなる（v2.1.175+） |
 | `footerLinksRegexes` | フッター行に regex マッチの link badge を表示する設定（user または managed settings）（v2.1.176+） |
 | `sandbox.allowAppleEvents` | macOS の sandboxed command が Apple Events（`osascript` 等で他アプリを制御）を送れるようにする opt-in（v2.1.181+。テンプレは未設定＝無効） |
+| `respondToBashCommands` | `!` で実行した bash コマンドの出力に Claude が自動応答するか（v2.1.186+、デフォルト `true`）。`false` で従来の context-only 挙動（出力を文脈に取り込むだけで応答しない）に戻す |
 
 ## Settings Hierarchy
 
