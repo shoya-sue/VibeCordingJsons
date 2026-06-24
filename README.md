@@ -229,17 +229,20 @@ All 27 events:
 
 ### env (Environment Variables)
 
-| Variable | Description | Recommended |
+> **値列の出所**: 数値系（timeout / token 上限）は**公式 docs に明記される default** を記載し、公式に default が無いものは Description に「公式 default 記載なし（テンプレ値）」と明記する。フラグ系（`1` / `auto` / `haiku` 等）はテンプレが設定する推奨値。
+
+| Variable | Description | Value |
 |----------|-------------|-------------|
-| `MCP_TIMEOUT` | MCP timeout (ms) | `10000`-`15000` |
-| `MAX_MCP_OUTPUT_TOKENS` | MCP output token limit | `10000`-`25000` |
-| `BASH_MAX_TIMEOUT_MS` | Bash timeout (ms) | `120000`-`300000` |
-| `CLAUDE_CODE_MAX_OUTPUT_TOKENS` | 1 応答あたりの出力トークン上限。Opus 4.8 は最大 128k 対応だがテンプレは保守的に 64k。長文出力が多ければ `settings.local.json` で `128000` まで引き上げ可（Claude Code 側が内部 cap している場合は無効） | `64000` |
-| `ENABLE_TOOL_SEARCH` | Enable tool search | `auto` |
+| `MCP_TIMEOUT` | MCP server **startup** timeout (ms)。**公式 docs に default 記載なし**。テンプレは `30000` を設定 | `30000`（テンプレ値） |
+| `MAX_MCP_OUTPUT_TOKENS` | MCP ツール出力のトークン上限。**公式 default `25000`**。テンプレは default 同値 | `25000` |
+| `BASH_MAX_TIMEOUT_MS` | model が設定できる長時間 Bash コマンドの最大 timeout (ms)。**公式 default `600000`（10 分）**。テンプレは default 同値 | `600000` |
+| `BASH_DEFAULT_TIMEOUT_MS` | 長時間 Bash コマンドのデフォルト timeout (ms)。**公式 default `120000`（2 分）**。テンプレ未設定（公式 default に委ねる） | （未設定＝公式 `120000`） |
+| `CLAUDE_CODE_MAX_OUTPUT_TOKENS` | 1 応答あたりの出力トークン上限。**公式 docs に default 記載なし（テンプレ選択）**。Opus 4.8 は最大 128k 対応だがテンプレは保守的に 64k。長文出力が多ければ `settings.local.json` で `128000` まで引き上げ可（Claude Code 側が内部 cap している場合は無効） | `64000`（テンプレ値） |
+| `ENABLE_TOOL_SEARCH` | tool search（MCP ツールの遅延探索）の有効化。**公式: default で有効**。テンプレ未設定（既定の有効に委ねる） | `auto`（既定で有効） |
 | `CLAUDE_CODE_AUTO_COMPACT_WINDOW` | Autocompact 発火 token 数の上書き。**標準 200K ウィンドウでは設定しない**（native auto-compaction に委ね、`/context`・`/compact`・`/clear` で能動ハイジーン）。`1000000` は **1M context モード（`/model ...[1m]`）利用者専用の opt-in workaround**（1M モードで閾値が 400K に誤縮小する regression [#43989](https://github.com/anthropics/claude-code/issues/43989)、**未修正 OPEN** を回避）。標準窓で大きい値を入れると実上限前に発火せず逆効果。v2.1.172+ で 1M セッションが標準上限超過時にネイティブ auto-compaction が発動する安全網が追加されたが、#43989 自体は未修正のためワークアラウンドは継続 | 未設定（1M モードのみ `1000000`） |
 | `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS` | Enable Agent Teams | `1` |
 | `CLAUDE_CODE_AUTO_MEMORY_PATH` | Auto-memory save path | `""` (default) |
-| `CLAUDE_CODE_SESSIONEND_HOOKS_TIMEOUT_MS` | SessionEnd hook timeout (ms) | `5000` |
+| `CLAUDE_CODE_SESSIONEND_HOOKS_TIMEOUT_MS` | SessionEnd hook の timeout (ms)。**公式 docs 未記載（テンプレ参考値）** | `5000`（テンプレ値） |
 | `CLAUDE_CODE_DISABLE_CRON` | Disable `/loop` scheduled execution | `1` |
 | `CLAUDE_CODE_SIMPLE` | Minimal mode (Skills/Memory/Hooks/MCP disabled) | `1` |
 | `CLAUDE_CODE_SAFE_MODE` | 全カスタマイズ（CLAUDE.md/plugins/skills/hooks/MCP）を無効化して起動＝トラブルシュート用（CLI `--safe-mode` 同等、v2.1.169+） | `1` |
@@ -257,7 +260,7 @@ All 27 events:
 | `CLAUDE_CODE_PLUGIN_PREFER_HTTPS` | GitHub からのプラグインソース取得を SSH ではなく HTTPS で行う（SSH ブロック環境向け）（v2.1.141+） | `1` |
 | `ANTHROPIC_WORKSPACE_ID` | Workload identity federation 用のワークスペース ID（エンタープライズ向け）（v2.1.141+） | (set if applicable) |
 | `CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE` | Fast mode (`/fast`) を Opus 4.6 に固定。**削除済み（2026-06-01）** — Opus 4.8 デフォルト化（v2.1.154+）に伴い廃止。Opus 4.6 を Fast mode で使うには `/model claude-opus-4-6[1m]` → `/fast on` | （削除済み・使用不可） |
-| `MCP_TOOL_TIMEOUT` | MCP ツール呼び出し 1 回あたりのフェッチタイムアウト（ms）。v2.1.142 でリモート HTTP/SSE サーバーの 60s ハードキャップを回避 | `120000` |
+| `MCP_TOOL_TIMEOUT` | MCP ツール呼び出し 1 回あたりのフェッチ timeout（ms）。v2.1.142 でリモート HTTP/SSE サーバーの 60s ハードキャップを回避。**公式: 未設定時の default は事実上無制限（約 28h 相当）**、明示すると per-tool に短い上限を課す。テンプレ未設定 | （未設定。設定時の目安 `120000`） |
 | `CLAUDE_CODE_MCP_TOOL_IDLE_TIMEOUT` | remote MCP ツール呼び出しの無応答 abort タイムアウト。v2.1.187+ で remote MCP ツールが 5 分無応答だと無限ハングせず error で abort するようになった。その閾値を上書き | `300000`（既定 5 分） |
 | `CLAUDE_CODE_STOP_HOOK_BLOCK_CAP` | Stop フックが連続でブロックできる回数の上限（v2.1.143+、デフォルト `8`、無限ループ防止） | `8` |
 | `CLAUDE_CODE_USE_POWERSHELL_TOOL` | Windows の PowerShell ツール有効化（v2.1.143 で Bedrock/Vertex/Foundry 利用時にデフォルト ON、`0` でオプトアウト） | `0` |
