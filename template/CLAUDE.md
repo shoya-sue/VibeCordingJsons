@@ -80,6 +80,7 @@ make deploy-staging   # Deploy to staging
 - Bundled skills 抑制（v2.1.169+）: `disableBundledSkills: true`（settings.json）または `CLAUDE_CODE_DISABLE_BUNDLED_SKILLS=1` で組み込み skills / workflows / built-in slash command をモデルから隠す
 - `!` で実行した bash コマンドの出力に Claude が自動応答するようになった（v2.1.186+、デフォルト `true`）。出力を文脈に取り込むだけで応答させたくない場合は `settings.json` に `"respondToBashCommands": false` を設定して従来挙動に戻す
 - MCP サーバー認証は `/mcp` メニューを開かず CLI から実行可能（v2.1.186+）: `claude mcp login <name>` / `claude mcp logout <name>`。`--no-browser` で stdin リダイレクトし SSH 越しに認証を完了できる
+- remote MCP ツール呼び出しが 5 分間無応答だと、無限ハングせず error で abort するようになった（v2.1.187+）。閾値は `CLAUDE_CODE_MCP_TOOL_IDLE_TIMEOUT`（ms）で上書き可
 - Agent Teams enabled (`teammateMode: auto`)
 - ECC hooks: session continuity (SessionStart/Stop/SessionEnd), --no-verify guard (PreToolUse), auto-format JS/TS (PostToolUse), compact quality (PreCompact)
 - Context hygiene: `CLAUDE_CODE_AUTO_COMPACT_WINDOW` is NOT set by default (1M-context opt-in workaround for [#43989](https://github.com/anthropics/claude-code/issues/43989) only). Standard 200K window → manage context actively: `/context`, `/compact <focus>`, `/clear`, `/goal`, subagent delegation; keep high-signal tokens small. See `.claude/rules/ecc/common/performance.md`
