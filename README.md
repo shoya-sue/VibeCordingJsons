@@ -258,6 +258,7 @@ All 27 events:
 | `ANTHROPIC_WORKSPACE_ID` | Workload identity federation 用のワークスペース ID（エンタープライズ向け）（v2.1.141+） | (set if applicable) |
 | `CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE` | Fast mode (`/fast`) を Opus 4.6 に固定。**削除済み（2026-06-01）** — Opus 4.8 デフォルト化（v2.1.154+）に伴い廃止。Opus 4.6 を Fast mode で使うには `/model claude-opus-4-6[1m]` → `/fast on` | （削除済み・使用不可） |
 | `MCP_TOOL_TIMEOUT` | MCP ツール呼び出し 1 回あたりのフェッチタイムアウト（ms）。v2.1.142 でリモート HTTP/SSE サーバーの 60s ハードキャップを回避 | `120000` |
+| `CLAUDE_CODE_MCP_TOOL_IDLE_TIMEOUT` | remote MCP ツール呼び出しの無応答 abort タイムアウト。v2.1.187+ で remote MCP ツールが 5 分無応答だと無限ハングせず error で abort するようになった。その閾値を上書き | `300000`（既定 5 分） |
 | `CLAUDE_CODE_STOP_HOOK_BLOCK_CAP` | Stop フックが連続でブロックできる回数の上限（v2.1.143+、デフォルト `8`、無限ループ防止） | `8` |
 | `CLAUDE_CODE_USE_POWERSHELL_TOOL` | Windows の PowerShell ツール有効化（v2.1.143 で Bedrock/Vertex/Foundry 利用時にデフォルト ON、`0` でオプトアウト） | `0` |
 | `CLAUDE_CODE_POWERSHELL_RESPECT_EXECUTION_POLICY` | PowerShell ツールの `-ExecutionPolicy Bypass` デフォルトを無効化し、システムの ExecutionPolicy を尊重（v2.1.143+） | `1` |
@@ -305,6 +306,7 @@ All 27 events:
 | `enforceAvailableModels` | managed settings — 有効時、`availableModels` allowlist が Default モデルも制約し（disallow に解決される Default は最初の allowed モデルにフォールバック）、user/project 設定で managed の `availableModels` を広げられなくなる（v2.1.175+） |
 | `footerLinksRegexes` | フッター行に regex マッチの link badge を表示する設定（user または managed settings）（v2.1.176+） |
 | `sandbox.allowAppleEvents` | macOS の sandboxed command が Apple Events（`osascript` 等で他アプリを制御）を送れるようにする opt-in（v2.1.181+。テンプレは未設定＝無効） |
+| `sandbox.credentials` | macOS の sandboxed command が認証ファイル・機密 env（API キー等）を読み取るのをブロックする opt-in（v2.1.187+。テンプレは未設定。sandbox を能動有効化する場合のハードニング用） |
 | `respondToBashCommands` | `!` で実行した bash コマンドの出力に Claude が自動応答するか（v2.1.186+、デフォルト `true`）。`false` で従来の context-only 挙動（出力を文脈に取り込むだけで応答しない）に戻す |
 
 ## Settings Hierarchy
