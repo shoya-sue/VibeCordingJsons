@@ -44,6 +44,8 @@
 | `MessageDisplay` | アシスタントメッセージ表示直前（テキストを変換/非表示にできる、v2.1.152+） | Yes |
 | `SessionEnd` | セッション終了時 | No |
 
+> **マッチャー構文**: 複数ツールを 1 つの hook にまとめるときは **パイプ区切り**（`"Write|Edit"`）を使う。カンマ区切り（`"Bash,PowerShell"`）は v2.1.191 未満で **サイレントに一度も発火しない** バグがあった（v2.1.191 で修正）。古い CC でも確実に動かすならパイプ区切りに統一する。
+
 ## Advanced Features
 
 ### Conditional Filtering (`if` field, v2.1.85+)
