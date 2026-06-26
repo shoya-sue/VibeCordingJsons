@@ -69,3 +69,15 @@ tool_timeout_sec = 60
 
 [mcp_servers.github.env]
 PATH = "NODEJS_BIN_DIR:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
+
+# Optional — Plaud meeting-recorder owners. OAuth (run `npx -y @plaud-ai/mcp@latest install` once);
+# unauthenticated = tools simply do not appear. No API key.
+[mcp_servers.plaud]
+command = "npx"
+args = ["-y", "@plaud-ai/mcp@latest"]
+startup_timeout_sec = 30
+tool_timeout_sec = 60
+
+[mcp_servers.plaud.env]
+PATH = "NODEJS_BIN_DIR:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
+DO_NOT_TRACK = "1"
