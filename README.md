@@ -267,6 +267,7 @@ All 27 events:
 | `CLAUDE_CODE_POWERSHELL_RESPECT_EXECUTION_POLICY` | PowerShell ツールの `-ExecutionPolicy Bypass` デフォルトを無効化し、システムの ExecutionPolicy を尊重（v2.1.143+） | `1` |
 | `OTEL_METRICS_INCLUDE_ENTRYPOINT` | OpenTelemetry metrics に `app.entrypoint`（セッション起動エントリ）属性を含める（v2.1.152+、opt-in） | `true` |
 | `OTEL_LOG_TOOL_DETAILS` | `tool_decision` telemetry イベントに `tool_parameters`（bash コマンド・MCP/skill 名）を含める（v2.1.157+、opt-in） | `1` |
+| `OTEL_LOG_ASSISTANT_RESPONSES` | `claude_code.assistant_response` OTel log event にモデル応答テキストを含める（v2.1.193+）。**未設定時は `OTEL_LOG_USER_PROMPTS` に追従** → prompt をログ済みの環境はアップグレードで応答内容も記録され始める。prompts のみに保つなら `0` を明示 | `0`（prompts-only に保つ） |
 | `CLAUDE_CODE_ENABLE_AUTO_MODE` | Bedrock / Vertex / Foundry で auto mode（Opus 4.7・4.8）を有効化する opt-in（v2.1.158+）。標準の Anthropic API 利用時は不要 | `1`（該当ゲートウェイ利用時のみ） |
 | `OTEL_RESOURCE_ATTRIBUTES` | OpenTelemetry メトリクスのデータポイントにカスタムラベル（team・repo 等の任意ディメンション）を付与し、利用メトリクスをスライス可能にする（v2.1.161+） | `team=infra,repo=app` |
 | `ENABLE_PROMPT_CACHING_1H` | 1 時間 TTL の prompt caching を有効化（標準 5 分 TTL の延長）。API Key / Bedrock / Vertex / Foundry 全対応で `ENABLE_PROMPT_CACHING_1H_BEDROCK` の上位互換（v2.1.108+）。テンプレ既定で有効 | `1` |
@@ -275,6 +276,7 @@ All 27 events:
 | `CLAUDE_CODE_NO_FLICKER` | チラつきなし alt-screen レンダリング（v2.1.91+） | `1` |
 | `CLAUDE_CLIENT_PRESENCE_FILE` | クライアント presence ファイルを指定してモバイル（Claude アプリ）への通知を抑制する（v2.1.181+） | （用途に応じパス） |
 | `CLAUDE_CODE_RETRY_WATCHDOG` | unattended（CI / headless）セッション向けのリトライ監視。v2.1.186+ で `CLAUDE_CODE_MAX_RETRIES` は **15 が上限**にキャップされたため、無人運用で粘り強くリトライしたい場合はこちらを使う | `1` |
+| `CLAUDE_CODE_DISABLE_BG_SHELL_PRESSURE_REAP` | メモリ逼迫時のアイドル background シェルコマンド自動回収を無効化（v2.1.193+、既定は自動回収有効） | `1`（自動回収を止める場合） |
 
 ### Other Settings
 
@@ -301,6 +303,7 @@ All 27 events:
 | `worktree.bgIsolation` | バックグラウンドセッションを worktree で分離するか（`"none"` で無効化し working copy を直接編集、v2.1.143+） |
 | `parentSettingsBehavior` | admin 設定の結合方式（`"first-wins"`: 最上位優先 / `"merge"`: 全階層をマージ）（v2.1.133+） |
 | `autoMode.hard_deny` | auto モード分類ルール — ユーザーの意図や allow 例外に関わらず無条件ブロック（v2.1.136+） |
+| `autoMode.classifyAllShell` | auto モードで全 Bash/PowerShell コマンドを分類器に通す（既定は arbitrary-code-execution パターンのみ）。より厳格な auto モード運用向け（v2.1.193+） |
 | `allowAllClaudeAiMcps` | エンタープライズ managed 設定 — `managed-mcp.json` と並んで claude.ai クラウド MCP コネクタをロード（v2.1.149+） |
 | `pluginSuggestionMarketplaces` | エンタープライズ managed 設定 — context-aware tips でプラグイン提案する組織 marketplace の allow リスト（v2.1.152+） |
 | `agent` | dispatched session（`claude agents` から起動）で使うデフォルトエージェント。`settings.json` の値が honored される（v2.1.157+）。CLI からは `--agent <name>` で override |
