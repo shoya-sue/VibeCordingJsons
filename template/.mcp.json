@@ -50,6 +50,17 @@
       "env": {
         "PATH": "NODEJS_BIN_DIR:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
       }
+    },
+    "plaud": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@plaud-ai/mcp@latest"
+      ],
+      "env": {
+        "PATH": "NODEJS_BIN_DIR:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin",
+        "DO_NOT_TRACK": "1"
+      }
     }
   }
 }

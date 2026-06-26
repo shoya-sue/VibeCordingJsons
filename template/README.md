@@ -10,7 +10,7 @@ Complete configuration for Claude Code, Codex, and GitHub Copilot CLI with `ecc`
 | Skills (Claude) | 10 local + 261 via ECC plugin (ECC 2.0.0) |
 | Agents (Claude) | 64 agents via ECC plugin (ECC 2.0.0; code-reviewer, architect, language-specific reviewers, etc.) |
 | Rules | 55 ECC rules (common 10 + 9 languages × 5) + 3 custom (subagent-delegation, team-coordination, obsidian-mcp) |
-| MCP Servers | obsidian, context7, playwright, deepwiki, excalidraw, github |
+| MCP Servers | obsidian, context7, playwright, deepwiki, excalidraw, github, plaud (optional, Plaud owners) |
 | Codex | `.codex/config.toml` with high-effort model defaults, memories, matching MCP servers, and Codex-only fail-open hooks |
 | Copilot CLI | copilot-instructions.md, 8 skills, 4 agents |
 | VSCode | Workspace config with auto-start task |

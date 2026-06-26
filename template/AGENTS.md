@@ -15,7 +15,7 @@ Copy all files from the `template/` directory to your project root or home direc
 - 64 agents via `ecc` plugin (ECC 2.0.0, from the `everything-claude-code` marketplace; plugin-provided — code-reviewer, security-reviewer, architect, tdd-guide, language-specific reviewers, etc.; addressed as `ecc:<agent>`)
 - 55 rules: `ecc/common/` (10) + 9 languages × 5 (typescript, python, golang, rust, swift, java, kotlin, cpp, php)
 - 3 custom rules: subagent-delegation, team-coordination, obsidian-mcp
-- 6 MCP servers: obsidian, context7, playwright, deepwiki, excalidraw, github
+- 7 MCP servers: obsidian, context7, playwright, deepwiki, excalidraw, github, plaud (optional — Plaud meeting-recorder owners; OAuth, unauthenticated = tools hidden)
 - Agent Teams enabled with auto teammate mode
 - Attribution enabled (commits and PRs)
 - **Requires** the `ecc` plugin (from the `everything-claude-code` marketplace)

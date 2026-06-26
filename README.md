@@ -445,7 +445,7 @@ Provides 64 agents, 261 skills, 84 commands (ECC 2.0.0; plugin-provided counts a
 - **Use ask**: Require confirmation for push / publish operations via `ask`
 - **Explicit deny**: Block dangerous operations with `deny`
 - **Use `/model opusplan`**: Auto-switch Opus for planning, Sonnet for execution
-- **Keep MCP servers to 4-5**: Too many slows startup and becomes counterproductive
+- **Keep MCP servers lean**: Too many slows startup. `obsidian` / `github` / `plaud` are environment-specific — remove any you don't use.
 - **Keep CLAUDE.md under 150 lines**: Ensures it fits in context reliably
 - **Never write secrets**: Do not put `.env` or API keys in settings.json
 - **Use hooks**: Visualize work with file change notifications and command logs
