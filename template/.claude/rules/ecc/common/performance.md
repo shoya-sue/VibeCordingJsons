@@ -73,6 +73,7 @@ Control extended thinking via:
 - **No-flicker mode**: `CLAUDE_CODE_NO_FLICKER=1` — チラつきなし alt-screen レンダリング（v2.1.91+）
 - **Disable alt-screen**: `CLAUDE_CODE_DISABLE_ALTERNATE_SCREEN=1` — alt-screen を無効化して通常スクロールバックを維持（v2.1.132+）
 - **Force sync output**: `CLAUDE_CODE_FORCE_SYNC_OUTPUT=1` — Emacs eat 等で同期出力を強制有効化（v2.1.129+）
+- **Disable mouse clicks**: `CLAUDE_CODE_DISABLE_MOUSE_CLICKS=1` — fullscreen モードでマウスのクリック/ドラッグ/ホバーを無効化（ホイールスクロールは維持）（v2.1.195+）
 
 For complex tasks requiring deep reasoning:
 1. Ensure extended thinking is enabled (on by default)
