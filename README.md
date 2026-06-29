@@ -253,6 +253,7 @@ All 27 events:
 | `ANTHROPIC_BEDROCK_SERVICE_TIER` | Bedrock サービスティア（`default` / `flex` / `priority`）（v2.1.122+） | `default` |
 | `CLAUDE_CODE_SESSION_ID` | セッション ID（Bash サブプロセスに自動設定、フック `session_id` と同値）（v2.1.132+）。v2.1.154+ で MCP stdio サーバーにも `CLAUDE_CODE_SESSION_ID` と `CLAUDECODE=1` が渡る。v2.1.163+ で `--resume` 時も stdio MCP サーバーに渡る | (auto) |
 | `CLAUDE_CODE_DISABLE_ALTERNATE_SCREEN` | フルスクリーン alt-screen レンダラーを無効化して通常の端末スクロールバックを維持（v2.1.132+） | `1` |
+| `CLAUDE_CODE_DISABLE_MOUSE_CLICKS` | fullscreen モードでマウスのクリック/ドラッグ/ホバーを無効化（ホイールスクロールは維持）（v2.1.195+） | `1` |
 | `CLAUDE_CODE_FORCE_SYNC_OUTPUT` | 同期出力を強制有効化（Emacs `eat` 等の自動検出が効かない端末向け）（v2.1.129+） | `1` |
 | `CLAUDE_CODE_PACKAGE_MANAGER_AUTO_UPDATE` | Homebrew/WinGet インストール時にバックグラウンドで自動アップグレード（v2.1.129+） | `1` |
 | `CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY` | `/model` ピッカーでゲートウェイ `/v1/models` 探索を有効化（オプトイン）（v2.1.129+） | `1` |
