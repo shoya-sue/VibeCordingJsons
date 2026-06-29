@@ -252,7 +252,7 @@
     ],
     "PostToolUseFailure": [
       {
-        "matcher": "mcp__obsidian__*",
+        "matcher": "mcp__obsidian__.*",
         "hooks": [
           {
             "type": "command",
