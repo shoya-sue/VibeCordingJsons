@@ -54,7 +54,7 @@ gh release list -R anthropics/claude-code --limit 1
 
 - `CURRENT_RELEASE` が既にカバーしている Claude Code バージョンと `LATEST_CC` を比較する。
 - 新しいエントリが**ある** → 通常フロー（Step 0 以降）へ。
-- 新しいエントリが**ない**（既に最新をカバー済み） → それでも **0変更カバレッジ記録リリースを出す**（バージョン追跡の連続性維持のため。Step 0.5 で「適用ゼロ」を 4 レンズで検証し、doc-only リリースとして記録する）。**勝手に early-exit しない。**
+- 新しいエントリが**ない**（既に最新をカバー済み） → それでも **0変更カバレッジ記録リリースを出す**（バージョン追跡の連続性維持のため。Step 0.5 で「適用ゼロ」を 5 レンズで検証し、doc-only リリースとして記録する）。**勝手に early-exit しない。**
 
 ---
 
@@ -146,7 +146,7 @@ If changelog mentions a new ECC version:
 
 ### 0.5. Deep Quality Analysis
 
-**This step is mandatory.** Before finalizing any triage decision, evaluate each candidate change through all four lenses below. Record the findings in the update doc under `## 品質分析サマリー`. This analysis may upgrade or downgrade items from the initial triage.
+**This step is mandatory.** Before finalizing any triage decision, evaluate each candidate change through all five lenses below. Record the findings in the update doc under `## 品質分析サマリー`. This analysis may upgrade or downgrade items from the initial triage.
 
 #### Lens 1 — Applicability（テンプレートとしての適合性）
 
@@ -193,10 +193,26 @@ Ask: *Is this change being applied fully, or only partially?*
 
 → Incomplete items: add companion tasks to 🟡 list.
 
-**After all four lenses**, revise the triage:
+#### Lens 5 — Breaking-change Audit（出荷 config への破壊的変更監査）
+
+Ask: *Does this changelog item change matching / permission / parsing semantics in a way that could break the template's OWN shipped config — not just add a doc-worthy knob?*
+
+A changelog entry that **tightens or changes how an existing knob is interpreted** (hook `matcher` evaluation, permission-rule matching, glob vs regex, exact vs substring, parser strictness) is not merely a doc item — it can **silently break config the template already ships**. Audit the shipped files, never only the docs.
+
+**Trigger** this audit when an item's wording includes: hook `matcher` semantics, permission-rule matching, `mcp__*` tool-name matching, glob/regex, exact/substring, or any "now X-matches instead of Y-matches" phrasing.
+
+Steps:
+1. Enumerate every affected construct the template ships. For hook matchers, run `python3` over `template/.claude/settings.json` and list every `hooks[*][*].matcher`.
+2. For each, decide whether the new semantics change its match set. Record the verdict (壊れる / 壊れない) with the reason in the update doc under a `## 破壊的変更チェック` heading.
+3. If anything breaks, fix the shipped config in the **same PR** (upgrade to 🔴) — never ship a doc note describing a knob the template itself mis-uses.
+4. Run `bash scripts/check-counts.sh` after any settings.json matcher edit — it now also asserts no hook matcher uses a bare `__*` glob (must be exact-string or proper `.*` regex).
+
+Reference — official 3 evaluation modes (mirrored in `hooks.md`): `"*"`/`""`/omitted = match-all; only `[A-Za-z0-9_ ,|]` = exact string (or `|`/`,` list); any other char = JS regex (unanchored). All tools of a server = `mcp__<server>__.*` (regex), never bare `mcp__<server>__*`.
+
+**After all five lenses**, revise the triage:
 - Downgrade 🔴/🟡 → ⚪ if Applicability is Skip or Risk is High with no mitigation
-- Upgrade 🟡 → 🔴 if already partially applied (Completeness)
-- Add new 🟡 items surfaced by Lens 2 or Lens 4
+- Upgrade 🟡 → 🔴 if already partially applied (Completeness) or if Lens 5 finds the shipped config breaks
+- Add new 🟡 items surfaced by Lens 2, Lens 4, or Lens 5
 
 ---
 

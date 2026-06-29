@@ -70,6 +70,34 @@ for s in "${STALE[@]}"; do
   fi
 done
 
+# ---- hook matcher idiom guard ----
+# Claude Code evaluates a hook matcher as a JS regex when it contains any char
+# outside [A-Za-z0-9_ ,|]. A bare-glob like "mcp__obsidian__*" then means the
+# regex `mcp__obsidian_` + `_*` — it only matches by accident. The idiomatic
+# form is "mcp__obsidian__.*". This guard fails on any matcher that contains '*'
+# but is neither the match-all "*" nor a proper ".*" regex.
+MATCHER_BAD=$(python3 - <<'PY'
+import json
+d=json.load(open('template/.claude/settings.json'))
+bad=[]
+for ev,arr in d.get('hooks',{}).items():
+    if not isinstance(arr,list): continue
+    for g in arr:
+        if not isinstance(g,dict): continue
+        m=g.get('matcher')
+        if not isinstance(m,str): continue
+        if m.strip()=='*': continue          # match-all is fine
+        if '*' in m and '.*' not in m:        # bare glob — non-idiomatic
+            bad.append(f"{ev}: {m!r}")
+print("\n".join(bad))
+PY
+)
+if [ -n "$MATCHER_BAD" ]; then
+  echo "NON-IDIOMATIC HOOK MATCHER (bare '*' glob — use exact string or '.*' regex):"
+  echo "$MATCHER_BAD" | sed 's/^/    /'
+  fail=1
+fi
+
 echo
 if [ "$fail" -eq 0 ]; then
   echo "✓ counts consistent"
