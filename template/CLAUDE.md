@@ -42,9 +42,9 @@ make deploy-staging   # Deploy to staging
 
 ## Slash Commands
 
-- `/model opusplan` — Auto-switch: Opus for planning, Sonnet for execution（v2.1.153+ で `/model` の選択はデフォルトで新セッションにも適用される。現セッションのみ切り替えたい場合はピッカーで `s` キー。旧 keybinding `modelPicker:setAsDefault` は `modelPicker:thisSessionOnly` にリネーム）
+- `/model opusplan` — Auto-switch: Opus for planning, Sonnet for execution（v2.1.153+ で `/model` の選択はデフォルトで新セッションにも適用される。現セッションのみ切り替えたい場合はピッカーで `s` キー。旧 keybinding `modelPicker:setAsDefault` は `modelPicker:thisSessionOnly` にリネーム）。v2.1.196+ では organization default model に対応し、自分でモデルを選んでいない場合 `/model` に「Org default」（またはロール別の「Role default」）として表示される（管理者が org console で設定）
 - `/effort low|medium|high|xhigh|max` — Set thinking level. `/effort auto` to reset（v2.1.162+ で選択したレベルはデフォルトで新セッションにも引き継がれる）
-- `/voice [hold|tap|off]` — ターミナルで音声ディクテーション（v2.1.69+、tap モード v2.1.116+）。テンプレは `settings.json` で有効化＋日本語化済み（`voice.mode: tap` / `language: japanese`）。Space タップで録音開始→再タップで送信。文字起こしは無料（トークン非消費）。音声は Anthropic に送信（クラウド処理）・要 Claude.ai ログイン・SSH/Web 不可。v2.1.195+ でスペース無し言語（日本語・中国語・タイ語）の音声 auto-submit が発火しなかったバグが修正済み。乱れた日本語の整形やローカル offline 経路（whisper.cpp）は `voice-input` スキル → `.claude/skills/voice-input/SETUP.md`
+- `/voice [hold|tap|off]` — ターミナルで音声ディクテーション（v2.1.69+、tap モード v2.1.116+）。テンプレは `settings.json` で有効化＋日本語化済み（`voice.mode: tap` / `language: japanese`）。Space タップで録音開始→再タップで送信。文字起こしは無料（トークン非消費）。音声は Anthropic に送信（クラウド処理）・要 Claude.ai ログイン・SSH/Web 不可。v2.1.195+ でスペース無し言語（日本語・中国語・タイ語）の音声 auto-submit が発火しなかったバグが修正済み。v2.1.196+ では voice モード有効時に高速タイピングで space を飲み込む / 誤って録音を開始するバグも修正された。乱れた日本語の整形やローカル offline 経路（whisper.cpp）は `voice-input` スキル → `.claude/skills/voice-input/SETUP.md`
 - `/memory` — Manage auto-memory
 - `/loop 5m check deploy` — Repeat a prompt on schedule
 - `/plan <description>` — Start plan mode
@@ -80,7 +80,9 @@ make deploy-staging   # Deploy to staging
 - Bundled skills 抑制（v2.1.169+）: `disableBundledSkills: true`（settings.json）または `CLAUDE_CODE_DISABLE_BUNDLED_SKILLS=1` で組み込み skills / workflows / built-in slash command をモデルから隠す
 - `!` で実行した bash コマンドの出力に Claude が自動応答するようになった（v2.1.186+、デフォルト `true`）。出力を文脈に取り込むだけで応答させたくない場合は `settings.json` に `"respondToBashCommands": false` を設定して従来挙動に戻す
 - MCP サーバー認証は `/mcp` メニューを開かず CLI から実行可能（v2.1.186+）: `claude mcp login <name>` / `claude mcp logout <name>`。`--no-browser` で stdin リダイレクトし SSH 越しに認証を完了できる
+- v2.1.196+ では `claude mcp list`/`get` が、committed `.claude/settings.json` 経由でリポジトリが自己承認した `.mcp.json` サーバーを spawn しなくなった（untrusted workspace では `⏸ Pending approval` と表示）。テンプレは `.mcp.json` を同梱するため、信頼していない workspace では明示承認が必要
 - remote MCP ツール呼び出しが 5 分間無応答だと、無限ハングせず error で abort するようになった（v2.1.187+）。閾値は `CLAUDE_CODE_MCP_TOOL_IDLE_TIMEOUT`（ms）で上書き可
+- 応答ストリームの idle watchdog が v2.1.196+ で全プロバイダ既定 ON（ストリームが 5 分間イベント無しだと abort して自動 retry）。無効化は env var `CLAUDE_ENABLE_STREAM_WATCHDOG=0`
 - Agent Teams enabled (`teammateMode: auto`)
 - ECC hooks: session continuity (SessionStart/Stop/SessionEnd), --no-verify guard (PreToolUse), auto-format JS/TS (PostToolUse), compact quality (PreCompact)
 - Context hygiene: `CLAUDE_CODE_AUTO_COMPACT_WINDOW` is NOT set by default (1M-context opt-in workaround for [#43989](https://github.com/anthropics/claude-code/issues/43989) only). Standard 200K window → manage context actively: `/context`, `/compact <focus>`, `/clear`, `/goal`, subagent delegation; keep high-signal tokens small. See `.claude/rules/ecc/common/performance.md`
