@@ -278,6 +278,7 @@ All 27 events:
 | `CLAUDE_CLIENT_PRESENCE_FILE` | クライアント presence ファイルを指定してモバイル（Claude アプリ）への通知を抑制する（v2.1.181+） | （用途に応じパス） |
 | `CLAUDE_CODE_RETRY_WATCHDOG` | unattended（CI / headless）セッション向けのリトライ監視。v2.1.186+ で `CLAUDE_CODE_MAX_RETRIES` は **15 が上限**にキャップされたため、無人運用で粘り強くリトライしたい場合はこちらを使う | `1` |
 | `CLAUDE_CODE_DISABLE_BG_SHELL_PRESSURE_REAP` | メモリ逼迫時のアイドル background シェルコマンド自動回収を無効化（v2.1.193+、既定は自動回収有効） | `1`（自動回収を止める場合） |
+| `CLAUDE_ENABLE_STREAM_WATCHDOG` | 応答ストリームの idle watchdog。ストリームが 5 分間イベントを出さないと abort して自動 retry する。v2.1.196+ で**全プロバイダ既定 ON**（従来は一部のみ）。`0` で無効化 | `0`（無効化する場合） |
 
 ### Other Settings
 
@@ -384,6 +385,8 @@ Edit `project.code-workspace` to manage Claude Code across multiple projects in 
 Claude Code lets you switch models mid-session with the `/model` command.
 
 > **v2.1.153+ 挙動変更**: `/model` で選んだモデルはデフォルトで新セッションにも引き継がれる（IDE と同挙動）。現セッションのみ切り替えたい場合はモデルピッカーで `s` キーを押す。旧 keybinding `modelPicker:setAsDefault` は `modelPicker:thisSessionOnly` にリネーム（`d` アクションは `s` に置換）。
+>
+> **v2.1.196+ organization default model**: 管理者が org console で組織のデフォルトモデルを設定でき、ユーザーが自分でモデルを選んでいない場合は `/model` に「Org default」（またはロール別の「Role default」）として表示される。
 
 | Model Alias | Description | Recommended For |
 |-------------|-------------|-----------------|
