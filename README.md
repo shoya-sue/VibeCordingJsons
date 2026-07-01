@@ -390,15 +390,17 @@ Claude Code lets you switch models mid-session with the `/model` command.
 
 | Model Alias | Description | Recommended For |
 |-------------|-------------|-----------------|
-| `opus` | Opus 4.8 (highest performance, default) | Complex architecture design |
-| `sonnet` | Sonnet 4.6 (balanced) | Everyday development |
+| `opus` | Opus 4.8 (highest performance; テンプレ既定 = settings.json で opus 固定) | Complex architecture design |
+| `sonnet` | Sonnet 5 (v2.1.197+ の Claude Code 既定モデル・1M context 標準内蔵・`claude-sonnet-5`) | Everyday development |
 | `haiku` | Haiku 4.5 (fast, low cost) | Simple questions, code review |
 | `fable` | Fable 5 (Mythos-class frontier, v2.1.170+, `claude-fable-5`; 1M context built-in, `[1m]` suffix auto-stripped in v2.1.173+) | Frontier-grade analysis / research (opt-in, not fast-mode eligible) |
 | **`opusplan`** | **Opus for planning → Sonnet for execution (auto-switch)** | **Cost-optimized (recommended)** |
 
+> **v2.1.197+**: Claude Sonnet 5 が Claude Code の**既定モデル**に昇格（native 1M context、model id `claude-sonnet-5`）。導入当初は 8/31 まで $2/$10 per Mtok のプロモ価格。`sonnet` エイリアスの解決先が Sonnet 4.6 → Sonnet 5 に切替。テンプレは `settings.json` で `opus` を固定しているため既定挙動は不変 — 既定を Sonnet 5 にしたい場合は `model` を外すか `sonnet` を指定する。
+
 **`/model opusplan` workflow**:
 1. Plan mode (Shift+Tab) uses Opus 4.8 for complex thinking and design
-2. After plan confirmation, automatically switches to Sonnet 4.6 for implementation
+2. After plan confirmation, automatically switches to Sonnet 5 for implementation
 3. Saves weekly subscription quota while maintaining high-quality planning
 
 Set `"model": "opusplan"` in `settings.local.json` to enable by default.
