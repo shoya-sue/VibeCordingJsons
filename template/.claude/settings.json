@@ -100,7 +100,9 @@
       "Bash(terraform apply *)",
       "Bash(kubectl apply *)",
       "Bash(curl *)",
-      "Bash(chmod +x *)"
+      "Bash(chmod +x *)",
+      "Bash(git config --global core.hooksPath *)",
+      "Bash(git config --system *)"
     ],
     "deny": [
       "Read(**/.env*)",
@@ -137,6 +139,11 @@
       "Bash(git clean -fd *)",
       "Bash(git clean -fdx *)",
       "Bash(git checkout -- *)",
+      "Bash(git config --global user.name *)",
+      "Bash(git config --global user.email *)",
+      "Bash(git config --system user.name *)",
+      "Bash(git config --system user.email *)",
+      "Bash(git config --global --replace-all user.* *)",
       "Bash(curl * | sh)",
       "Bash(curl * | zsh)",
       "Bash(wget * | sh)",
@@ -211,6 +218,11 @@
             "type": "command",
             "command": "${HOME}/.claude/hooks/obsidian-mcp-healthcheck.sh",
             "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "${HOME}/.claude/hooks/git-identity-sentinel.sh",
+            "timeout": 5
           }
         ]
       }
@@ -230,6 +242,11 @@
       {
         "matcher": "Bash",
         "hooks": [
+          {
+            "type": "command",
+            "command": "${HOME}/.claude/hooks/guard-git-identity.sh",
+            "timeout": 5
+          },
           {
             "type": "command",
             "command": "npx block-no-verify@1.1.2 >/dev/null",
