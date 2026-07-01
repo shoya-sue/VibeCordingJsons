@@ -32,6 +32,7 @@ Copy all files from the `template/` directory to your project root or home direc
 - `kubectl delete namespace/node` — cluster-critical deletions
 - Reading `.env*`, `secrets/`, `.aws/`, `.ssh/`, `*.key`, `*.pem`
 - `git push --force`, `git reset --hard` — destructive git operations
+- `git config --global/--system user.name/user.email` — mutating the **machine-level git identity** (denied in `settings.json` **and** hard-blocked by the `guard-git-identity.sh` PreToolUse hook, which also blocks any test/placeholder identity like `Test User` / `test@test.com`). Use `--local` for per-repo identity; genuine machine setup is a human action (run it yourself in the terminal — `!` bang commands bypass the hook). Backstop: the `git-identity-sentinel.sh` SessionStart hook warns if the global identity already looks like a test/CI placeholder (signature of a `~/.gitconfig` clobber by a leaking test harness)
 
 ### Subagent Delegation
 
