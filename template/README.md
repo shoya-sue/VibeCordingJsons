@@ -45,7 +45,7 @@ Subagent usage does not count against billing quotas:
 - Architecture → `ecc:architect` (opus)
 - Language reviews → `ecc:{lang}-reviewer` (sonnet)
 - Tests → test-runner (built-in, sonnet)
-- Exploration → Explore agent (haiku)
+- Exploration → Explore agent (inherits session model, ≤opus; v2.1.198+ — was haiku)
 
 ### Team Coordination
 

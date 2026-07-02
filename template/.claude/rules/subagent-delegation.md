@@ -13,7 +13,7 @@ Agents are provided by the `ecc` plugin — no custom agent files needed.
 
 | Task Type | Agent Type | Model |
 |-----------|-----------|-------|
-| Codebase exploration | Explore | haiku |
+| Codebase exploration | Explore | session model, ≤opus（*） |
 | Code review | ecc:code-reviewer | sonnet |
 | Security review | ecc:security-reviewer | sonnet |
 | Test execution / fixing | test-runner (built-in) | sonnet |
@@ -27,6 +27,8 @@ Agents are provided by the `ecc` plugin — no custom agent files needed.
 | Java review | ecc:java-reviewer | sonnet |
 | Kotlin review | ecc:kotlin-reviewer | sonnet |
 | C++ review | ecc:cpp-reviewer | sonnet |
+
+> （*）v2.1.198+ で **Explore agent はメインセッションのモデルを継承**するよう変更（**opus 上限**）。以前は haiku 固定だった。軽量・低コストな探索を維持したい場合は、明示的に haiku 系モデルを指定した専用 agent に委任する。
 
 ## GitHub Operations
 
