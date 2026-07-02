@@ -23,7 +23,7 @@
 | `PostToolUseFailure` | ツール実行失敗後 | No |
 | `PermissionRequest` | 権限確認時 | No |
 | `PermissionDenied` | 権限拒否時（`retry: true` 返却可） | No |
-| `Notification` | 通知発生時 | No |
+| `Notification` | 通知発生時（v2.1.198+ は background agent の待機/完了でも発火: `agent_needs_input` / `agent_completed`） | No |
 | `SubagentStart` | サブエージェント開始時 | No |
 | `SubagentStop` | サブエージェント停止時 | Yes |
 | `Stop` | 応答完了時（8 連続ブロックで自動終了、`CLAUDE_CODE_STOP_HOOK_BLOCK_CAP` で変更、v2.1.143+） | Yes |

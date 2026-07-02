@@ -23,6 +23,11 @@
 - `/model claude-fable-5` で選択。**Fast mode 対象外**（`/fast` は Opus 4.8/4.7/4.6 のみ）
 - **1M コンテキスト標準内蔵**のため `[1m]` サフィックス不要（v2.1.173+ で付与しても自動除去される）
 
+## Agent モデル継承 (v2.1.198+)
+
+- **Explore agent** は v2.1.198+ でメインセッションのモデルを継承する（**opus 上限**）。以前は haiku 固定だった。軽量・低コストな探索を維持したい場合は、明示的に haiku 系モデルを指定した専用 agent に委任する。
+- **Subagent / context compaction** はセッションの extended thinking 設定を継承する（委任タスク・要約の出力品質が向上）。
+
 ## Fast Mode
 
 `/fast` で Claude Opus を高速出力モードで利用できる（小型モデルへのダウングレードではない、品質維持のままレイテンシ低減）。

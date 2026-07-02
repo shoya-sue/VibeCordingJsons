@@ -128,7 +128,7 @@ grep -ril "<topic keywords>" \
 grep -ril "<topic keywords>" "${HOME}/Public/shoya-sue/claude-obsidian/wiki/" 2>/dev/null
 ```
 
-広範な探索が必要な場合は Explore subagent（haiku モデル）に委任する。  
+広範な探索が必要な場合は Explore subagent に委任する（v2.1.198+ はデフォルトで session モデル継承 [≤opus]、以前は haiku 固定）。  
 MCP 経由なら `search_query` (JsonLogic) / `search_simple` でクエリ検索も可能。
 
 This prevents duplication and reveals notes that should receive [[wikilinks]].
